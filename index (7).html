@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cat Knight Adventure</title>
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'MedievalSharp', cursive;
+      background: linear-gradient(to bottom, #1a1a2e, #16213e);
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 { font-size: 2em; }
+    .zone {
+      background: #293462;
+      padding: 15px;
+      margin: 15px auto;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 300px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: slideIn 0.5s ease forwards;
+    }
+    .zone:nth-child(1) { animation-delay: 0.1s; }
+    .zone:nth-child(2) { animation-delay: 0.2s; }
+    .zone:nth-child(3) { animation-delay: 0.3s; }
+    .zone:nth-child(4) { animation-delay: 0.4s; }
+    .zone:nth-child(5) { animation-delay: 0.5s; }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    button {
+      background: #ff6363;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      margin: 5px;
+      font-size: 16px;
+    }
+
+    #quiz { display: none; }
+  </style>
+</head>
+<body>
+  <h1>🐱 Cat Knight Adventure</h1>
+  <div id="map">
+    <div class="zone" onclick="startQuiz('maps')">🗺️ Mountain of Maps</div>
+    <div class="zone" onclick="startQuiz('history')">🏛️ Ruins of Time</div>
+    <div class="zone" onclick="startQuiz('sports')">🏟️ Arena of Motion</div>
+    <div class="zone" onclick="startQuiz('stage')">🎭 Grand Stage of Screens</div>
+    <div class="zone" onclick="startQuiz('daily')">🔮 Crystal Spire</div>
+  </div>
+  <div id="quiz">
+    <h2 id="questionText"></h2>
+    <div id="answers"></div>
+    <button onclick="nextQuestion()">Next</button>
+  </div>
+  <script>
+    const questionBank = {
+      maps: [
+        { q: "What is the capital of France?", a: "Paris", o: ["Paris", "Madrid", "Rome", "Berlin"] },
+        { q: "Which ocean borders the US East Coast?", a: "Atlantic Ocean", o: ["Pacific Ocean", "Atlantic Ocean", "Indian Ocean", "Arctic Ocean"] },
+        { q: "How many continents are there?", a: "7", o: ["5", "6", "7", "8"] },
+        { q: "Which country has the most time zones?", a: "France", o: ["USA", "Russia", "France", "Australia"] },
+        { q: "Mount Everest lies between which two countries?", a: "Nepal and China", o: ["India and China", "Nepal and China", "China and Bhutan", "Nepal and India"] }
+      ],
+      history: [
+        { q: "Who discovered America in 1492?", a: "Christopher Columbus", o: ["Christopher Columbus", "Ferdinand Magellan", "James Cook", "Marco Polo"] },
+        { q: "When did World War II end?", a: "1945", o: ["1942", "1943", "1945", "1946"] },
+        { q: "Which wall fell in 1989?", a: "Berlin Wall", o: ["Berlin Wall", "Great Wall", "Iron Curtain", "Wall of China"] },
+        { q: "Who was the first U.S. President?", a: "George Washington", o: ["George Washington", "Thomas Jefferson", "John Adams", "Abraham Lincoln"] },
+        { q: "Where did the Renaissance begin?", a: "Italy", o: ["France", "Italy", "England", "Germany"] }
+      ],
+      sports: [
+        { q: "How many players are on a soccer team?", a: "11", o: ["9", "10", "11", "12"] },
+        { q: "Which sport uses a bat and a ball?", a: "Baseball", o: ["Baseball", "Basketball", "Football", "Tennis"] },
+        { q: "What is the national sport of Japan?", a: "Sumo Wrestling", o: ["Karate", "Judo", "Sumo Wrestling", "Aikido"] },
+        { q: "Which sport is Serena Williams famous for?", a: "Tennis", o: ["Tennis", "Golf", "Basketball", "Athletics"] },
+        { q: "What sport is played at Wimbledon?", a: "Tennis", o: ["Tennis", "Cricket", "Rugby", "Football"] }
+      ],
+      stage: [
+        { q: "Who played Jack in Titanic?", a: "Leonardo DiCaprio", o: ["Leonardo DiCaprio", "Brad Pitt", "Tom Cruise", "Johnny Depp"] },
+        { q: "What is the longest-running Broadway show?", a: "The Phantom of the Opera", o: ["The Phantom of the Opera", "Les Misérables", "Cats", "Wicked"] },
+        { q: "Who directed Inception?", a: "Christopher Nolan", o: ["Christopher Nolan", "Steven Spielberg", "James Cameron", "Quentin Tarantino"] },
+        { q: "Which movie features a hobbit and a ring?", a: "The Lord of the Rings", o: ["The Lord of the Rings", "Harry Potter", "The Hobbit", "Percy Jackson"] },
+        { q: "What was Pixar’s first movie?", a: "Toy Story", o: ["Toy Story", "Finding Nemo", "Cars", "Up"] }
+      ],
+      daily: [
+        { q: "What is H2O commonly known as?", a: "Water", o: ["Oxygen", "Hydrogen", "Water", "Steam"] },
+        { q: "Which planet is closest to the sun?", a: "Mercury", o: ["Venus", "Mars", "Mercury", "Earth"] },
+        { q: "What do bees produce?", a: "Honey", o: ["Honey", "Pollen", "Wax", "Milk"] },
+        { q: "How many days are in a non-leap year?", a: "365", o: ["360", "364", "365", "366"] },
+        { q: "What color do red and blue make?", a: "Purple", o: ["Orange", "Purple", "Brown", "Green"] }
+      ]
+    };
+
+    let currentZone = "";
+    let currentQuestions = [];
+    let currentIndex = 0;
+
+    function startQuiz(zone) {
+      currentZone = zone;
+      currentQuestions = [...questionBank[zone]];
+      currentIndex = 0;
+      document.getElementById("map").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      const q = currentQuestions[currentIndex];
+      document.getElementById("questionText").innerText = q.q;
+      const answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = "";
+      q.o.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => {
+          const correct = q.a.trim().toLowerCase();
+          const guess = option.trim().toLowerCase();
+          if (guess === correct) {
+            alert("✅ Correct!");
+          } else {
+            alert("❌ Wrong. Correct answer was: " + q.a);
+          }
+        };
+        answersDiv.appendChild(btn);
+      });
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex < currentQuestions.length) {
+        showQuestion();
+      } else {
+        document.getElementById("quiz").style.display = "none";
+        document.getElementById("map").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
