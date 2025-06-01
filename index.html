@@ -1,1 +1,43 @@
-<!-- placeholder, your HTML file goes here -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Knight Adventure</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1e1e2f">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service-worker.js').then(function(reg) {
+        console.log('Service Worker registered!', reg);
+      }).catch(function(err) {
+        console.error('Service Worker registration failed:', err);
+      });
+    }
+  </script>
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: white;
+      font-family: sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>🧙‍♂️ Cat Knight Adventure</h1>
+    <p>The game is installed and running as a PWA!</p>
+    <p>You can now build your quiz logic and visuals here.</p>
+  </main>
+</body>
+</html>
