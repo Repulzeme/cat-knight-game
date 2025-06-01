@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cat Knight Adventure</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1e1e2f">
+  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'MedievalSharp', cursive;
+      background-image: url('https://i.imgur.com/kd0H2PI.jpg');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+      transition: background 0.8s ease;
+    }
+
+    .fade {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    .fade.active {
+      opacity: 1;
+    }
+
+    .cat-avatar {
+      width: 100px;
+      margin: 10px auto;
+      position: relative;
+    }
+
+    .wizard-hat {
+      width: 40px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      display: none;
+    }
+
+    .glow-xp {
+      animation: glow 1.5s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #4af, 0 0 10px #4af; }
+      to   { text-shadow: 0 0 10px #4af, 0 0 20px #4af; }
+    }
+
+    .map, .quiz-box, .boss-battle {
+      display: none;
+      max-width: 800px;
+      margin: auto;
+      background-color: rgba(30, 30, 47, 0.9);
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #000;
+      transition: opacity 0.5s ease;
+    }
+
+    .map.active, .quiz-box.active, .boss-battle.active {
+      display: block;
+      opacity: 1;
+    }
+
+    .row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .zone {
+      background-color: #3c3c5a;
+      padding: 15px;
+      border-radius: 10px;
+      width: 140px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .zone:hover {
+      transform: scale(1.05);
+      background-color: #5e5e80;
+      box-shadow: 0 0 10px #fff;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      border: none;
+      background-color: #4a90e2;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 5px;
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background-color: #3b78c2;
+    }
+
+    .spell-btn {
+      margin: 5px;
+      padding: 6px 12px;
+      background-color: #7e57c2;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+
+    .spell-btn.used {
+      animation: spellFlash 0.4s ease-out;
+    }
+
+    @keyframes spellFlash {
+      from { background-color: #e0b3ff; transform: scale(1.1); }
+      to   { background-color: #7e57c2; transform: scale(1); }
+    }
+
+    #xp-display {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="cat-avatar">
+    <img src="https://i.imgur.com/w2yRfzj.png" alt="Cat Knight">
+    <img class="wizard-hat" id="wizardHat" src="https://i.imgur.com/6MBaNxy.png" alt="Wizard Hat">
+  </div>
+
+  <audio id="correct-sfx" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7a8b4be76e.mp3"></audio>
+  <audio id="wrong-sfx" src="https://cdn.pixabay.com/download/audio/2022/03/11/audio_f1dd6fd7a1.mp3"></audio>
+  <audio id="boss-music" loop src="https://cdn.pixabay.com/download/audio/2022/03/11/audio_a5fda2be24.mp3"></audio>
+
+  <div class="map active" id="map">
+    <h1>🗺️ Realm of Quizzaria</h1>
+    <div class="row">
+      <div class="zone" onclick="startQuiz('maps')">🏔️ Mountain of Maps</div>
+      <div class="zone" onclick="startQuiz('stage')">🎭 Grand Stage of Screens</div>
+    </div>
+    <div class="row">
+      <div class="zone" onclick="startQuiz('history')">🏛️ Ruins of Time</div>
+      <div class="zone" onclick="startQuiz('sports')">🏟️ Arena of Motion</div>
+    </div>
+    <div class="row">
+      <div class="zone" onclick="startQuiz('daily')">🔮 Crystal Spire</div>
+      <div class="zone" onclick="startBossBattle()">🌩️ Castle of Oblivion</div>
+    </div>
+    <div id="xp-display" class="glow-xp">XP: 0</div>
+  </div>
+
+  <div class="quiz-box" id="quiz">
+    <h2 id="quiz-title">Quiz Time!</h2>
+    <p id="question"></p>
+    <div id="answers"></div>
+    <div>
+      <button class="spell-btn" id="hintBtn" onclick="useHint()">🪄 Hint</button>
+      <button class="spell-btn" id="removeBtn" onclick="useRemove()">💥 Remove One</button>
+    </div>
+    <p id="feedback"></p>
+    <button class="btn" onclick="nextQuestion()">Next</button>
+  </div>
+
+  <div class="boss-battle" id="boss">
+    <h2>⚔️ Battle: Shadow Sage</h2>
+    <p id="boss-question"></p>
+    <div id="boss-answers"></div>
+    <p id="boss-feedback"></p>
+    <p id="boss-progress"></p>
+    <button class="btn" onclick="nextBossQuestion()">Next</button>
+  </div>
+
+  <script>
+    let xp = 0;
+    let currentQ = 0;
+    let quizData = [];
+    let bossIndex = 0;
+    let correctBossAnswers = 0;
+
+    const questionBank = {
+      maps: [
+        { q: "Which is the largest continent?", a: "Asia", o: ["Africa", "Asia", "Europe", "Antarctica"], f: "Asia is the largest continent." }
+      ],
+      history: [
+        { q: "Who was the first U.S. President?", a: "George Washington", o: ["Lincoln", "Jefferson", "Washington", "Adams"], f: "George Washington." }
+      ],
+      sports: [
+        { q: "How many players in soccer (on field)?", a: "11", o: ["9", "10", "11", "12"], f: "11 players per team on field." }
+      ],
+      stage: [
+        { q: "Who played Jack in Titanic?", a: "Leonardo DiCaprio", o: ["Pitt", "Cruise", "DiCaprio", "Depp"], f: "It was DiCaprio." }
+      ],
+      daily: [
+        { q: "H2O is also known as?", a: "Water", o: ["Oxygen", "Hydrogen", "Water", "Helium"], f: "H2O = Water." }
+      ]
+    };
+
+    function startQuiz(subject) {
+      quizData = questionBank[subject];
+      currentQ = 0;
+      showQuestion();
+      switchScreen('map', 'quiz');
+    }
+
+    function showQuestion() {
+      const q = quizData[currentQ];
+      document.getElementById('question').innerText = q.q;
+      const ansDiv = document.getElementById('answers');
+      ansDiv.innerHTML = '';
+      document.getElementById('feedback').innerText = '';
+      q.o.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.innerText = option;
+        btn.onclick = () => {
+          if (option === q.a) {
+            document.getElementById('feedback').innerText = `✅ ${q.f}`;
+            document.getElementById('correct-sfx').play();
+            xp += 10;
+            document.getElementById('xp-display').innerText = `XP: ${xp}`;
+          } else {
+            document.getElementById('feedback').innerText = `❌ ${q.f}`;
+            document.getElementById('wrong-sfx').play();
+          }
+        };
+        ansDiv.appendChild(btn);
+      });
+    }
+
+    function nextQuestion() {
+      currentQ++;
+      if (currentQ < quizData.length) {
+        showQuestion();
+      } else {
+        switchScreen('quiz', 'map');
+      }
+    }
+
+    function startBossBattle() {
+      bossIndex = 0;
+      correctBossAnswers = 0;
+      switchScreen('map', 'boss');
+      document.getElementById('boss-music').play();
+      showBossQuestion();
+    }
+
+    const bossData = [
+      { q: "Capital of Egypt?", a: "Cairo", o: ["Alexandria", "Giza", "Cairo", "Luxor"] }
+    ];
+
+    function showBossQuestion() {
+      const q = bossData[bossIndex];
+      document.getElementById('boss-question').innerText = q.q;
+      document.getElementById('boss-progress').innerText = `Q${bossIndex + 1} of ${bossData.length}`;
+      const ansDiv = document.getElementById('boss-answers');
+      ansDiv.innerHTML = '';
+      document.getElementById('boss-feedback').innerText = '';
+      q.o.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'btn';
+        btn.innerText = option;
+        btn.onclick = () => {
+          if (option === q.a) {
+            correctBossAnswers++;
+            document.getElementById('boss-feedback').innerText = "✅ Correct!";
+            document.getElementById('correct-sfx').play();
+          } else {
+            document.getElementById('boss-feedback').innerText = "❌ Restart!";
+            document.getElementById('wrong-sfx').play();
+            setTimeout(startBossBattle, 1500);
+            return;
+          }
+        };
+        ansDiv.appendChild(btn);
+      });
+    }
+
+    function nextBossQuestion() {
+      bossIndex++;
+      if (bossIndex >= bossData.length) {
+        alert("🎉 You defeated the Shadow Sage!");
+        document.getElementById('wizardHat').style.display = 'block';
+        switchScreen('boss', 'map');
+        document.getElementById('boss-music').pause();
+        document.getElementById('boss-music').currentTime = 0;
+      } else {
+        showBossQuestion();
+      }
+    }
+
+    function switchScreen(fromId, toId) {
+      document.getElementById(fromId).classList.remove('active');
+      document.getElementById(toId).classList.add('active');
+    }
+
+    function useHint() {
+      const btn = document.getElementById('hintBtn');
+      btn.classList.add('used');
+      setTimeout(() => btn.classList.remove('used'), 400);
+      alert("🔮 Hint: Think carefully!");
+    }
+
+    function useRemove() {
+      const btn = document.getElementById('removeBtn');
+      btn.classList.add('used');
+      setTimeout(() => btn.classList.remove('used'), 400);
+      alert("💥 Removed one wrong answer (demo).");
+    }
+  </script>
+</body>
+</html>
