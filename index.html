@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cat Knight Adventure</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" href="icon-192.png" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0d1f;
+      color: white;
+      text-align: center;
+      padding: 30px;
+    }
+    .zone-button {
+      background-color: #2935d1;
+      color: white;
+      font-size: 1.2em;
+      padding: 15px 25px;
+      margin: 10px auto;
+      border: none;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 300px;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .zone-button:hover {
+      transform: scale(1.05);
+    }
+    .avatar {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+      animation: idleBounce 1.8s infinite ease-in-out;
+    }
+    @keyframes idleBounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    .glow {
+      animation: glowPulse 2s infinite alternate;
+    }
+    @keyframes glowPulse {
+      from { box-shadow: 0 0 5px #a9f; }
+      to { box-shadow: 0 0 20px #fff; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🐱 Cat Knight Adventure</h1>
+  <img src="icon-192.png" class="avatar" id="catAvatar" alt="Cat Knight" />
+  <div id="xp-banner" style="font-weight:bold; margin-bottom:20px;">XP: 0 | Spells: 0</div>
+  <p>Select a knowledge zone to begin your journey:</p>
+  <button class="zone-button" onclick="enterZone('maps')">🗺️ Mountain of Maps</button>
+  <button class="zone-button" onclick="enterZone('history')">🏛️ Ruins of Time</button>
+  <button class="zone-button" onclick="enterZone('sports')">🏟️ Arena of Motion</button>
+  <button class="zone-button" onclick="enterZone('entertainment')">🎭 Grand Stage of Screens</button>
+  <button class="zone-button" onclick="enterZone('daily')">🔮 Crystal Spire</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
