@@ -1,0 +1,18 @@
+<!-- Full HTML will include this animated CSS and enhanced visuals -->
+
+<style>
+  @keyframes zoneEntry {
+    0% { opacity: 0; transform: translateY(20px) scale(0.95); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .zone {
+    animation: zoneEntry 0.6s ease-in-out;
+  }
+
+  .zone:hover {
+    transform: scale(1.05);
+    background-color: #5e5e80;
+    box-shadow: 0 0 10px #fff;
+  }
+</style>
