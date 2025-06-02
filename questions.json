@@ -4,123 +4,144 @@
       {
         "question": "What is the capital of France?",
         "options": ["Paris", "Madrid", "Berlin", "Rome"],
-        "answer": "Paris"
+        "answer": "Paris",
+        "fact": "Paris has been France's capital since the 10th century."
       },
       {
         "question": "Which continent is Egypt in?",
         "options": ["Africa", "Asia", "Europe", "Australia"],
-        "answer": "Africa"
+        "answer": "Africa",
+        "fact": "Egypt is one of only two countries that straddle both Africa and Asia, but it's politically considered African."
       }
     ],
     "scholar": [
       {
         "question": "Which river flows through Baghdad?",
         "options": ["Tigris", "Euphrates", "Nile", "Jordan"],
-        "answer": "Tigris"
+        "answer": "Tigris",
+        "fact": "The Tigris River is one of the two major rivers of Mesopotamia, the other being the Euphrates."
       },
       {
         "question": "Which country has the most time zones?",
         "options": ["Russia", "USA", "France", "China"],
-        "answer": "France"
+        "answer": "France",
+        "fact": "France has 12 time zones due to its many overseas territories."
       }
     ],
     "wizard": [
       {
         "question": "What is the name of the desert in northern China and southern Mongolia?",
         "options": ["Gobi", "Sahara", "Karakum", "Kalahari"],
-        "answer": "Gobi"
+        "answer": "Gobi",
+        "fact": "The Gobi is a cold desert — it even snows there."
       }
     ]
   },
+
   "stage": {
     "novice": [
       {
         "question": "What is a 'proscenium' in theatre?",
         "options": ["A type of actor", "The stage curtain", "The arch framing the stage", "A lighting cue"],
-        "answer": "The arch framing the stage"
+        "answer": "The arch framing the stage",
+        "fact": "The proscenium arch frames the stage like a picture frame, separating audience and performers."
       }
     ],
     "scholar": [
       {
         "question": "Who wrote the play 'Hamlet'?",
         "options": ["Shakespeare", "Molière", "Ibsen", "Goethe"],
-        "answer": "Shakespeare"
+        "answer": "Shakespeare",
+        "fact": "'Hamlet' is one of Shakespeare’s most famous tragedies, written around 1600."
       }
     ],
     "wizard": [
       {
         "question": "Which theatre movement emphasized absurdity and illogical dialogue?",
         "options": ["Theatre of the Absurd", "Realism", "Romanticism", "Vaudeville"],
-        "answer": "Theatre of the Absurd"
+        "answer": "Theatre of the Absurd",
+        "fact": "The Theatre of the Absurd emerged after World War II, reflecting the existential disillusionment of the era."
       }
     ]
   },
+
   "history": {
     "novice": [
       {
         "question": "Who was the first President of the United States?",
         "options": ["George Washington", "Thomas Jefferson", "John Adams", "Abraham Lincoln"],
-        "answer": "George Washington"
+        "answer": "George Washington",
+        "fact": "George Washington was elected unanimously and served from 1789 to 1797."
       }
     ],
     "scholar": [
       {
         "question": "In which year did World War II end?",
         "options": ["1942", "1945", "1948", "1950"],
-        "answer": "1945"
+        "answer": "1945",
+        "fact": "WWII ended in 1945 after the surrender of Germany in May and Japan in September."
       }
     ],
     "wizard": [
       {
         "question": "Which empire was ruled by Suleiman the Magnificent?",
         "options": ["Ottoman Empire", "Roman Empire", "Mongol Empire", "British Empire"],
-        "answer": "Ottoman Empire"
+        "answer": "Ottoman Empire",
+        "fact": "Suleiman the Magnificent ruled the Ottoman Empire at its peak in the 16th century."
       }
     ]
   },
+
   "sports": {
     "novice": [
       {
         "question": "How many players are on a soccer team (on the field)?",
         "options": ["9", "10", "11", "12"],
-        "answer": "11"
+        "answer": "11",
+        "fact": "A soccer team fields 11 players, including the goalkeeper."
       }
     ],
     "scholar": [
       {
         "question": "In which sport would you perform a 'slam dunk'?",
         "options": ["Volleyball", "Basketball", "Handball", "Tennis"],
-        "answer": "Basketball"
+        "answer": "Basketball",
+        "fact": "A slam dunk is one of the most powerful moves in basketball."
       }
     ],
     "wizard": [
       {
         "question": "Which country has won the most Olympic gold medals?",
         "options": ["China", "Russia", "Germany", "USA"],
-        "answer": "USA"
+        "answer": "USA",
+        "fact": "The USA leads all countries in Olympic golds, with over 1,100 in total."
       }
     ]
   },
+
   "daily": {
     "novice": [
       {
         "question": "What is the boiling point of water in Celsius?",
         "options": ["90°C", "95°C", "100°C", "110°C"],
-        "answer": "100°C"
+        "answer": "100°C",
+        "fact": "Water boils at 100°C at sea level, but this changes with altitude."
       }
     ],
     "scholar": [
       {
         "question": "Which planet is closest to the sun?",
         "options": ["Venus", "Earth", "Mars", "Mercury"],
-        "answer": "Mercury"
+        "answer": "Mercury",
+        "fact": "Mercury is the closest planet to the Sun, orbiting it every 88 Earth days."
       }
     ],
     "wizard": [
       {
         "question": "What is the chemical symbol for gold?",
         "options": ["Ag", "Gd", "Au", "Pb"],
-        "answer": "Au"
+        "answer": "Au",
+        "fact": "The symbol 'Au' comes from the Latin word 'Aurum', meaning shining dawn."
       }
     ]
   }
