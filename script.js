@@ -50,10 +50,10 @@ function startQuiz(subject, difficulty) {
 
 function renderQuestion(q, subject, difficulty) {
   let root = document.getElementById("game-root");
-  root.innerHTML = \`
-    <div><strong>\${q.question}</strong></div>
-    \${q.options.map(opt => `<button onclick="handleAnswer('\${opt}', '\${q.answer}', '\${subject}', '\${difficulty}')">\${opt}</button>`).join("<br>")}
-  \`;
+  root.innerHTML = `
+  <div><strong>${q.question}</strong></div>
+  ${q.options.map(opt => `<button onclick="handleAnswer('${opt}', '${q.answer}', '${subject}', '${difficulty}')">${opt}</button>`).join("<br>")}
+`;
 }
 
 function handleAnswer(selected, correct, subject, difficulty) {
