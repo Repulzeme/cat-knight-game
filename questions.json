@@ -1,0 +1,26 @@
+
+{
+  "geography": {
+    "novice": [
+      {
+        "question": "What is the capital of France?",
+        "options": ["Paris", "Madrid", "Berlin", "Rome"],
+        "answer": "Paris"
+      }
+    ],
+    "scholar": [
+      {
+        "question": "Which river flows through Baghdad?",
+        "options": ["Tigris", "Euphrates", "Nile", "Jordan"],
+        "answer": "Tigris"
+      }
+    ],
+    "wizard": [
+      {
+        "question": "What is the name of the desert that covers much of northern China and southern Mongolia?",
+        "options": ["Gobi", "Sahara", "Karakum", "Kalahari"],
+        "answer": "Gobi"
+      }
+    ]
+  }
+}
