@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cat Knight: Realm 1</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #fdfdfd; }
+    .button { padding: 10px 20px; margin: 5px; font-size: 16px; cursor: pointer; }
+    .question-container { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>🐱 Cat Knight: Realm 1</h1>
+  <div id="xp">XP: 0</div>
+  <div>
+    <button class="button" onclick="startQuiz('geography', 'novice')">Geography - Novice</button>
+    <button class="button" onclick="startQuiz('geography', 'scholar')">Geography - Scholar</button>
+    <button class="button" onclick="startQuiz('geography', 'wizard')">Geography - Wizard</button>
+  </div>
+  <div id="quiz" class="question-container"></div>
+  <script src="script.js"></script>
+</body>
+</html>
