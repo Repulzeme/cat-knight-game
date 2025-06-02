@@ -87,3 +87,46 @@ function handleAnswer(selected, correct, subject, difficulty) {
 }
 
 window.onload = () => updateUI();
+// Step C: Zone click logic to load quiz subject and show difficulty options
+
+const zoneSubjects = {
+  arena: "geography",
+  theater: "stage",
+  library: "history",
+  stadium: "sports",
+  daily: "daily"
+};
+
+function setupZoneButtons() {
+  Object.keys(zoneSubjects).forEach((zoneId) => {
+    const zone = document.getElementById(zoneId);
+    if (zone) {
+      zone.addEventListener("click", () => {
+        const subject = zoneSubjects[zoneId];
+        showDifficultyOptions(subject);
+      });
+    }
+  });
+}
+
+function showDifficultyOptions(subject) {
+  const root = document.getElementById("game-root");
+  root.innerHTML = `
+    <h2>Choose difficulty for ${capitalize(subject)}</h2>
+    <button onclick="startQuiz('${subject}', 'novice')">🟢 Novice</button>
+    <button onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar</button>
+    <button onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard</button>
+    <br><br>
+    <button onclick="updateUI()">⬅️ Back to map</button>
+  `;
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Ensure this is called when window loads
+window.onload = () => {
+  updateUI();
+  setupZoneButtons();
+};
