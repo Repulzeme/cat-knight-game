@@ -151,7 +151,6 @@ if (gameData.dailyXp >= 90 && !gameData.spells.freeze) {
     });
 }
 
-window.onload = () => updateUI();
 // Step C: Zone click logic to load quiz subject and show difficulty options
 
 const zoneSubjects = {
