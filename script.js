@@ -1,1 +1,0 @@
-// Updated script.js with auto map return, completed zone tracking, repeat button
