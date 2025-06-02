@@ -32,6 +32,22 @@ function zoneDone(key) {
 }
 
 function startQuiz(subject, difficulty) {
+  const key = subject + "_" + difficulty;
+
+  // Check if difficulty is unlocked
+  const unlockRules = {
+    scholar: "novice",
+    wizard: "scholar"
+  };
+
+  if (difficulty !== "novice") {
+    const prereq = subject + "_" + unlockRules[difficulty];
+    if (!gameData.completedZones[prereq]) {
+      alert("You must complete the previous level first!");
+      return;
+    }
+  }
+
   fetch("questions.json")
     .then(res => res.json())
     .then(data => {
@@ -44,6 +60,7 @@ function startQuiz(subject, difficulty) {
       renderQuestion(q, subject, difficulty);
     });
 }
+
 
 function renderQuestion(q, subject, difficulty) {
   let root = document.getElementById("game-root");
@@ -108,15 +125,22 @@ function setupZoneButtons() {
 
 function showDifficultyOptions(subject) {
   const root = document.getElementById("game-root");
+
+  const noviceDone = zoneDone(subject + "_novice");
+  const scholarUnlocked = noviceDone;
+  const scholarDone = zoneDone(subject + "_scholar");
+  const wizardUnlocked = scholarDone;
+
   root.innerHTML = `
     <h2>Choose difficulty for ${capitalize(subject)}</h2>
-    <button onclick="startQuiz('${subject}', 'novice')">🟢 Novice</button>
-    <button onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar</button>
-    <button onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard</button>
+    <button onclick="startQuiz('${subject}', 'novice')">🟢 Novice ${noviceDone ? "✅" : ""}</button>
+    <button ${!scholarUnlocked ? "disabled" : ""} onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar ${scholarDone ? "✅" : scholarUnlocked ? "" : "🔒"}</button>
+    <button ${!wizardUnlocked ? "disabled" : ""} onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard ${zoneDone(subject + "_wizard") ? "✅" : wizardUnlocked ? "" : "🔒"}</button>
     <br><br>
-    <button onclick="updateUI()">⬅️ Back to map</button>
+    <button onclick="updateUI()">🔙 Back to map</button>
   `;
 }
+
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
