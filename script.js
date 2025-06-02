@@ -61,7 +61,6 @@ function startQuiz(subject, difficulty) {
     });
 }
 
-
 function renderQuestion(q, subject, difficulty) {
   let root = document.getElementById("game-root");
   root.innerHTML = `
@@ -126,21 +125,26 @@ function setupZoneButtons() {
 function showDifficultyOptions(subject) {
   const root = document.getElementById("game-root");
 
-  const noviceDone = zoneDone(subject + "_novice");
+  const noviceKey = subject + "_novice";
+  const scholarKey = subject + "_scholar";
+  const wizardKey = subject + "_wizard";
+
+  const noviceDone = zoneDone(noviceKey);
+  const scholarDone = zoneDone(scholarKey);
+  const wizardDone = zoneDone(wizardKey);
+
   const scholarUnlocked = noviceDone;
-  const scholarDone = zoneDone(subject + "_scholar");
   const wizardUnlocked = scholarDone;
 
   root.innerHTML = `
     <h2>Choose difficulty for ${capitalize(subject)}</h2>
     <button onclick="startQuiz('${subject}', 'novice')">🟢 Novice ${noviceDone ? "✅" : ""}</button>
-    <button ${!scholarUnlocked ? "disabled" : ""} onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar ${scholarDone ? "✅" : scholarUnlocked ? "" : "🔒"}</button>
-    <button ${!wizardUnlocked ? "disabled" : ""} onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard ${zoneDone(subject + "_wizard") ? "✅" : wizardUnlocked ? "" : "🔒"}</button>
+    <button ${!scholarUnlocked ? "disabled style='opacity:0.5'" : ""} onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar ${scholarDone ? "✅" : ""} ${!scholarUnlocked ? "🔒" : ""}</button>
+    <button ${!wizardUnlocked ? "disabled style='opacity:0.5'" : ""} onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard ${wizardDone ? "✅" : ""} ${!wizardUnlocked ? "🔒" : ""}</button>
     <br><br>
     <button onclick="updateUI()">🔙 Back to map</button>
   `;
 }
-
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
