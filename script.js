@@ -70,17 +70,19 @@ function renderQuestion(q, subject, difficulty) {
 }
 
 function handleAnswer(selected, correct, subject, difficulty) {
+  let xp = 10;
+  if (difficulty === "scholar") xp = 15;
+  if (difficulty === "wizard") xp = 20;
+
+  const today = new Date().toISOString().split("T")[0];
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yString = yesterday.toISOString().split("T")[0];
+
+  let message = "";
+
   if (selected === correct) {
-    let xp = 10;
-    if (difficulty === "scholar") xp = 15;
-    if (difficulty === "wizard") xp = 20;
     gameData.xp += xp;
-
-    const today = new Date().toISOString().split("T")[0];
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    const yString = yesterday.toISOString().split("T")[0];
-
     if (!gameData.lastPlayedDate || gameData.lastPlayedDate !== today) {
       gameData.streak = (gameData.lastPlayedDate === yString) ? gameData.streak + 1 : 1;
       gameData.lastPlayedDate = today;
@@ -92,11 +94,27 @@ function handleAnswer(selected, correct, subject, difficulty) {
     const key = subject + "_" + difficulty;
     gameData.completedZones[key] = true;
 
-    saveProgress();
-    updateUI();
+    message = `✅ Correct! You gained ${xp} XP.`;
   } else {
-    alert("Wrong! Try again.");
+    message = `❌ Wrong! The correct answer was ${correct}.`;
   }
+
+  saveProgress();
+
+  // Show fun fact if available
+  fetch("questions.json")
+    .then(res => res.json())
+    .then(data => {
+      const questionSet = data[subject][difficulty];
+      const fact = questionSet.find(q => q.answer === correct)?.fact;
+
+      let root = document.getElementById("game-root");
+      root.innerHTML = `
+        <div><strong>${message}</strong></div>
+        ${fact ? `<div class="fact">💡 ${fact}</div>` : ""}
+        <br><button onclick="updateUI()">🔙 Back to map</button>
+      `;
+    });
 }
 
 window.onload = () => updateUI();
