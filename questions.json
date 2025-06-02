@@ -31,5 +31,97 @@
         "answer": "Gobi"
       }
     ]
+  },
+  "stage": {
+    "novice": [
+      {
+        "question": "What is a 'proscenium' in theatre?",
+        "options": ["A type of actor", "The stage curtain", "The arch framing the stage", "A lighting cue"],
+        "answer": "The arch framing the stage"
+      }
+    ],
+    "scholar": [
+      {
+        "question": "Who wrote the play 'Hamlet'?",
+        "options": ["Shakespeare", "Molière", "Ibsen", "Goethe"],
+        "answer": "Shakespeare"
+      }
+    ],
+    "wizard": [
+      {
+        "question": "Which theatre movement emphasized absurdity and illogical dialogue?",
+        "options": ["Theatre of the Absurd", "Realism", "Romanticism", "Vaudeville"],
+        "answer": "Theatre of the Absurd"
+      }
+    ]
+  },
+  "history": {
+    "novice": [
+      {
+        "question": "Who was the first President of the United States?",
+        "options": ["George Washington", "Thomas Jefferson", "John Adams", "Abraham Lincoln"],
+        "answer": "George Washington"
+      }
+    ],
+    "scholar": [
+      {
+        "question": "In which year did World War II end?",
+        "options": ["1942", "1945", "1948", "1950"],
+        "answer": "1945"
+      }
+    ],
+    "wizard": [
+      {
+        "question": "Which empire was ruled by Suleiman the Magnificent?",
+        "options": ["Ottoman Empire", "Roman Empire", "Mongol Empire", "British Empire"],
+        "answer": "Ottoman Empire"
+      }
+    ]
+  },
+  "sports": {
+    "novice": [
+      {
+        "question": "How many players are on a soccer team (on the field)?",
+        "options": ["9", "10", "11", "12"],
+        "answer": "11"
+      }
+    ],
+    "scholar": [
+      {
+        "question": "In which sport would you perform a 'slam dunk'?",
+        "options": ["Volleyball", "Basketball", "Handball", "Tennis"],
+        "answer": "Basketball"
+      }
+    ],
+    "wizard": [
+      {
+        "question": "Which country has won the most Olympic gold medals?",
+        "options": ["China", "Russia", "Germany", "USA"],
+        "answer": "USA"
+      }
+    ]
+  },
+  "daily": {
+    "novice": [
+      {
+        "question": "What is the boiling point of water in Celsius?",
+        "options": ["90°C", "95°C", "100°C", "110°C"],
+        "answer": "100°C"
+      }
+    ],
+    "scholar": [
+      {
+        "question": "Which planet is closest to the sun?",
+        "options": ["Venus", "Earth", "Mars", "Mercury"],
+        "answer": "Mercury"
+      }
+    ],
+    "wizard": [
+      {
+        "question": "What is the chemical symbol for gold?",
+        "options": ["Ag", "Gd", "Au", "Pb"],
+        "answer": "Au"
+      }
+    ]
   }
 }
