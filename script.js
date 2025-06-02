@@ -20,13 +20,9 @@ function saveProgress() {
 
 function updateUI() {
   let root = document.getElementById("game-root");
-  root.innerHTML = `
+root.innerHTML = ""; // prevent old UI from injecting buttons
     <div>🔥 XP: ${gameData.xp} | 🔁 Streak: ${gameData.streak}</div>
     <div>${gameData.hasHat ? "🎩 Hat unlocked!" : ""} ${gameData.hasCloak ? "🧥 Cloak unlocked!" : ""}</div>
-    <h2>Choose your zone</h2>
-    <button onclick="startQuiz('geography', 'novice')">🌍 Geography: Novice ${zoneDone('geography_novice')}</button>
-    <button onclick="startQuiz('geography', 'scholar')">🌍 Geography: Scholar ${zoneDone('geography_scholar')}</button>
-    <button onclick="startQuiz('geography', 'wizard')">🌍 Geography: Wizard ${zoneDone('geography_wizard')}</button>
   `;
 }
 
