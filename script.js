@@ -1,6 +1,9 @@
 // Core Game Logic — With Map + Repeat Flow
 
 let gameData = {
+  spells: JSON.parse(localStorage.getItem("spells")) || {},
+  dailyXp: parseInt(localStorage.getItem("dailyXp")) || 0,
+  dailyXpDate: localStorage.getItem("dailyXpDate") || null,
   xp: parseInt(localStorage.getItem("xp")) || 0,
   streak: parseInt(localStorage.getItem("streak")) || 0,
   lastPlayedDate: localStorage.getItem("lastPlayedDate") || null,
@@ -10,6 +13,9 @@ let gameData = {
 };
 
 function saveProgress() {
+  localStorage.setItem("spells", JSON.stringify(gameData.spells));
+  localStorage.setItem("dailyXp", gameData.dailyXp);
+  localStorage.setItem("dailyXpDate", gameData.dailyXpDate);
   localStorage.setItem("xp", gameData.xp);
   localStorage.setItem("streak", gameData.streak);
   localStorage.setItem("lastPlayedDate", gameData.lastPlayedDate);
@@ -19,9 +25,12 @@ function saveProgress() {
 }
 
 function updateUI() {
+  let spellList = Object.keys(gameData.spells).filter(key => gameData.spells[key]);
+  let spellsText = spellList.length ? "Spells: " + spellList.map(s => `🧙 ${s}`).join(", ") : "";
   let root = document.getElementById("game-root");
   root.innerHTML = `
     <div>🔥 XP: ${gameData.xp} 🧊 Streak: ${gameData.streak}</div>
+    <div>${spellsText}</div>
     <div>${gameData.hasHat ? "🎩 Hat unlocked! " : ""} ${gameData.hasCloak ? "🧥 Cloak unlocked! " : ""}</div>
   `;
   setupZoneButtons();
@@ -98,6 +107,31 @@ function handleAnswer(selected, correct, subject, difficulty) {
   } else {
     message = `❌ Wrong! The correct answer was ${correct}.`;
   }
+
+// Track daily XP for spell rewards
+const today = new Date().toISOString().split("T")[0];
+
+if (gameData.dailyXpDate !== today) {
+  gameData.dailyXp = 0;
+  gameData.dailyXpDate = today;
+  gameData.spells = {}; // Reset spells daily
+}
+
+gameData.dailyXp += xp;
+
+// Spell reward logic
+if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
+  gameData.spells.eliminate = true;
+  alert("🪄 You unlocked the 'Eliminate' spell! Removes 1 wrong answer.");
+}
+if (gameData.dailyXp >= 60 && !gameData.spells.hint) {
+  gameData.spells.hint = true;
+  alert("💡 You unlocked the 'Hint' spell! Reveals a clue.");
+}
+if (gameData.dailyXp >= 90 && !gameData.spells.freeze) {
+  gameData.spells.freeze = true;
+  alert("❄️ You unlocked the 'Freeze' spell! Time stops!");
+}
 
   saveProgress();
 
