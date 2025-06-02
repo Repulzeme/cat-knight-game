@@ -1,1 +1,0 @@
-// JavaScript logic for zone map and navigation
