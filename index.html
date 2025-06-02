@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cat Knight - Realm 1</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    .zone-btn { margin: 1rem; padding: 1rem 2rem; font-size: 1.2rem; }
+    #avatar { margin: 2rem 0; }
+    #debug-panel button { margin: 0.3rem; }
+  </style>
+</head>
+<body>
+  <h1>🐱 Cat Knight: Realm 1</h1>
+  <div id="avatar">🛡️ Cat Knight</div>
+  <div id="streak">🔥 Streak: 0</div>
+  <div id="xp">📘 XP: 0</div>
+  <div id="map">
+    <button class="zone-btn" onclick="completeZone('Geography')">Geography</button>
+    <button class="zone-btn" onclick="completeZone('History')">History</button>
+    <button class="zone-btn" onclick="completeZone('Sports')">Sports</button>
+    <button class="zone-btn" onclick="completeZone('Stage')">Stage</button>
+    <button class="zone-btn" onclick="completeZone('Daily Mix')">Daily Mix</button>
+  </div>
+  <div id="debug-panel">
+    <h3>🧪 Debug Panel</h3>
+    <button onclick="simulateNextDay()">Simulate Next Day</button>
+    <button onclick="resetStreak()">Reset Streak</button>
+    <button onclick="forceCloak()">Force 7-Day Streak</button>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
