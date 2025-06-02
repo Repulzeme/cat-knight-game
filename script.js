@@ -20,10 +20,11 @@ function saveProgress() {
 
 function updateUI() {
   let root = document.getElementById("game-root");
-root.innerHTML = ""; // prevent old UI from injecting buttons
-    <div>🔥 XP: ${gameData.xp} | 🔁 Streak: ${gameData.streak}</div>
-    <div>${gameData.hasHat ? "🎩 Hat unlocked!" : ""} ${gameData.hasCloak ? "🧥 Cloak unlocked!" : ""}</div>
+  root.innerHTML = `
+    <div>🔥 XP: ${gameData.xp} 🧊 Streak: ${gameData.streak}</div>
+    <div>${gameData.hasHat ? "🎩 Hat unlocked! " : ""} ${gameData.hasCloak ? "🧥 Cloak unlocked! " : ""}</div>
   `;
+  setupZoneButtons();
 }
 
 function zoneDone(key) {
