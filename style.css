@@ -37,3 +37,11 @@ main {
 .zone:hover {
   background-color: #e0f7fa;
 }
+.fact {
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #fff3cd;
+  border-left: 5px solid #ffeeba;
+  font-style: italic;
+  font-size: 0.95em;
+}
