@@ -64,11 +64,11 @@ function startQuiz(subject, difficulty) {
       const q = questionSet[qIndex];
       const correct = q.answer;
 
-      renderQuestion(q, correct, subject, difficulty, qIndex);
+      renderQuestion(q, correct, subject, difficulty, qIndex, { eliminateUsed: false, hintUsed: false });
     });
 }
 
-function renderQuestion(q, correct, subject, difficulty, qIndex) {
+function renderQuestion(q, correct, subject, difficulty, qIndex, usage) {
   const root = document.getElementById("game-root");
   let optionsHTML = q.options.map(option => `
     <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
@@ -76,7 +76,7 @@ function renderQuestion(q, correct, subject, difficulty, qIndex) {
 
   root.innerHTML = `
     <h2>${q.question}</h2>
-    ${renderSpellsForQuestion(correct, subject, difficulty, qIndex, q)}
+    ${renderSpellsForQuestion(correct, subject, difficulty, qIndex, q, usage)}
     ${optionsHTML}
     <br><button onclick="updateUI()">🔙 Back to map</button>
   `;
@@ -132,13 +132,13 @@ function handleAnswer(subject, difficulty, correct, selected, qIndex) {
   }
 }
 
-function renderSpellsForQuestion(correct, subject, difficulty, qIndex, q) {
+function renderSpellsForQuestion(correct, subject, difficulty, qIndex, q, usage) {
   let html = "";
 
-  if (gameData.spells.eliminate) {
+  if (gameData.spells.eliminate && !usage.eliminateUsed) {
     html += `<button onclick="useEliminate('${correct}', '${subject}', '${difficulty}', ${qIndex})">🪄 Eliminate</button> `;
   }
-  if (gameData.spells.hint && q.hint) {
+  if (gameData.spells.hint && q.hint && !usage.hintUsed) {
     html += `<button onclick="useHint('${correct}', '${q.hint}')">💡 Hint</button> `;
   }
   if (gameData.spells.freeze) {
@@ -156,18 +156,9 @@ function useEliminate(correct, subject, difficulty, qIndex) {
       const wrongOptions = q.options.filter(opt => opt !== correct);
       const toRemove = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
       const reducedOptions = q.options.filter(opt => opt !== toRemove);
+      q.options = reducedOptions; // apply elimination
 
-      const optionsHTML = reducedOptions.map(option => `
-        <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
-      `).join("<br>");
-
-      const root = document.getElementById("game-root");
-      root.innerHTML = `
-        <h2>${q.question}</h2>
-        ${renderSpellsForQuestion(correct, subject, difficulty, qIndex, q)}
-        ${optionsHTML}
-        <br><button onclick="updateUI()">🔙 Back to map</button>
-      `;
+      renderQuestion(q, correct, subject, difficulty, qIndex, { eliminateUsed: true, hintUsed: false });
     });
 }
 
