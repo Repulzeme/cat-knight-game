@@ -52,7 +52,7 @@ function startQuiz(subject, difficulty) {
   if (difficulty !== "novice") {
     const prereq = subject + "_" + unlockRules[difficulty];
     if (!gameData.completedZones[prereq]) {
-      alert("You must complete the previous level first!");
+      alert(`You must complete ${unlockRules[difficulty]} first.`);
       return;
     }
   }
@@ -62,51 +62,61 @@ function startQuiz(subject, difficulty) {
     .then(data => {
       const questionSet = data[subject][difficulty];
       if (!questionSet || questionSet.length === 0) {
-        alert("No questions for this level.");
+        alert("No questions available.");
         return;
       }
-      const q = questionSet[Math.floor(Math.random() * questionSet.length)];
-      renderQuestion(q, subject, difficulty);
+
+      const qIndex = Math.floor(Math.random() * questionSet.length);
+      const q = questionSet[qIndex];
+      const correct = q.answer;
+
+      let message = prompt(q.question + "\n" + q.options.join(" / "));
+      if (message === null) return;
+
+      const xp = 10;
+      if (message.trim().toLowerCase() === correct.toLowerCase()) {
+        gameData.xp += xp;
+
+        // Track daily XP for spell rewards
+        const today = new Date().toISOString().split("T")[0];
+        if (gameData.dailyXpDate !== today) {
+          gameData.dailyXp = 0;
+          gameData.dailyXpDate = today;
+          gameData.spells = {};
+        }
+
+        gameData.dailyXp += xp;
+
+        if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
+          gameData.spells.eliminate = true;
+          alert("🪄 You unlocked the 'Eliminate' spell! Removes 1 wrong answer.");
+        }
+        if (gameData.dailyXp >= 60 && !gameData.spells.hint) {
+          gameData.spells.hint = true;
+          alert("🪄 You unlocked the 'Hint' spell! Reveals a clue.");
+        }
+        if (gameData.dailyXp >= 90 && !gameData.spells.freeze) {
+          gameData.spells.freeze = true;
+          alert("🪄 You unlocked the 'Freeze' spell! Time stops!");
+        }
+
+        const zoneKey = subject + "_" + difficulty;
+        gameData.completedZones[zoneKey] = true;
+        saveProgress();
+
+        // Show fun fact
+        const fact = q.fact || "";
+        const root = document.getElementById("game-root");
+        root.innerHTML = `
+          <div><strong>✅ Correct!</strong></div>
+          ${fact ? `<div class="fact">📚 ${fact}</div>` : ""}
+          <br><button onclick="updateUI()">🔙 Back to map</button>
+        `;
+      } else {
+        alert("❌ Wrong! Try again.");
+      }
     });
 }
-
-function renderQuestion(q, subject, difficulty) {
-  let root = document.getElementById("game-root");
-  root.innerHTML = `
-  <div><strong>${q.question}</strong></div>
-  ${q.options.map(opt => `<button onclick="handleAnswer('${opt}', '${q.answer}', '${subject}', '${difficulty}')">${opt}</button>`).join("<br>")}
-`;
-}
-
-function handleAnswer(selected, correct, subject, difficulty) {
-  let xp = 10;
-  if (difficulty === "scholar") xp = 15;
-  if (difficulty === "wizard") xp = 20;
-
-  const today = new Date().toISOString().split("T")[0];
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  const yString = yesterday.toISOString().split("T")[0];
-
-  let message = "";
-
-  if (selected === correct) {
-    gameData.xp += xp;
-    if (!gameData.lastPlayedDate || gameData.lastPlayedDate !== today) {
-      gameData.streak = (gameData.lastPlayedDate === yString) ? gameData.streak + 1 : 1;
-      gameData.lastPlayedDate = today;
-    }
-
-    if (gameData.xp >= 100) gameData.hasHat = true;
-    if (gameData.streak >= 7) gameData.hasCloak = true;
-
-    const key = subject + "_" + difficulty;
-    gameData.completedZones[key] = true;
-
-    message = `✅ Correct! You gained ${xp} XP.`;
-  } else {
-    message = `❌ Wrong! The correct answer was ${correct}.`;
-  }
 
 // Track daily XP for spell rewards
 const today = new Date().toISOString().split("T")[0];
