@@ -43,7 +43,6 @@ function zoneDone(key) {
 function startQuiz(subject, difficulty) {
   const key = subject + "_" + difficulty;
 
-  // Check if difficulty is unlocked
   const unlockRules = {
     scholar: "novice",
     wizard: "scholar"
@@ -68,12 +67,13 @@ function startQuiz(subject, difficulty) {
 
       const qIndex = Math.floor(Math.random() * questionSet.length);
       const q = questionSet[qIndex];
+      const correct = q.answer;
+
+      let optionsHTML = q.options.map(option => `
+        <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
+      `).join("<br>");
+
       const root = document.getElementById("game-root");
-
-      let optionsHTML = q.options.map(opt =>
-        `<button onclick="handleAnswer('${subject}', '${difficulty}', '${q.answer}', '${opt}', ${qIndex})">${opt}</button>`
-      ).join("<br>");
-
       root.innerHTML = `
         <h2>${q.question}</h2>
         ${optionsHTML}
@@ -98,7 +98,7 @@ function handleAnswer(subject, difficulty, correct, selected, qIndex) {
 
     gameData.dailyXp += xp;
 
-    // Spell rewards
+    // Spell reward logic
     if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
       gameData.spells.eliminate = true;
       alert("🪄 You unlocked the 'Eliminate' spell! Removes 1 wrong answer.");
@@ -122,14 +122,15 @@ function handleAnswer(subject, difficulty, correct, selected, qIndex) {
         const q = data[subject][difficulty][qIndex];
         const fact = q.fact || "";
         const root = document.getElementById("game-root");
-
         root.innerHTML = `
           <div><strong>✅ Correct!</strong></div>
-          ${fact ? `<div class="fact">📚 ${fact}</div>` : ""}
+          ${fact ? `<div class="fact">📘 ${fact}</div>` : ""}
           <br><button onclick="updateUI()">🔙 Back to map</button>
         `;
+      })
+      .catch(error => {
+        console.error("Error loading fact:", error);
       });
-
   } else {
     alert("❌ Wrong! Try again.");
   }
