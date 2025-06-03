@@ -56,9 +56,6 @@ function startQuiz(subject, difficulty) {
     }
  }
   
-  fetch("questions.json")
-    .then(res => res.json())
-
 function renderSpellsUI(questionObj, correctAnswer) {
   const spellDiv = document.createElement("div");
   spellDiv.id = "spell-buttons";
