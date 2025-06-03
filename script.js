@@ -53,6 +53,8 @@ function startQuiz(subject, difficulty) {
     if (!gameData.completedZones[prereq]) {
       alert(`You must complete ${unlockRules[difficulty]} first.`);
       return;
+    }
+ }
   
   fetch("questions.json")
     .then(res => res.json())
