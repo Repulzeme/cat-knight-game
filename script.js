@@ -164,8 +164,6 @@ fetch("questions.json")
   });
 }
 
-// Step C: Zone click logic to load quiz subject and show difficulty options
-
 const zoneSubjects = {
   arena: "geography",
   theater: "stage",
