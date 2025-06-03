@@ -53,7 +53,6 @@ function startQuiz(subject, difficulty) {
     if (!gameData.completedZones[prereq]) {
       alert(`You must complete ${unlockRules[difficulty]} first.`);
       return;
-    }
   
   fetch("questions.json")
     .then(res => res.json())
@@ -96,19 +95,32 @@ function renderSpellsUI(questionObj, correctAnswer) {
   document.getElementById("game-root").appendChild(spellDiv);
 }
 
-    
     .then(data => {
+  const questionSet = data[subject][difficulty];
+  if (!questionSet || questionSet.length === 0) {
+    alert("No questions available.");
+    return;
+  }
 
+  const qIndex = Math.floor(Math.random() * questionSet.length);
+  const q = questionSet[qIndex];
+  const correct = q.answer;
 
-      const questionSet = data[subject][difficulty];
-      if (!questionSet || questionSet.length === 0) {
-        alert("No questions available.");
-        return;
-      }
+  renderSpellsUI(q, correct);     // Spell buttons
+  renderQuestion(q, correct);     // Question and choices
+});
 
-      const qIndex = Math.floor(Math.random() * questionSet.length);
-      const q = questionSet[qIndex];
-      const correct = q.answer;
+function renderQuestion(question, correct) {
+  const root = document.getElementById("game-root");
+  root.innerHTML = `<h3>${question.question}</h3>`;
+
+  question.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.onclick = () => handleAnswer(opt, correct, question);
+    root.appendChild(btn);
+  });
+}
 
       let optionsHTML = q.options.map(option => `
   <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
