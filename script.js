@@ -146,19 +146,22 @@ if (gameData.dailyXp >= 90 && !gameData.spells.freeze) {
   saveProgress();
 
   // Show fun fact if available
-  fetch("questions.json")
-    .then(res => res.json())
-    .then(data => {
-      const questionSet = data[subject][difficulty];
-      const fact = questionSet.find(q => q.answer === correct)?.fact;
+fetch("questions.json")
+  .then(res => res.json())
+  .then(data => {
+    const questionSet = data[subject][difficulty];
+    const fact = questionSet.find(q => q.answer === correct)?.fact || "";
 
-      let root = document.getElementById("game-root");
-      root.innerHTML = `
-        <div><strong>${message}</strong></div>
-        ${fact ? `<div class="fact">💡 ${fact}</div>` : ""}
-        <br><button onclick="updateUI()">🔙 Back to map</button>
-      `;
-    });
+    const root = document.getElementById("game-root");
+    root.innerHTML = `
+      <div><strong>✅ Correct!</strong></div>
+      ${fact ? `<div class="fact">📘 ${fact}</div>` : ""}
+      <br><button onclick="updateUI()">🔙 Back to map</button>
+    `;
+  })
+  .catch(error => {
+    console.error("Error loading fact:", error);
+  });
 }
 
 // Step C: Zone click logic to load quiz subject and show difficulty options
