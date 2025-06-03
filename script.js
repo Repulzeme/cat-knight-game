@@ -98,7 +98,7 @@ function handleAnswer(subject, difficulty, correct, selected, qIndex) {
 
     gameData.dailyXp += xp;
 
-    // Spell reward logic
+    // Spell rewards
     if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
       gameData.spells.eliminate = true;
       alert("🪄 You unlocked the 'Eliminate' spell! Removes 1 wrong answer.");
@@ -131,18 +131,29 @@ function handleAnswer(subject, difficulty, correct, selected, qIndex) {
       .catch(error => {
         console.error("Error loading fact:", error);
       });
+
   } else {
+    // Reload same question after wrong answer
     alert("❌ Wrong! Try again.");
+    fetch("questions.json")
+      .then(res => res.json())
+      .then(data => {
+        const q = data[subject][difficulty][qIndex];
+        const correct = q.answer;
+
+        let optionsHTML = q.options.map(option => `
+          <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
+        `).join("<br>");
+
+        const root = document.getElementById("game-root");
+        root.innerHTML = `
+          <h2>${q.question}</h2>
+          ${optionsHTML}
+          <br><button onclick="updateUI()">🔙 Back to map</button>
+        `;
+      });
   }
 }
-
-const zoneSubjects = {
-  arena: "geography",
-  theater: "stage",
-  library: "history",
-  stadium: "sports",
-  daily: "daily"
-};
 
 function setupZoneButtons() {
   Object.keys(zoneSubjects).forEach((zoneId) => {
