@@ -70,15 +70,16 @@ function startQuiz(subject, difficulty) {
       const correct = q.answer;
 
       let optionsHTML = q.options.map(option => `
-        <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
-      `).join("<br>");
+  <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
+`).join("<br>");
 
-      const root = document.getElementById("game-root");
-      root.innerHTML = `
-        <h2>${q.question}</h2>
-        ${optionsHTML}
-        <br><button onclick="updateUI()">🔙 Back to map</button>
-      `;
+const root = document.getElementById("game-root");
+root.innerHTML = `
+  <h2>${q.question}</h2>
+  ${renderSpellsForQuestion(correct, subject, difficulty, qIndex, q)}
+  ${optionsHTML}
+  <br><button onclick="updateUI()">🔙 Back to map</button>
+`;
     });
 }
 
@@ -193,6 +194,50 @@ function showDifficultyOptions(subject) {
 
 function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function renderSpellsForQuestion(correct, subject, difficulty, qIndex, q) {
+  let html = "";
+
+  if (gameData.spells.eliminate) {
+    html += `<button onclick="useEliminate('${correct}', '${subject}', '${difficulty}', ${qIndex})">🪄 Eliminate</button> `;
+  }
+  if (gameData.spells.hint && q.hint) {
+    html += `<button onclick="useHint('${correct}', '${q.hint}')">💡 Hint</button> `;
+  }
+  if (gameData.spells.freeze) {
+    html += `<button disabled title='Not implemented yet'>❄️ Freeze</button>`;
+  }
+
+  return html ? `<div id="spell-buttons">${html}</div><br>` : "";
+}
+
+function useEliminate(correct, subject, difficulty, qIndex) {
+  fetch("questions.json")
+    .then(res => res.json())
+    .then(data => {
+      const q = data[subject][difficulty][qIndex];
+      const wrongOptions = q.options.filter(opt => opt !== correct);
+      const toRemove = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
+
+      const reducedOptions = q.options.filter(opt => opt !== toRemove);
+
+      let optionsHTML = reducedOptions.map(option => `
+        <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
+      `).join("<br>");
+
+      const root = document.getElementById("game-root");
+      root.innerHTML = `
+        <h2>${q.question}</h2>
+        ${renderSpellsForQuestion(correct, subject, difficulty, qIndex, q)}
+        ${optionsHTML}
+        <br><button onclick="updateUI()">🔙 Back to map</button>
+      `;
+    });
+}
+
+function useHint(correct, hint) {
+  alert("💡 Hint: " + hint);
 }
 
 window.onload = () => {
