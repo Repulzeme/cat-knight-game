@@ -54,11 +54,53 @@ function startQuiz(subject, difficulty) {
       alert(`You must complete ${unlockRules[difficulty]} first.`);
       return;
     }
-  }
+  
 
   fetch("questions.json")
     .then(res => res.json())
+
+function renderSpellsUI(questionObj, correctAnswer) {
+  const spellDiv = document.createElement("div");
+  spellDiv.id = "spell-buttons";
+  spellDiv.innerHTML = "<strong>Spells:</strong><br>";
+
+  if (gameData.spells.eliminate) {
+    const btn = document.createElement("button");
+    btn.innerText = "🪄 Eliminate";
+    btn.onclick = () => {
+      const incorrect = questionObj.options.filter(opt => opt !== correctAnswer);
+      const toRemove = incorrect[Math.floor(Math.random() * incorrect.length)];
+      questionObj.options = questionObj.options.filter(opt => opt !== toRemove);
+      renderQuestion(questionObj, correctAnswer); // re-render question with one less option
+    };
+    spellDiv.appendChild(btn);
+  }
+
+  if (gameData.spells.hint) {
+    const btn = document.createElement("button");
+    btn.innerText = "💡 Hint";
+    btn.onclick = () => {
+      alert("Clue: " + (questionObj.hint || "No hint available."));
+    };
+    spellDiv.appendChild(btn);
+  }
+
+  if (gameData.spells.freeze) {
+    const btn = document.createElement("button");
+    btn.innerText = "❄️ Freeze";
+    btn.onclick = () => {
+      alert("⏸️ Time is frozen... (not implemented)");
+    };
+    spellDiv.appendChild(btn);
+  }
+
+  document.getElementById("game-root").appendChild(spellDiv);
+}
+
+    
     .then(data => {
+
+
       const questionSet = data[subject][difficulty];
       if (!questionSet || questionSet.length === 0) {
         alert("No questions available.");
@@ -174,6 +216,18 @@ function setupZoneButtons() {
       });
     }
   });
+}
+
+function renderQuestion(q, correct) {
+  const root = document.getElementById("game-root");
+  root.innerHTML = `<h3>${q.question}</h3>`;
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt;
+    btn.onclick = () => handleAnswer(opt, correct, q);
+    root.appendChild(btn);
+  });
+  renderSpellsUI(q, correct); // show spells if any
 }
 
 function showDifficultyOptions(subject) {
