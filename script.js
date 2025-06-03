@@ -1,4 +1,3 @@
-// Core Game Logic — With Map + Repeat Flow
 let gameData = {
   spells: JSON.parse(localStorage.getItem("spells")) || {},
   dailyXp: parseInt(localStorage.getItem("dailyXp")) || 0,
@@ -39,53 +38,25 @@ function zoneDone(key) {
   return gameData.completedZones[key] ? "✅" : "";
 }
 
-function startQuiz(subject, difficulty) {
-  const key = subject + "_" + difficulty;
-  const unlockRules = { scholar: "novice", wizard: "scholar" };
-
-  if (difficulty !== "novice") {
-    const prereq = subject + "_" + unlockRules[difficulty];
-    if (!gameData.completedZones[prereq]) {
-      alert(`You must complete ${unlockRules[difficulty]} first.`);
-      return;
-    }
-  }
-
-  fetch("questions.json")
-    .then(res => res.json())
-    .then(data => {
-      const questionSet = data[subject][difficulty];
-      if (!questionSet || questionSet.length === 0) {
-        alert("No questions available.");
-        return;
-      }
-
-      const qIndex = Math.floor(Math.random() * questionSet.length);
-      const q = questionSet[qIndex];
-      const correct = q.answer;
-
-      renderQuestion(q, correct, subject, difficulty, qIndex, { eliminateUsed: false, hintUsed: false });
-    });
-}
-
-function renderQuestion(q, correct, subject, difficulty, qIndex, usage) {
+function renderQuestion(q, correct, subject, difficulty, qIndex, usage = {}) {
   const root = document.getElementById("game-root");
-  let optionsHTML = q.options.map(option => `
-    <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
-  `).join("<br>");
+  const buttons = q.options.map(option => {
+    return `<button onclick="handleAnswer('${option}', '${correct}', '${subject}', '${difficulty}', ${qIndex}, ${JSON.stringify(usage)})">${option}</button>`;
+  }).join("<br>");
 
   root.innerHTML = `
-    <h2>${q.question}</h2>
+    <h3>${q.question}</h3>
+    ${buttons}
+    <br><br>
     ${renderSpellsForQuestion(correct, subject, difficulty, qIndex, q, usage)}
-    ${optionsHTML}
-    <br><button onclick="updateUI()">🔙 Back to map</button>
+    <button onclick="updateUI()">🔙 Back to map</button>
   `;
 }
 
-function handleAnswer(subject, difficulty, correct, selected, qIndex) {
-  const xp = 10;
-  if (selected === correct) {
-    gameData.xp += xp;
+function handleAnswer(selected, correct, subject, difficulty, qIndex, usage = {}) {
+  const zoneKey = subject + "_" + difficulty;
+  if (selected.toLowerCase() === correct.toLowerCase()) {
+    gameData.xp += 10;
 
     const today = new Date().toISOString().split("T")[0];
     if (gameData.dailyXpDate !== today) {
@@ -94,41 +65,36 @@ function handleAnswer(subject, difficulty, correct, selected, qIndex) {
       gameData.spells = {};
     }
 
-    gameData.dailyXp += xp;
-
+    gameData.dailyXp += 10;
     if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
       gameData.spells.eliminate = true;
-      alert("🪄 You unlocked the 'Eliminate' spell! Removes 1 wrong answer.");
+      alert("🪄 Spell unlocked: Eliminate");
     }
     if (gameData.dailyXp >= 60 && !gameData.spells.hint) {
       gameData.spells.hint = true;
-      alert("💡 You unlocked the 'Hint' spell! Reveals a clue.");
+      alert("💡 Spell unlocked: Hint");
     }
     if (gameData.dailyXp >= 90 && !gameData.spells.freeze) {
       gameData.spells.freeze = true;
-      alert("❄️ You unlocked the 'Freeze' spell! Time stops!");
+      alert("❄️ Spell unlocked: Freeze");
     }
 
-    const zoneKey = subject + "_" + difficulty;
     gameData.completedZones[zoneKey] = true;
     saveProgress();
 
     fetch("questions.json")
       .then(res => res.json())
       .then(data => {
-        const q = data[subject][difficulty][qIndex];
-        const fact = q.fact || "";
+        const fact = data[subject][difficulty][qIndex]?.fact || "";
         const root = document.getElementById("game-root");
         root.innerHTML = `
           <div><strong>✅ Correct!</strong></div>
-          ${fact ? `<div class="fact">📘 ${fact}</div>` : ""}
+          ${fact ? `<div class="fact">📚 ${fact}</div>` : ""}
           <br><button onclick="updateUI()">🔙 Back to map</button>
         `;
       });
-
   } else {
     alert("❌ Wrong! Try again.");
-    startQuiz(subject, difficulty);
   }
 }
 
@@ -138,11 +104,13 @@ function renderSpellsForQuestion(correct, subject, difficulty, qIndex, q, usage)
   if (gameData.spells.eliminate && !usage.eliminateUsed) {
     html += `<button onclick="useEliminate('${correct}', '${subject}', '${difficulty}', ${qIndex})">🪄 Eliminate</button> `;
   }
+
   if (gameData.spells.hint && q.hint && !usage.hintUsed) {
     html += `<button onclick="useHint('${correct}', '${q.hint}')">💡 Hint</button> `;
   }
-  if (gameData.spells.freeze) {
-    html += `<button disabled title='Not implemented yet'>❄️ Freeze</button>`;
+
+  if (gameData.spells.freeze && !usage.freezeUsed) {
+    html += `<button onclick="useFreeze('${subject}', '${difficulty}', ${qIndex}, ${JSON.stringify(q)}, ${JSON.stringify(usage)})">❄️ Freeze</button>`;
   }
 
   return html ? `<div id="spell-buttons">${html}</div><br>` : "";
@@ -155,15 +123,38 @@ function useEliminate(correct, subject, difficulty, qIndex) {
       const q = data[subject][difficulty][qIndex];
       const wrongOptions = q.options.filter(opt => opt !== correct);
       const toRemove = wrongOptions[Math.floor(Math.random() * wrongOptions.length)];
-      const reducedOptions = q.options.filter(opt => opt !== toRemove);
-      q.options = reducedOptions; // apply elimination
-
-      renderQuestion(q, correct, subject, difficulty, qIndex, { eliminateUsed: true, hintUsed: false });
+      q.options = q.options.filter(opt => opt !== toRemove);
+      renderQuestion(q, correct, subject, difficulty, qIndex, { eliminateUsed: true });
     });
 }
 
 function useHint(correct, hint) {
   alert("💡 Hint: " + hint);
+}
+
+function useFreeze(subject, difficulty, qIndex, q, usage) {
+  const root = document.getElementById("game-root");
+  const buttons = document.querySelectorAll("#game-root button");
+  buttons.forEach(btn => btn.disabled = true);
+
+  const freezeMsg = document.createElement("div");
+  freezeMsg.innerHTML = "❄️ Time frozen! You can answer in 3 seconds...";
+  root.prepend(freezeMsg);
+
+  setTimeout(() => {
+    freezeMsg.remove();
+    buttons.forEach(btn => {
+      if (!btn.innerHTML.includes("Back to map")) {
+        btn.disabled = false;
+      }
+    });
+
+    renderQuestion(q, q.answer, subject, difficulty, qIndex, {
+      eliminateUsed: usage.eliminateUsed || false,
+      hintUsed: usage.hintUsed || false,
+      freezeUsed: true
+    });
+  }, 3000);
 }
 
 const zoneSubjects = {
@@ -202,12 +193,39 @@ function showDifficultyOptions(subject) {
 
   root.innerHTML = `
     <h2>Choose difficulty for ${capitalize(subject)}</h2>
-    <button onclick="startQuiz('${subject}', 'novice')">🟢 Novice ${noviceDone}</button>
-    <button ${!scholarUnlocked ? "disabled style='opacity:0.5'" : ""} onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar ${scholarDone} ${!scholarUnlocked ? "🔒" : ""}</button>
-    <button ${!wizardUnlocked ? "disabled style='opacity:0.5'" : ""} onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard ${wizardDone} ${!wizardUnlocked ? "🔒" : ""}</button>
+    <button onclick="startQuiz('${subject}', 'novice')">🟢 Novice ${noviceDone ? "✅" : ""}</button>
+    <button ${!scholarUnlocked ? "disabled style='opacity:0.5'" : ""} onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar ${scholarDone ? "✅" : ""} ${!scholarUnlocked ? "🔒" : ""}</button>
+    <button ${!wizardUnlocked ? "disabled style='opacity:0.5'" : ""} onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard ${wizardDone ? "✅" : ""} ${!wizardUnlocked ? "🔒" : ""}</button>
     <br><br>
     <button onclick="updateUI()">🔙 Back to map</button>
   `;
+}
+
+function startQuiz(subject, difficulty) {
+  const key = subject + "_" + difficulty;
+
+  const unlockRules = { scholar: "novice", wizard: "scholar" };
+  if (difficulty !== "novice") {
+    const prereq = subject + "_" + unlockRules[difficulty];
+    if (!gameData.completedZones[prereq]) {
+      alert(`You must complete ${unlockRules[difficulty]} first.`);
+      return;
+    }
+  }
+
+  fetch("questions.json")
+    .then(res => res.json())
+    .then(data => {
+      const questionSet = data[subject][difficulty];
+      if (!questionSet || questionSet.length === 0) {
+        alert("No questions available.");
+        return;
+      }
+
+      const qIndex = Math.floor(Math.random() * questionSet.length);
+      const q = questionSet[qIndex];
+      renderQuestion(q, q.answer, subject, difficulty, qIndex);
+    });
 }
 
 function capitalize(str) {
@@ -216,5 +234,4 @@ function capitalize(str) {
 
 window.onload = () => {
   updateUI();
-  setupZoneButtons();
 };
