@@ -55,7 +55,6 @@ function startQuiz(subject, difficulty) {
       return;
     }
   
-
   fetch("questions.json")
     .then(res => res.json())
 
