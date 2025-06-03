@@ -43,7 +43,6 @@ function zoneDone(key) {
 function startQuiz(subject, difficulty) {
   const key = subject + "_" + difficulty;
 
-  // Check if difficulty is unlocked
   const unlockRules = {
     scholar: "novice",
     wizard: "scholar"
@@ -74,17 +73,17 @@ function startQuiz(subject, difficulty) {
       if (message === null) return;
 
       const xp = 10;
+      const today = new Date().toISOString().split("T")[0];
+
+      // Reset if new day
+      if (gameData.dailyXpDate !== today) {
+        gameData.dailyXp = 0;
+        gameData.dailyXpDate = today;
+        gameData.spells = {};
+      }
+
       if (message.trim().toLowerCase() === correct.toLowerCase()) {
         gameData.xp += xp;
-
-        // Track daily XP for spell rewards
-        const today = new Date().toISOString().split("T")[0];
-        if (gameData.dailyXpDate !== today) {
-          gameData.dailyXp = 0;
-          gameData.dailyXpDate = today;
-          gameData.spells = {};
-        }
-
         gameData.dailyXp += xp;
 
         if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
@@ -104,7 +103,6 @@ function startQuiz(subject, difficulty) {
         gameData.completedZones[zoneKey] = true;
         saveProgress();
 
-        // Show fun fact
         const fact = q.fact || "";
         const root = document.getElementById("game-root");
         root.innerHTML = `
@@ -116,52 +114,6 @@ function startQuiz(subject, difficulty) {
         alert("❌ Wrong! Try again.");
       }
     });
-}
-
-// Track daily XP for spell rewards
-const today = new Date().toISOString().split("T")[0];
-
-if (gameData.dailyXpDate !== today) {
-  gameData.dailyXp = 0;
-  gameData.dailyXpDate = today;
-  gameData.spells = {}; // Reset spells daily
-}
-
-gameData.dailyXp += xp;
-
-// Spell reward logic
-if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
-  gameData.spells.eliminate = true;
-  alert("🪄 You unlocked the 'Eliminate' spell! Removes 1 wrong answer.");
-}
-if (gameData.dailyXp >= 60 && !gameData.spells.hint) {
-  gameData.spells.hint = true;
-  alert("💡 You unlocked the 'Hint' spell! Reveals a clue.");
-}
-if (gameData.dailyXp >= 90 && !gameData.spells.freeze) {
-  gameData.spells.freeze = true;
-  alert("❄️ You unlocked the 'Freeze' spell! Time stops!");
-}
-
-  saveProgress();
-
-  // Show fun fact if available
-fetch("questions.json")
-  .then(res => res.json())
-  .then(data => {
-    const questionSet = data[subject][difficulty];
-    const fact = questionSet.find(q => q.answer === correct)?.fact || "";
-
-    const root = document.getElementById("game-root");
-    root.innerHTML = `
-      <div><strong>✅ Correct!</strong></div>
-      ${fact ? `<div class="fact">📘 ${fact}</div>` : ""}
-      <br><button onclick="updateUI()">🔙 Back to map</button>
-    `;
-  })
-  .catch(error => {
-    console.error("Error loading fact:", error);
-  });
 }
 
 const zoneSubjects = {
@@ -212,7 +164,6 @@ function capitalize(str) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-// Ensure this is called when window loads
 window.onload = () => {
   updateUI();
   setupZoneButtons();
