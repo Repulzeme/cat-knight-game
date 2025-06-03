@@ -156,6 +156,14 @@ function handleAnswer(subject, difficulty, correct, selected, qIndex) {
   }
 }
 
+const zoneSubjects = {
+  arena: "geography",
+  theater: "stage",
+  library: "history",
+  stadium: "sports",
+  daily: "daily"
+};
+
 function setupZoneButtons() {
   Object.keys(zoneSubjects).forEach((zoneId) => {
     const zone = document.getElementById(zoneId);
