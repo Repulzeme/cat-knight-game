@@ -54,7 +54,39 @@ function startQuiz(subject, difficulty) {
       alert(`You must complete ${unlockRules[difficulty]} first.`);
       return;
     }
- }
+  }
+
+  fetch("questions.json")
+    .then(res => res.json())
+    .then(data => {
+      const questionSet = data[subject][difficulty];
+      if (!questionSet || questionSet.length === 0) {
+        alert("No questions available.");
+        return;
+      }
+
+      const qIndex = Math.floor(Math.random() * questionSet.length);
+      const q = questionSet[qIndex];
+      const correct = q.answer;
+
+      // Show question and spell buttons
+      const optionsHTML = q.options.map(option => `
+        <button onclick="handleAnswer('${subject}', '${difficulty}', '${correct}', '${option}', ${qIndex})">${option}</button>
+      `).join("<br>");
+
+      const root = document.getElementById("game-root");
+      root.innerHTML = `
+        <h2>${q.question}</h2>
+        ${renderSpellsForQuestion(correct, subject, difficulty, qIndex, q)}
+        ${optionsHTML}
+        <br><button onclick="updateUI()">🔙 Back to map</button>
+      `;
+    })
+    .catch(error => {
+      console.error("Failed to load questions.json:", error);
+      alert("Error loading quiz. Try refreshing.");
+    });
+}
   
 function renderSpellsUI(questionObj, correctAnswer) {
   const spellDiv = document.createElement("div");
