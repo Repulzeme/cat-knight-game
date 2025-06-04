@@ -1,146 +1,126 @@
-let gameData = JSON.parse(localStorage.getItem("catKnightData")) || {
-  xp: 0,
-  streak: 0,
-  dailyDate: "",
-  completedZones: {},
-  spells: {},
+let gameData = {
+  spells: JSON.parse(localStorage.getItem("spells")) || {},
+  xp: parseInt(localStorage.getItem("xp")) || 0,
+  streak: parseInt(localStorage.getItem("streak")) || 0,
+  lastPlayedDate: localStorage.getItem("lastPlayedDate") || null,
+  completedZones: JSON.parse(localStorage.getItem("completedZones")) || {}
 };
 
-function saveGame() {
-  localStorage.setItem("catKnightData", JSON.stringify(gameData));
+function saveProgress() {
+  localStorage.setItem("spells", JSON.stringify(gameData.spells));
+  localStorage.setItem("xp", gameData.xp);
+  localStorage.setItem("streak", gameData.streak);
+  localStorage.setItem("lastPlayedDate", gameData.lastPlayedDate);
+  localStorage.setItem("completedZones", JSON.stringify(gameData.completedZones));
 }
 
-function updateHeader() {
+function updateUI() {
   document.getElementById("xp").textContent = gameData.xp;
   document.getElementById("streak").textContent = gameData.streak;
+  renderZoneButtons();
+  document.getElementById("difficulty-buttons").innerHTML = "";
+  document.getElementById("game-content").innerHTML = "";
 }
 
-const zones = [
-  { id: "arena", label: "⚔️ Arena" },
-  { id: "theater", label: "🎭 Theater" },
-  { id: "library", label: "📚 Library" },
-  { id: "stadium", label: "🏟️ Stadium" },
-  { id: "daily", label: "🌀 Daily Mix" },
-];
+const subjects = {
+  arena: "geography",
+  theater: "entertainment",
+  library: "history",
+  stadium: "sports",
+  daily: "daily"
+};
 
-function setupZoneButtons() {
+function renderZoneButtons() {
   const container = document.getElementById("zone-buttons");
   container.innerHTML = "";
-  zones.forEach((zone) => {
+  for (const [zone, subject] of Object.entries(subjects)) {
     const btn = document.createElement("button");
-    btn.textContent = zone.label;
-    btn.onclick = () => showDifficultyOptions(zone.id);
+    btn.textContent = subject.charAt(0).toUpperCase() + subject.slice(1);
+    btn.onclick = () => showDifficultyOptions(subject);
     container.appendChild(btn);
-  });
+  }
 }
 
 function showDifficultyOptions(subject) {
   const container = document.getElementById("difficulty-buttons");
-  const gameArea = document.getElementById("game-content");
   container.innerHTML = "";
-  gameArea.innerHTML = "";
 
-  ["novice", "scholar", "wizard"].forEach((level) => {
-    const prereq = level === "novice" ? null :
-      level === "scholar" ? `${subject}_novice` : `${subject}_scholar`;
+  const noviceKey = subject + "_novice";
+  const scholarKey = subject + "_scholar";
+  const wizardKey = subject + "_wizard";
 
-    const unlocked = !prereq || gameData.completedZones[prereq];
-    const btn = document.createElement("button");
-    btn.textContent = level[0].toUpperCase() + level.slice(1);
-    if (!unlocked) btn.classList.add("locked");
-    btn.disabled = !unlocked;
+  const scholarUnlocked = !!gameData.completedZones[noviceKey];
+  const wizardUnlocked = !!gameData.completedZones[scholarKey];
 
-    btn.onclick = () => startQuiz(subject, level);
-    container.appendChild(btn);
-  });
+  container.appendChild(createDifficultyButton("Novice", subject, "novice", true));
+  container.appendChild(createDifficultyButton("Scholar", subject, "scholar", scholarUnlocked));
+  container.appendChild(createDifficultyButton("Wizard", subject, "wizard", wizardUnlocked));
+}
 
-  const backBtn = document.createElement("button");
-  backBtn.textContent = "⬅️ Back";
-  backBtn.onclick = () => {
-    container.innerHTML = "";
-  };
-  container.appendChild(backBtn);
+function createDifficultyButton(label, subject, difficulty, unlocked) {
+  const btn = document.createElement("button");
+  btn.textContent = label;
+  if (!unlocked) btn.classList.add("locked");
+  btn.onclick = () => startQuiz(subject, difficulty);
+  return btn;
 }
 
 function startQuiz(subject, difficulty) {
   fetch("questions.json")
-    .then((res) => res.json())
-    .then((data) => {
-      const questions = data[subject]?.[difficulty];
-      if (!questions || questions.length === 0) {
+    .then(res => res.json())
+    .then(data => {
+      const questionSet = data[subject]?.[difficulty];
+      if (!questionSet || questionSet.length === 0) {
         alert("No questions available.");
         return;
       }
-      const q = questions[Math.floor(Math.random() * questions.length)];
+
+      const q = questionSet[Math.floor(Math.random() * questionSet.length)];
       renderQuestion(q, subject, difficulty);
     });
 }
 
 function renderQuestion(q, subject, difficulty) {
-  const gameArea = document.getElementById("game-content");
-  gameArea.innerHTML = `<h3>${q.question}</h3>`;
-
-  const spellBar = document.createElement("div");
-  spellBar.className = "spell-buttons";
-
-  if (gameData.spells.eliminate) {
-    const btn = document.createElement("button");
-    btn.textContent = "❌ Eliminate";
-    btn.onclick = () => {
-      const wrongs = q.options.filter(o => o !== q.answer);
-      const remove = wrongs[Math.floor(Math.random() * wrongs.length)];
-      q.options = q.options.filter(o => o !== remove);
-      renderQuestion(q, subject, difficulty);
-    };
-    spellBar.appendChild(btn);
-  }
-
-  if (gameData.spells.hint && q.hint) {
-    const btn = document.createElement("button");
-    btn.textContent = "💡 Hint";
-    btn.onclick = () => alert("Hint: " + q.hint);
-    spellBar.appendChild(btn);
-  }
-
-  gameArea.appendChild(spellBar);
-
-  q.options.forEach((opt) => {
-    const btn = document.createElement("button");
-    btn.textContent = opt;
-    btn.onclick = () => handleAnswer(subject, difficulty, opt, q.answer);
-    gameArea.appendChild(btn);
-  });
+  const container = document.getElementById("game-content");
+  container.innerHTML = `
+    <h3>${q.question}</h3>
+    ${q.options.map((opt, i) => `<button onclick="handleAnswer('${opt}', '${q.answer}', '${subject}', '${difficulty}', \`${q.fact || ""}\`)">${opt}</button>`).join("<br><br>")}
+  `;
 }
 
-function handleAnswer(subject, difficulty, selected, correct) {
+window.handleAnswer = function(choice, correct, subject, difficulty, fact) {
+  const container = document.getElementById("game-content");
   const today = new Date().toISOString().split("T")[0];
-  if (selected === correct) {
-    alert("✅ Correct!");
+
+  if (choice.toLowerCase() === correct.toLowerCase()) {
     gameData.xp += 10;
 
-    if (gameData.dailyDate !== today) {
-      gameData.streak += 1;
-      gameData.dailyDate = today;
+    if (gameData.lastPlayedDate !== today) {
+      gameData.streak++;
+      gameData.lastPlayedDate = today;
     }
 
+    const zoneKey = subject + "_" + difficulty;
+    gameData.completedZones[zoneKey] = true;
+
+    // Spell unlock logic
     if (gameData.xp >= 30 && !gameData.spells.eliminate) {
       gameData.spells.eliminate = true;
-      alert("✨ You unlocked the 'Eliminate' spell!");
-    }
-    if (gameData.xp >= 60 && !gameData.spells.hint) {
-      gameData.spells.hint = true;
-      alert("🕵️ You unlocked the 'Hint' spell!");
+      alert("🪄 Spell unlocked: Eliminate");
     }
 
-    gameData.completedZones[`${subject}_${difficulty}`] = true;
+    saveProgress();
+
+    container.innerHTML = `
+      <p><strong>✅ Correct!</strong></p>
+      ${fact ? `<div class="fact">📘 ${fact}</div>` : ""}
+      <br><button onclick="updateUI()">🔙 Back</button>
+    `;
   } else {
     alert("❌ Wrong!");
   }
-
-  saveGame();
-  updateHeader();
-  document.getElementById("game-content").innerHTML = "";
 }
 
-updateHeader();
-setupZoneButtons();
+window.onload = () => {
+  updateUI();
+};
