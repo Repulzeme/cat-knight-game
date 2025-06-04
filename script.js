@@ -97,10 +97,10 @@ function renderQuestion() {
     <h3>${q.question}</h3>
     <div class="answers">
       ${q.options
-        .map(
-          (opt) =>
-            `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn">${opt}</button>`
-        )
+        .map(opt => {
+  const isCorrect = opt === q.answer;
+  return `<button onclick="selectAnswer(this, ${isCorrect})" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
+})
         .join("")}
     </div>
     <div id="hint-msg"></div>
