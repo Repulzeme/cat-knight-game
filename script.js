@@ -109,26 +109,34 @@ function renderQuestion() {
 function selectAnswer(index) {
   const correct = currentQuestion.correct;
   const buttons = document.querySelectorAll(".answers button");
-  buttons.forEach((btn) => (btn.disabled = true));
+  const feedback = document.createElement("div");
+  feedback.id = "feedback-message";
+  document.querySelector(".answers").after(feedback);
 
+  // Disable all buttons
+  buttons.forEach((btn) => btn.disabled = true);
+
+  // Style and show correct/wrong
   if (index === correct) {
     buttons[index].classList.add("correct");
-    const xpGained = currentDifficulty === "novice" ? 10 : currentDifficulty === "scholar" ? 15 : 20;
+    const xpGained = currentDifficulty === "novice" ? 10 :
+                     currentDifficulty === "scholar" ? 15 : 20;
     xp += xpGained;
     localStorage.setItem("xp", xp);
     updateStats();
-    alert(`✅ Correct! +${xpGained} XP`);
+    feedback.textContent = `✅ Correct! You earned ${xpGained} XP.`;
   } else {
     buttons[index].classList.add("wrong");
     buttons[correct].classList.add("correct");
-    alert("❌ Wrong answer.");
+    feedback.textContent = "❌ Wrong answer.";
   }
 
+  // Return to main screen after 2s
   setTimeout(() => {
     questionScreen.classList.add("hidden");
     mainScreen.classList.remove("hidden");
     renderZones();
-  }, 1000);
+  }, 2000);
 }
 
 function goToMain() {
