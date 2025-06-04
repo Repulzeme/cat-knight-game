@@ -5,7 +5,7 @@
         "question": "What is the capital of France?",
         "options": ["Paris", "Madrid", "Berlin", "Rome"],
         "answer": "Paris",
-        "fact": "Paris is known as the City of Light and home to the Eiffel Tower."
+        "hint": "Paris is known as the City of Light and home to the Eiffel Tower."
       }
     ],
     "scholar": [
@@ -13,7 +13,7 @@
         "question": "Which country has the most time zones?",
         "options": ["Russia", "USA", "France", "China"],
         "answer": "France",
-        "fact": "France has many overseas territories across the world, resulting in 12 time zones."
+        "hint": "France has many overseas territories across the world, resulting in 12 time zones."
       }
     ],
     "wizard": [
@@ -21,7 +21,7 @@
         "question": "Which desert is the largest in the world (non-polar)?",
         "options": ["Sahara", "Gobi", "Kalahari", "Arabian"],
         "answer": "Sahara",
-        "fact": "The Sahara covers over 9 million square kilometers."
+        "hint": "The Sahara covers over 9 million square kilometers."
       }
     ]
   },
@@ -31,7 +31,7 @@
         "question": "Who was the first President of the United States?",
         "options": ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "John Adams"],
         "answer": "George Washington",
-        "fact": "He served from 1789 to 1797."
+        "hint": "He served from 1789 to 1797."
       }
     ],
     "scholar": [
@@ -39,7 +39,7 @@
         "question": "What year did World War II end?",
         "options": ["1942", "1945", "1939", "1950"],
         "answer": "1945",
-        "fact": "WWII ended in September 1945 after Japan surrendered."
+        "hint": "WWII ended in September 1945 after Japan surrendered."
       }
     ],
     "wizard": [
@@ -47,7 +47,7 @@
         "question": "Which empire was ruled by Genghis Khan?",
         "options": ["Roman Empire", "Ottoman Empire", "Mongol Empire", "Persian Empire"],
         "answer": "Mongol Empire",
-        "fact": "It became the largest contiguous empire in history."
+        "hint": "It became the largest contiguous empire in history."
       }
     ]
   },
@@ -57,7 +57,7 @@
         "question": "Which sport is played at Wimbledon?",
         "options": ["Tennis", "Golf", "Cricket", "Football"],
         "answer": "Tennis",
-        "fact": "Wimbledon is the oldest tennis tournament in the world."
+        "hint": "Wimbledon is the oldest tennis tournament in the world."
       }
     ],
     "scholar": [
@@ -65,7 +65,7 @@
         "question": "How many players are on a basketball team on the court?",
         "options": ["5", "6", "7", "4"],
         "answer": "5",
-        "fact": "Each team has five active players during gameplay."
+        "hint": "Each team has five active players during gameplay."
       }
     ],
     "wizard": [
@@ -73,7 +73,7 @@
         "question": "In which year did Usain Bolt set the 100m world record?",
         "options": ["2008", "2009", "2012", "2016"],
         "answer": "2009",
-        "fact": "He ran it in 9.58 seconds at the World Championships in Berlin."
+        "hint": "He ran it in 9.58 seconds at the World Championships in Berlin."
       }
     ]
   },
@@ -83,7 +83,7 @@
         "question": "Who played Harry Potter in the movies?",
         "options": ["Daniel Radcliffe", "Elijah Wood", "Rupert Grint", "Tom Holland"],
         "answer": "Daniel Radcliffe",
-        "fact": "He starred in all eight Harry Potter films."
+        "hint": "He starred in all eight Harry Potter films."
       }
     ],
     "scholar": [
@@ -91,7 +91,7 @@
         "question": "Which film won Best Picture at the 2020 Oscars?",
         "options": ["1917", "Parasite", "Joker", "Ford v Ferrari"],
         "answer": "Parasite",
-        "fact": "Parasite was the first non-English film to win Best Picture."
+        "hint": "Parasite was the first non-English film to win Best Picture."
       }
     ],
     "wizard": [
@@ -99,7 +99,7 @@
         "question": "What year was the first Academy Awards held?",
         "options": ["1929", "1935", "1918", "1941"],
         "answer": "1929",
-        "fact": "The first Oscars took place in May 1929."
+        "hint": "The first Oscars took place in May 1929."
       }
     ]
   },
@@ -109,7 +109,7 @@
         "question": "What gas do plants absorb from the atmosphere?",
         "options": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
         "answer": "Carbon Dioxide",
-        "fact": "Plants use CO2 during photosynthesis."
+        "hint": "Plants use CO2 during photosynthesis."
       }
     ],
     "scholar": [
@@ -117,7 +117,7 @@
         "question": "Which company created the iPhone?",
         "options": ["Microsoft", "Samsung", "Google", "Apple"],
         "answer": "Apple",
-        "fact": "The iPhone was introduced in 2007."
+        "hint": "The iPhone was introduced in 2007."
       }
     ],
     "wizard": [
@@ -125,7 +125,7 @@
         "question": "Which physicist developed the theory of general relativity?",
         "options": ["Isaac Newton", "Marie Curie", "Albert Einstein", "Stephen Hawking"],
         "answer": "Albert Einstein",
-        "fact": "Einstein published his theory in 1915."
+        "hint": "Einstein published his theory in 1915."
       }
     ]
   }
