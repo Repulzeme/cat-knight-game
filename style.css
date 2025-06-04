@@ -45,3 +45,15 @@ main {
   font-style: italic;
   font-size: 0.95em;
 }
+.spell-row {
+  margin-top: 20px;
+}
+.spell-row button {
+  margin-right: 10px;
+  background-color: #444;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
