@@ -5,144 +5,132 @@
         "question": "What is the capital of France?",
         "options": ["Paris", "Madrid", "Berlin", "Rome"],
         "answer": "Paris",
-        "fact": "Paris has been France's capital since the 10th century."
-      },
-      {
-        "question": "Which continent is Egypt in?",
-        "options": ["Africa", "Asia", "Europe", "Australia"],
-        "answer": "Africa",
-        "fact": "Egypt is one of only two countries that straddle both Africa and Asia, but it's politically considered African."
+        "fact": "Paris is known as the City of Light and home to the Eiffel Tower."
       }
     ],
     "scholar": [
-      {
-        "question": "Which river flows through Baghdad?",
-        "options": ["Tigris", "Euphrates", "Nile", "Jordan"],
-        "answer": "Tigris",
-        "fact": "The Tigris River is one of the two major rivers of Mesopotamia, the other being the Euphrates."
-      },
       {
         "question": "Which country has the most time zones?",
         "options": ["Russia", "USA", "France", "China"],
         "answer": "France",
-        "fact": "France has 12 time zones due to its many overseas territories."
+        "fact": "France has many overseas territories across the world, resulting in 12 time zones."
       }
     ],
     "wizard": [
       {
-        "question": "What is the name of the desert in northern China and southern Mongolia?",
-        "options": ["Gobi", "Sahara", "Karakum", "Kalahari"],
-        "answer": "Gobi",
-        "fact": "The Gobi is a cold desert — it even snows there."
+        "question": "Which desert is the largest in the world (non-polar)?",
+        "options": ["Sahara", "Gobi", "Kalahari", "Arabian"],
+        "answer": "Sahara",
+        "fact": "The Sahara covers over 9 million square kilometers."
       }
     ]
   },
-
-  "entertainment": {
-    "novice": [
-      {
-        "question": "What is a 'proscenium' in theatre?",
-        "options": ["A type of actor", "The stage curtain", "The arch framing the stage", "A lighting cue"],
-        "answer": "The arch framing the stage",
-        "fact": "The proscenium arch frames the stage like a picture frame, separating audience and performers."
-      }
-    ],
-    "scholar": [
-      {
-        "question": "Who wrote the play 'Hamlet'?",
-        "options": ["Shakespeare", "Molière", "Ibsen", "Goethe"],
-        "answer": "Shakespeare",
-        "fact": "'Hamlet' is one of Shakespeare’s most famous tragedies, written around 1600."
-      }
-    ],
-    "wizard": [
-      {
-        "question": "Which theatre movement emphasized absurdity and illogical dialogue?",
-        "options": ["Theatre of the Absurd", "Realism", "Romanticism", "Vaudeville"],
-        "answer": "Theatre of the Absurd",
-        "fact": "The Theatre of the Absurd emerged after World War II, reflecting the existential disillusionment of the era."
-      }
-    ]
-  },
-
   "history": {
     "novice": [
       {
         "question": "Who was the first President of the United States?",
-        "options": ["George Washington", "Thomas Jefferson", "John Adams", "Abraham Lincoln"],
+        "options": ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "John Adams"],
         "answer": "George Washington",
-        "fact": "George Washington was elected unanimously and served from 1789 to 1797."
+        "fact": "He served from 1789 to 1797."
       }
     ],
     "scholar": [
       {
-        "question": "In which year did World War II end?",
-        "options": ["1942", "1945", "1948", "1950"],
+        "question": "What year did World War II end?",
+        "options": ["1942", "1945", "1939", "1950"],
         "answer": "1945",
-        "fact": "WWII ended in 1945 after the surrender of Germany in May and Japan in September."
+        "fact": "WWII ended in September 1945 after Japan surrendered."
       }
     ],
     "wizard": [
       {
-        "question": "Which empire was ruled by Suleiman the Magnificent?",
-        "options": ["Ottoman Empire", "Roman Empire", "Mongol Empire", "British Empire"],
-        "answer": "Ottoman Empire",
-        "fact": "Suleiman the Magnificent ruled the Ottoman Empire at its peak in the 16th century."
+        "question": "Which empire was ruled by Genghis Khan?",
+        "options": ["Roman Empire", "Ottoman Empire", "Mongol Empire", "Persian Empire"],
+        "answer": "Mongol Empire",
+        "fact": "It became the largest contiguous empire in history."
       }
     ]
   },
-
   "sports": {
     "novice": [
       {
-        "question": "How many players are on a soccer team (on the field)?",
-        "options": ["9", "10", "11", "12"],
-        "answer": "11",
-        "fact": "A soccer team fields 11 players, including the goalkeeper."
+        "question": "Which sport is played at Wimbledon?",
+        "options": ["Tennis", "Golf", "Cricket", "Football"],
+        "answer": "Tennis",
+        "fact": "Wimbledon is the oldest tennis tournament in the world."
       }
     ],
     "scholar": [
       {
-        "question": "In which sport would you perform a 'slam dunk'?",
-        "options": ["Volleyball", "Basketball", "Handball", "Tennis"],
-        "answer": "Basketball",
-        "fact": "A slam dunk is one of the most powerful moves in basketball."
+        "question": "How many players are on a basketball team on the court?",
+        "options": ["5", "6", "7", "4"],
+        "answer": "5",
+        "fact": "Each team has five active players during gameplay."
       }
     ],
     "wizard": [
       {
-        "question": "Which country has won the most Olympic gold medals?",
-        "options": ["China", "Russia", "Germany", "USA"],
-        "answer": "USA",
-        "fact": "The USA leads all countries in Olympic golds, with over 1,100 in total."
+        "question": "In which year did Usain Bolt set the 100m world record?",
+        "options": ["2008", "2009", "2012", "2016"],
+        "answer": "2009",
+        "fact": "He ran it in 9.58 seconds at the World Championships in Berlin."
       }
     ]
   },
-
-  "daily": {
+  "entertainment": {
     "novice": [
       {
-        "question": "What is the boiling point of water in Celsius?",
-        "options": ["90°C", "95°C", "100°C", "110°C"],
-        "answer": "100°C",
-        "fact": "Water boils at 100°C at sea level, but this changes with altitude."
+        "question": "Who played Harry Potter in the movies?",
+        "options": ["Daniel Radcliffe", "Elijah Wood", "Rupert Grint", "Tom Holland"],
+        "answer": "Daniel Radcliffe",
+        "fact": "He starred in all eight Harry Potter films."
       }
     ],
     "scholar": [
       {
-        "question": "Which planet is closest to the sun?",
-        "options": ["Venus", "Earth", "Mars", "Mercury"],
-        "answer": "Mercury",
-        "fact": "Mercury is the closest planet to the Sun, orbiting it every 88 Earth days."
+        "question": "Which film won Best Picture at the 2020 Oscars?",
+        "options": ["1917", "Parasite", "Joker", "Ford v Ferrari"],
+        "answer": "Parasite",
+        "fact": "Parasite was the first non-English film to win Best Picture."
       }
     ],
     "wizard": [
       {
-        "question": "What is the chemical symbol for gold?",
-        "options": ["Ag", "Gd", "Au", "Pb"],
-        "answer": "Au",
-        "fact": "The symbol 'Au' comes from the Latin word 'Aurum', meaning shining dawn."
+        "question": "What year was the first Academy Awards held?",
+        "options": ["1929", "1935", "1918", "1941"],
+        "answer": "1929",
+        "fact": "The first Oscars took place in May 1929."
       }
+    ]
+  },
+  "daily": {
+    "novice": [
+      {
+        "question": "What gas do plants absorb from the atmosphere?",
+        "options": ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+        "answer": "Carbon Dioxide",
+        "fact": "Plants use CO2 during photosynthesis."
+      }
+    ],
+    "scholar": [
+      {
+        "question": "Which company created the iPhone?",
+        "options": ["Microsoft", "Samsung", "Google", "Apple"],
+        "answer": "Apple",
+        "fact": "The iPhone was introduced in 2007."
+      }
+    ],
+    "wizard": [
+      {
+        "question": "Which physicist developed the theory of general relativity?",
+        "options": ["Isaac Newton", "Marie Curie", "Albert Einstein", "Stephen Hawking"],
+        "answer": "Albert Einstein",
+        "fact": "Einstein published his theory in 1915."
+      }
+    ]
+  }
+}
+
     ]
   }
 }
