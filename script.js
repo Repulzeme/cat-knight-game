@@ -33,35 +33,30 @@ function loadProgress() {
   gameData.hasCloak = localStorage.getItem("hasCloak") === "true";
 }
 
+// Main UI
 function updateUI() {
   loadProgress();
   const root = document.getElementById("game-root");
   let spellList = Object.keys(gameData.spells).filter(k => gameData.spells[k]);
   let spellString = spellList.length ? `🪄 Spells: ${spellList.join(", ")}` : "";
+
   root.innerHTML = `
     <h2>🐱🧠 Cat Knight: Realm 1</h2>
-    <div>
-      🔥 XP: ${gameData.xp} 🧊 Streak: ${gameData.streak}
-    </div>
+    <div>🔥 XP: ${gameData.xp} 📘 Streak: ${gameData.streak}</div>
     <br>
-    <button onclick="startQuiz('arena')">⚔️ Arena</button>
-    <button onclick="startQuiz('theater')">🎭 Theater</button>
-    <button onclick="startQuiz('library')">📚 Library</button>
-    <button onclick="startQuiz('stadium')">🏟️ Stadium</button>
+    <button onclick="startQuiz('geography')">⚔️ Arena</button>
+    <button onclick="startQuiz('stage')">🎭 Theater</button>
+    <button onclick="startQuiz('history')">📚 Library</button>
+    <button onclick="startQuiz('sports')">🏟️ Stadium</button>
     <button onclick="startQuiz('daily')">🧪 Daily Mix</button>
     <br><br>
-    <h3>☀️ Choose Your Path</h3>
-    <div>🧭 Geography</div>
-    <div>📜 History</div>
-    <div>🎬 Stage</div>
-    <div>🏅 Sports</div>
-    <div>📅 Daily</div>
-    <br>
-    🔥 XP: ${gameData.dailyXp} 🧊 Streak: ${gameData.streak}
+    🔥 Daily XP: ${gameData.dailyXp} 📘 Streak: ${gameData.streak}
+    <br><br>
+    ${spellString}
   `;
 }
 
-// Spell UI
+// Spells UI
 function renderSpellsUI(q, correct) {
   const spellDiv = document.createElement("div");
   spellDiv.id = "spell-buttons";
@@ -74,7 +69,7 @@ function renderSpellsUI(q, correct) {
       const incorrect = q.options.filter(opt => opt !== correct);
       const toRemove = incorrect[Math.floor(Math.random() * incorrect.length)];
       q.options = q.options.filter(opt => opt !== toRemove);
-      renderQuestion(q, correct); // Refresh UI
+      renderQuestion(q, correct); // Refresh
     };
     spellDiv.appendChild(btn);
   }
@@ -96,7 +91,7 @@ function renderSpellsUI(q, correct) {
   document.getElementById("game-root").appendChild(spellDiv);
 }
 
-// Render Question
+// Question Renderer
 function renderQuestion(question, correct) {
   const root = document.getElementById("game-root");
   root.innerHTML = `<h3>${question.question}</h3>`;
@@ -108,7 +103,7 @@ function renderQuestion(question, correct) {
   });
 }
 
-// Game Logic
+// Answer Handler
 function handleAnswer(selected, correct, q) {
   const isCorrect = selected === correct;
   const root = document.getElementById("game-root");
@@ -116,17 +111,16 @@ function handleAnswer(selected, correct, q) {
   if (isCorrect) {
     gameData.xp += 10;
 
-    // Track daily XP
+    // Daily XP and streak
     const today = new Date().toISOString().split("T")[0];
     if (gameData.dailyXpDate !== today) {
       gameData.dailyXpDate = today;
       gameData.dailyXp = 0;
       gameData.spells = {};
     }
-
     gameData.dailyXp += 10;
 
-    // Rewards
+    // Spell rewards
     let unlocked = [];
     if (gameData.dailyXp >= 30 && !gameData.spells.eliminate) {
       gameData.spells.eliminate = true;
@@ -149,7 +143,7 @@ function handleAnswer(selected, correct, q) {
       <br><button onclick="updateUI()">🔙 Back to map</button>
     `;
 
-    // Show unlocks after "Correct!"
+    // Alert after success UI is drawn
     if (unlocked.length) {
       setTimeout(() => alert(`🎁 You unlocked: ${unlocked.join(", ")}`), 100);
     }
@@ -159,7 +153,7 @@ function handleAnswer(selected, correct, q) {
   }
 }
 
-// Start Quiz
+// Quiz Starter
 function startQuiz(subject) {
   fetch("questions.json")
     .then(res => res.json())
@@ -172,6 +166,10 @@ function startQuiz(subject) {
       renderQuestion(q, correct);
     });
 }
+
+// Entry point
+window.onload = () => updateUI();
+
 
 // Launch
 window.onload = () => updateUI();
