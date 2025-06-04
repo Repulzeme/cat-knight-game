@@ -2,29 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cat Knight: Realm 1</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="manifest" href="manifest.json" />
 </head>
 <body>
-  <div class="header">
-    <h1>🐱🧠 Cat Knight: Realm 1</h1>
-    <div id="status-bar">
-      <span id="xp-display">🔥 XP: 0</span>
-      <span id="streak-display">📘 Streak: 0</span>
-      <span id="rewards-display"></span>
-    </div>
+  <div id="game-root">
+    <header style="background: #333; color: white; padding: 1rem; text-align: center;">
+      <h1>🐱🧠 Cat Knight: Realm 1</h1>
+      <div>🔥 XP: <span id="xp">0</span> 📘 Streak: <span id="streak">0</span></div>
+    </header>
+
+    <main style="padding: 1rem; text-align: center;">
+      <section id="zone-buttons" style="margin: 1.5rem 0;">
+        <button id="arena">⚔️ Arena</button>
+        <button id="theater">🎭 Theater</button>
+        <button id="library">📚 Library</button>
+        <button id="stadium">🏟️ Stadium</button>
+        <button id="daily">🌀 Daily Mix</button>
+      </section>
+
+      <section id="game-content">
+        <!-- Dynamic game UI will be injected here -->
+      </section>
+    </main>
   </div>
-  <main>
-    <div id="map">
-      <div class="zone" id="arena">⚔️ Arena</div>
-      <div class="zone" id="theater">🎭 Theater</div>
-      <div class="zone" id="library">📚 Library</div>
-      <div class="zone" id="stadium">🏟️ Stadium</div>
-      <div class="zone" id="daily">🌀 Daily Mix</div>
-    </div>
-    <div id="game-root">Loading game...</div>
-  </main>
+
   <script src="script.js"></script>
 </body>
 </html>
