@@ -98,7 +98,7 @@ function renderQuestion() {
       ${q.options
         .map(opt => {
   const isCorrect = opt === q.answer;
-  return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn">${opt}</button>`;
+  return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
 })
         .join("")}
     </div>
