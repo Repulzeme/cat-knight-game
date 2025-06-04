@@ -106,6 +106,15 @@ function renderQuestion() {
   `;
 }
 
+function getXPGain(difficulty) {
+  switch (difficulty) {
+    case 'novice': return 10;
+    case 'scholar': return 20;
+    case 'wizard': return 30;
+    default: return 0;
+  }
+}
+
 function selectAnswer(button, selectedOption) {
   const allButtons = Array.from(document.querySelectorAll("#question-container button"));
   allButtons.forEach(btn => btn.disabled = true);
