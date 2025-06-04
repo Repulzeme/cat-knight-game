@@ -98,7 +98,7 @@ function renderQuestion() {
       ${q.options
         .map(opt => {
   const isCorrect = opt === q.answer;
-  return `<button onclick="selectAnswer(this, ${isCorrect})" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
+  return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn">${opt}</button>`;
 })
         .join("")}
     </div>
@@ -110,9 +110,7 @@ function selectAnswer(button, selectedOption) {
   const allButtons = Array.from(document.querySelectorAll("#question-container button"));
   allButtons.forEach(btn => btn.disabled = true);
 
-  const correctOption = currentQuestion.correct;
-  console.log("Selected:", selectedOption);
-  console.log("Correct :", correctOption);
+  const correctOption = currentQuestion.answer;
   const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
 
   if (isCorrect) {
