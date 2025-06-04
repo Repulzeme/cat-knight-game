@@ -110,8 +110,8 @@ function selectAnswer(button, selectedOption) {
   const allButtons = Array.from(document.querySelectorAll("#question-container button"));
   allButtons.forEach(btn => btn.disabled = true);
 
-  const correctOption = currentQuestion.options[currentQuestion.correct];
-  const isCorrect = selectedOption === correctOption;
+  const correctOption = currentQuestion.correct;
+  const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
 
   if (isCorrect) {
     button.classList.add("correct");
