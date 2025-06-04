@@ -83,6 +83,7 @@ function startQuiz(zone, difficulty) {
   currentDifficulty = difficulty;
   const randomIndex = Math.floor(Math.random() * questions.length);
   currentQuestion = questions[randomIndex];
+  currentQuestion = question;
   usedEliminate = false;
   usedHint = false;
   difficultyScreen.classList.add("hidden");
