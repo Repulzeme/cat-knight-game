@@ -116,11 +116,17 @@ function handleAnswer(subject, difficulty, correct, selected) {
   }
 
   if (isCorrect) {
-    gameData.xp += 10;
-    gameData.dailyXP += 10;
+    let xpGain = 0;
+    if (difficulty === "novice") xpGain = 10;
+    else if (difficulty === "scholar") xpGain = 15;
+    else if (difficulty === "wizard") xpGain = 20;
+
+    gameData.xp += xpGain;
+    gameData.dailyXP += xpGain;
     gameData.completedZones[`${subject}_${difficulty}`] = true;
   }
 
   saveGameData();
   goToMain();
 }
+
