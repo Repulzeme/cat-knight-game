@@ -108,7 +108,7 @@ function renderQuestion() {
 
 function selectAnswer(index) {
   const correct = currentQuestion.correct;
-  const buttons = document.querySelectorAll(".answers button");
+  const buttons = document.querySelectorAll("#question-container button");
 
   // Disable all buttons
   buttons.forEach((btn) => btn.disabled = true);
