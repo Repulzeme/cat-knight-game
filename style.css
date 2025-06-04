@@ -90,6 +90,29 @@ button.locked {
   background-color: #3a86ff;
 }
 
+.xp-float {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  transform: translate(-50%, -50%);
+  font-size: 24px;
+  font-weight: bold;
+  color: gold;
+  opacity: 0;
+  transition: all 1s ease-out;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.xp-float.show {
+  top: 40%;
+  opacity: 1;
+}
+
+.hidden {
+  display: none;
+}
+
 #spell-buttons button:hover {
   background-color: #277da1;
 }
