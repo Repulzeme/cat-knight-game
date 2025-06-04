@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Cat Knight: Realm 1</title>
   <link rel="stylesheet" href="style.css" />
-  <link rel="manifest" href="manifest.json" />
   <style>
     body {
       font-family: sans-serif;
@@ -21,7 +20,7 @@
       padding: 1rem;
     }
 
-    #zone-buttons {
+    #zone-buttons, #difficulty-buttons {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -29,7 +28,7 @@
       margin-top: 2rem;
     }
 
-    #zone-buttons button {
+    button {
       font-size: 1.2rem;
       padding: 0.8rem 2rem;
       border-radius: 12px;
@@ -40,8 +39,22 @@
       transition: transform 0.2s ease;
     }
 
-    #zone-buttons button:hover {
+    button:hover {
       transform: scale(1.05);
+    }
+
+    .locked {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .spell-buttons {
+      margin: 1rem;
+    }
+
+    .spell-buttons button {
+      margin: 0.2rem;
+      background-color: #eef;
     }
 
     #game-content {
@@ -58,17 +71,9 @@
     </header>
 
     <main>
-      <section id="zone-buttons">
-        <button id="arena">⚔️ Arena</button>
-        <button id="theater">🎭 Theater</button>
-        <button id="library">📚 Library</button>
-        <button id="stadium">🏟️ Stadium</button>
-        <button id="daily">🌀 Daily Mix</button>
-      </section>
-
-      <section id="game-content">
-        <!-- Questions, spells, etc. will be rendered here -->
-      </section>
+      <section id="zone-buttons"></section>
+      <section id="difficulty-buttons"></section>
+      <section id="game-content"></section>
     </main>
   </div>
 
