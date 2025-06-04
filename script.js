@@ -111,6 +111,8 @@ function selectAnswer(button, selectedOption) {
   allButtons.forEach(btn => btn.disabled = true);
 
   const correctOption = currentQuestion.correct;
+  console.log("Selected:", selectedOption);
+  console.log("Correct :", correctOption);
   const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
 
   if (isCorrect) {
