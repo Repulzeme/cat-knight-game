@@ -106,35 +106,26 @@ function renderQuestion() {
   `;
 }
 
-function selectAnswer(index) {
-  const correct = currentQuestion.correct;
-  const buttons = document.querySelectorAll("#question-container button");
+function selectAnswer(button, isCorrect) {
+  const allButtons = Array.from(document.querySelectorAll("#question-container button"));
+  allButtons.forEach(btn => btn.disabled = true);
 
-  // Disable all buttons
-  buttons.forEach((btn) => btn.disabled = true);
-
-  // Highlight correct and selected
-  if (index === correct) {
-    buttons[index].classList.add("correct");
-    const xpGained = currentDifficulty === "novice" ? 10 :
-                     currentDifficulty === "scholar" ? 15 : 20;
-    xp += xpGained;
-    localStorage.setItem("xp", xp);
-    updateStats();
-
-    showFeedback(`✅ Correct! You earned ${xpGained} XP.`);
+  if (isCorrect) {
+    button.classList.add("correct");
+    showMessage("✅ Correct!");
+    // Add XP logic here if needed
   } else {
-    buttons[index].classList.add("wrong");
-    buttons[correct].classList.add("correct");
-    showFeedback("❌ Wrong answer.");
+    button.classList.add("wrong");
+    showMessage("❌ Wrong!");
   }
 
-  // Auto return to main after delay
+  // Optional: highlight the correct answer
+  const correctBtn = allButtons.find(btn => btn.dataset.correct === "true");
+  if (correctBtn && !isCorrect) correctBtn.classList.add("correct");
+
   setTimeout(() => {
-    questionScreen.classList.add("hidden");
-    mainScreen.classList.remove("hidden");
-    renderZones();
-  }, 2000);
+    goToMain();
+  }, 1500);
 }
 
 function showFeedback(message) {
