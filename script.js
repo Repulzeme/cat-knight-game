@@ -34,6 +34,7 @@ function loadProgress() {
 
 function updateUI() {
   const root = document.getElementById("game-root");
+  root.innerHTML = '';  // Clear the content before updating
 
   let zoneButtonsHTML = `
     <button onclick="showDifficultyOptions('arena')">⚔️ Arena</button>
