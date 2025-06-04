@@ -6,16 +6,59 @@
   <title>Cat Knight: Realm 1</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="manifest" href="manifest.json" />
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      background: #333;
+      color: white;
+      padding: 1rem;
+    }
+
+    #zone-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    #zone-buttons button {
+      font-size: 1.2rem;
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      border: 2px solid #444;
+      background: white;
+      cursor: pointer;
+      width: 200px;
+      transition: transform 0.2s ease;
+    }
+
+    #zone-buttons button:hover {
+      transform: scale(1.05);
+    }
+
+    #game-content {
+      margin-top: 2rem;
+      padding: 1rem;
+    }
+  </style>
 </head>
 <body>
   <div id="game-root">
-    <header style="background: #333; color: white; padding: 1rem; text-align: center;">
+    <header>
       <h1>🐱🧠 Cat Knight: Realm 1</h1>
       <div>🔥 XP: <span id="xp">0</span> 📘 Streak: <span id="streak">0</span></div>
     </header>
 
-    <main style="padding: 1rem; text-align: center;">
-      <section id="zone-buttons" style="margin: 1.5rem 0;">
+    <main>
+      <section id="zone-buttons">
         <button id="arena">⚔️ Arena</button>
         <button id="theater">🎭 Theater</button>
         <button id="library">📚 Library</button>
@@ -24,7 +67,7 @@
       </section>
 
       <section id="game-content">
-        <!-- Dynamic game UI will be injected here -->
+        <!-- Questions, spells, etc. will be rendered here -->
       </section>
     </main>
   </div>
