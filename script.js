@@ -171,13 +171,22 @@ function useHint() {
 
 function useEliminate() {
   if (usedEliminate) return;
+
+  const buttons = Array.from(document.querySelectorAll("#answers button"));
+  const wrongButtons = buttons.filter(btn => btn.dataset.correct !== "true");
+
+  if (wrongButtons.length <= 1) return; // Prevent breaking if only one wrong option
+
+  // Randomly remove two wrong answers
+  const toRemove = [];
+  while (toRemove.length < 2 && wrongButtons.length > 0) {
+    const index = Math.floor(Math.random() * wrongButtons.length);
+    toRemove.push(wrongButtons.splice(index, 1)[0]);
+  }
+
+  toRemove.forEach(btn => btn.style.display = "none");
+
   usedEliminate = true;
-  const buttons = document.querySelectorAll(".answers button");
-  const wrongIndexes = [...buttons]
-    .map((btn, i) => i)
-    .filter((i) => i !== currentQuestion.correct);
-  const toHide = wrongIndexes[Math.floor(Math.random() * wrongIndexes.length)];
-  buttons[toHide].style.display = "none";
 }
 
 function checkStreak() {
