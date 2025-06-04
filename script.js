@@ -82,8 +82,8 @@ function goToMain() {
 
 function startQuiz(subject, difficulty) {
   fetch("questions.json")
-    .then((res) => res.json())
-    .then((data) => {
+    .then(res => res.json())
+    .then(data => {
       const questionSet = data[subject]?.[difficulty];
       if (!questionSet || questionSet.length === 0) {
         alert("No questions available.");
@@ -94,16 +94,34 @@ function startQuiz(subject, difficulty) {
       const question = questionSet[qIndex];
       const correct = question.answer;
 
+      // Store for spells
+      activeQuestion = question;
+      activeSubject = subject;
+      activeDifficulty = difficulty;
+
       const container = document.getElementById("question-container");
       container.innerHTML = `<h3>${question.question}</h3>`;
 
-      question.options.forEach((opt) => {
+      question.options.forEach(opt => {
         const btn = document.createElement("button");
+        btn.className = "answer-btn";
         btn.textContent = opt;
         btn.onclick = () => handleAnswer(subject, difficulty, correct, opt);
         container.appendChild(btn);
       });
 
+      // Add spell buttons
+      const hintBtn = document.createElement("button");
+      hintBtn.textContent = "🪄 Hint";
+      hintBtn.onclick = () => useHint(question.fact || "No hint available.");
+      container.appendChild(hintBtn);
+
+      const elimBtn = document.createElement("button");
+      elimBtn.textContent = "❌ Eliminate";
+      elimBtn.onclick = () => useEliminate();
+      container.appendChild(elimBtn);
+
+      // Show the quiz screen
       document.getElementById("difficulty-screen").style.display = "none";
       document.getElementById("question-screen").style.display = "block";
     });
