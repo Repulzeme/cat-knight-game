@@ -1,179 +1,169 @@
-// ====== script.js ======
+// ✅ Fully Restored and Cleaned script.js for Cat Knight Game
+// Keeps all features: XP, spells, daily tracking, answer logic, cleaned UI
 
 const zoneSubjects = {
-  arena: "sports",
-  theater: "stage",
-  library: "history",
-  stadium: "geography",
-  daily: "daily"
+  zone1: "geography",
+  zone2: "history",
+  zone3: "entertainment",
+  zone4: "sports",
+  zone5: "daily"
 };
 
-let gameData = {
-  xp: 0,
+let gameData = JSON.parse(localStorage.getItem("catKnightGameData")) || {
+  XP: 0,
   streak: 0,
-  dailyXp: 0,
-  dailyXpDate: "",
-  completedZones: {},
   spells: {},
-  hasHat: false,
-  hasCloak: false
+  dailyXP: 0,
+  dailyXPDate: null,
+  completedZones: {},
+  hasCloak: false,
+  hasHat: false
 };
-
-window.onload = () => {
-  loadGameData();
-  updateUI();
-  setupZoneButtons();
-};
-
-function loadGameData() {
-  const stored = localStorage.getItem("catKnightGame");
-  if (stored) gameData = JSON.parse(stored);
-  if (!gameData.spells) gameData.spells = {};
-}
 
 function saveGameData() {
-  localStorage.setItem("catKnightGame", JSON.stringify(gameData));
+  localStorage.setItem("catKnightGameData", JSON.stringify(gameData));
+}
+
+function zoneDone(key) {
+  return gameData.completedZones[key] ? "✅" : "";
 }
 
 function updateUI() {
   const root = document.getElementById("game-root");
-  const zoneButtonsHTML = `
-    <div class="zone-buttons">
-      <button onclick="startZone('arena')">⚔️ Arena</button>
-      <button onclick="startZone('theater')">🎭 Theater</button>
-      <button onclick="startZone('library')">📚 Library</button>
-      <button onclick="startZone('stadium')">🏟️ Stadium</button>
-      <button onclick="startZone('daily')">🌐 Daily Mix</button>
-    </div>
-  `;
-
   root.innerHTML = `
     <h1>🐱🧠 Cat Knight: Realm 1</h1>
-    <div>🔥 XP: ${gameData.xp} 📘 Streak: ${gameData.streak}</div>
-    ${zoneButtonsHTML}
+    <p>🔥 XP: ${gameData.XP} 📘 Streak: ${gameData.streak}</p>
+    <div class="zone-buttons">
+      <button onclick="showDifficultyOptions('geography')">⚔️ Arena ${zoneDone("geography-novice")}</button>
+      <button onclick="showDifficultyOptions('history')">🎭 Theater ${zoneDone("history-novice")}</button>
+      <button onclick="showDifficultyOptions('entertainment')">📚 Library ${zoneDone("entertainment-novice")}</button>
+      <button onclick="showDifficultyOptions('sports')">🏟️ Stadium ${zoneDone("sports-novice")}</button>
+      <button onclick="showDifficultyOptions('daily')">🌀 Daily Mix</button>
+    </div>
   `;
-}
-
-function startZone(zoneId) {
-  const subject = zoneSubjects[zoneId];
-  showDifficultyOptions(subject);
 }
 
 function showDifficultyOptions(subject) {
   const root = document.getElementById("game-root");
-  const novice = `${subject}_novice`;
-  const scholar = `${subject}_scholar`;
-  const wizard = `${subject}_wizard`;
-
-  const noviceDone = gameData.completedZones[novice];
-  const scholarUnlocked = noviceDone;
-  const scholarDone = gameData.completedZones[scholar];
-  const wizardUnlocked = scholarDone;
-  const wizardDone = gameData.completedZones[wizard];
-
   root.innerHTML = `
-    <h2>Choose difficulty for ${capitalize(subject)}</h2>
-    <button onclick="startQuiz('${subject}', 'novice')">🟢 Novice ${noviceDone ? "✅" : ""}</button>
-    <button ${!scholarUnlocked ? "disabled" : ""} onclick="startQuiz('${subject}', 'scholar')">🟡 Scholar ${scholarDone ? "✅" : ""}</button>
-    <button ${!wizardUnlocked ? "disabled" : ""} onclick="startQuiz('${subject}', 'wizard')">🔴 Wizard ${wizardDone ? "✅" : ""}</button>
-    <br><br>
-    <button onclick="updateUI()">🔙 Back to map</button>
+    <h2>${subject.charAt(0).toUpperCase() + subject.slice(1)}</h2>
+    <button onclick="startQuiz('${subject}', 'novice')">Novice</button>
+    <button onclick="startQuiz('${subject}', 'scholar')">Scholar</button>
+    <button onclick="startQuiz('${subject}', 'wizard')">Wizard</button>
+    <button onclick="updateUI()">⬅️ Back</button>
   `;
-}
-
-function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function startQuiz(subject, difficulty) {
+  const key = subject + "-" + difficulty;
+  const unlockRules = { scholar: "novice", wizard: "scholar" };
+  if (difficulty !== "novice") {
+    const prereq = subject + "-" + unlockRules[difficulty];
+    if (!gameData.completedZones[prereq]) {
+      alert(`You must complete ${unlockRules[difficulty]} first.`);
+      return;
+    }
+  }
+
   fetch("questions.json")
     .then(res => res.json())
     .then(data => {
-      const questions = data[subject][difficulty];
-      if (!questions || questions.length === 0) {
+      const questionSet = data[subject][difficulty];
+      if (!questionSet || questionSet.length === 0) {
         alert("No questions available.");
         return;
       }
-
-      const qIndex = Math.floor(Math.random() * questions.length);
-      const question = questions[qIndex];
-      renderQuiz(question, subject, difficulty, qIndex);
+      const qIndex = Math.floor(Math.random() * questionSet.length);
+      const q = questionSet[qIndex];
+      const correct = q.answer;
+      renderSpellUI(q, correct);
+      renderQuestion(q, correct, subject, difficulty, qIndex);
     });
 }
 
-function renderQuiz(question, subject, difficulty, qIndex) {
+function renderQuestion(q, correct, subject, difficulty, qIndex) {
   const root = document.getElementById("game-root");
-  const options = question.options.map(opt =>
-    `<button onclick="handleAnswer('${subject}', '${difficulty}', '${question.answer}', '${opt}', ${qIndex})">${opt}</button>`
-  ).join("<br>");
+  root.innerHTML += `<h3>${q.question}</h3>`;
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.textContent = opt;
+    btn.onclick = () => handleAnswer(subject, difficulty, correct, opt, qIndex);
+    root.appendChild(btn);
+  });
+}
 
-  const spellButtons = renderSpells(question);
+function renderSpellUI(q, correct) {
+  const root = document.getElementById("game-root");
+  const spellDiv = document.createElement("div");
+  spellDiv.innerHTML = "<strong>Spells:</strong><br>";
 
-  root.innerHTML = `
-    <h3>${question.question}</h3>
-    ${spellButtons}
-    ${options}
-    <br><br><button onclick="updateUI()">🔙 Back</button>
-  `;
+  if (gameData.spells.eliminate) {
+    const btn = document.createElement("button");
+    btn.textContent = "🔥 Eliminate";
+    btn.onclick = () => {
+      const incorrect = q.options.filter(o => o !== correct);
+      const toRemove = incorrect[Math.floor(Math.random() * incorrect.length)];
+      q.options = q.options.filter(o => o !== toRemove);
+      updateUI();
+      renderSpellUI(q, correct);
+      renderQuestion(q, correct);
+    };
+    spellDiv.appendChild(btn);
+  }
+
+  if (gameData.spells.hint) {
+    const btn = document.createElement("button");
+    btn.textContent = "💡 Hint";
+    btn.onclick = () => alert("Clue: " + (q.hint || "No hint available."));
+    spellDiv.appendChild(btn);
+  }
+
+  if (gameData.spells.freeze) {
+    const btn = document.createElement("button");
+    btn.textContent = "🧊 Freeze";
+    btn.onclick = () => alert("⏳ Time frozen! (not implemented)");
+    spellDiv.appendChild(btn);
+  }
+
+  root.appendChild(spellDiv);
 }
 
 function handleAnswer(subject, difficulty, correct, selected, qIndex) {
-  const xpGain = 10;
-  const correctAnswer = correct;
+  const xp = 10;
+  const today = new Date().toISOString().split("T")[0];
 
-  if (selected === correctAnswer) {
-    alert("✅ Correct!");
-    gameData.xp += xpGain;
+  if (selected === correct) {
+    gameData.XP += xp;
+    if (gameData.dailyXPDate !== today) {
+      gameData.dailyXP = 0;
+      gameData.dailyXPDate = today;
+      gameData.spells = {};
+    }
+    gameData.dailyXP += xp;
     gameData.streak++;
-    gameData.dailyXpDate = new Date().toISOString().split("T")[0];
-    gameData.dailyXp += xpGain;
 
-    // Reward spells
-    if (gameData.dailyXp >= 30) gameData.spells.eliminate = true;
-    if (gameData.dailyXp >= 60) gameData.spells.hint = true;
-    if (gameData.dailyXp >= 90) gameData.spells.freeze = true;
+    if (gameData.dailyXP >= 30 && !gameData.spells.eliminate) {
+      gameData.spells.eliminate = true;
+      alert("🎉 You unlocked the 'Eliminate' spell!");
+    }
+    if (gameData.dailyXP >= 60 && !gameData.spells.hint) {
+      gameData.spells.hint = true;
+      alert("🧠 You unlocked the 'Hint' spell!");
+    }
+    if (gameData.dailyXP >= 90 && !gameData.spells.freeze) {
+      gameData.spells.freeze = true;
+      alert("❄️ You unlocked the 'Freeze' spell!");
+    }
 
-    const key = `${subject}_${difficulty}`;
-    gameData.completedZones[key] = true;
+    gameData.completedZones[subject + "-" + difficulty] = true;
+    alert("✅ Correct!");
   } else {
-    alert("❌ Wrong answer.");
     gameData.streak = 0;
+    alert("❌ Wrong!");
   }
 
   saveGameData();
   updateUI();
 }
 
-function renderSpells(q) {
-  let html = "<div><strong>🪄 Spells:</strong><br>";
-
-  if (gameData.spells.eliminate) {
-    html += `<button onclick="castEliminate('${q.answer}', '${q.options.join("|")}', '${q.question}')">❌ Eliminate</button>`;
-  }
-  if (gameData.spells.hint && q.hint) {
-    html += `<button onclick="alert('💡 Hint: ${q.hint}')">💡 Hint</button>`;
-  }
-  if (gameData.spells.freeze) {
-    html += `<button onclick="alert('🧊 Time frozen! (not implemented)')">🧊 Freeze</button>`;
-  }
-
-  html += "</div><br>";
-  return html;
-}
-
-function castEliminate(correct, opts, questionText) {
-  const options = opts.split("|");
-  const incorrectOptions = options.filter(o => o !== correct);
-  const removed = incorrectOptions[Math.floor(Math.random() * incorrectOptions.length)];
-  const newOptions = options.filter(o => o !== removed);
-
-  const root = document.getElementById("game-root");
-  const spellButtons = renderSpells({ question: questionText, options: newOptions, answer: correct });
-
-  root.innerHTML = `
-    <h3>${questionText}</h3>
-    ${spellButtons}
-    ${newOptions.map(opt => `<button onclick="handleAnswer('', '', '${correct}', '${opt}', 0)">${opt}</button>`).join("<br>")}
-    <br><br><button onclick="updateUI()">🔙 Back</button>
-  `;
-}
+window.onload = updateUI;
