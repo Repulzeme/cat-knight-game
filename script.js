@@ -106,13 +106,11 @@ function renderQuestion() {
   `;
 }
 
-function getXPGain(difficulty) {
-  switch (difficulty) {
-    case 'novice': return 10;
-    case 'scholar': return 20;
-    case 'wizard': return 30;
-    default: return 0;
-  }
+function gainXP(amount) {
+  xp += amount;
+  localStorage.setItem('xp', xp);
+  updateXPDisplay();
+  showFloatingXP(amount);
 }
 
 function selectAnswer(button, selectedOption) {
@@ -195,6 +193,20 @@ function checkStreak() {
     localStorage.setItem("lastPlayedDate", today);
     localStorage.setItem("streak", streak);
   }
+}
+
+function showFloatingXP(amount) {
+  const xpFloat = document.getElementById('xp-float');
+  if (!xpFloat) return;
+
+  xpFloat.textContent = `+${amount} XP`;
+  xpFloat.classList.remove('hidden');
+  xpFloat.classList.add('show');
+
+  setTimeout(() => {
+    xpFloat.classList.remove('show');
+    xpFloat.classList.add('hidden');
+  }, 1500);
 }
 
 window.onload = loadQuestions;
