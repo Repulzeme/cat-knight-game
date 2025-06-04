@@ -115,9 +115,12 @@ function handleAnswer(subject, difficulty, correct, selected) {
     gameData.streak++;
   }
 
-  gameData.xp += 10;
-  gameData.dailyXP += 10;
-  gameData.completedZones[`${subject}_${difficulty}`] = true;
+  if (isCorrect) {
+    gameData.xp += 10;
+    gameData.dailyXP += 10;
+    gameData.completedZones[`${subject}_${difficulty}`] = true;
+  }
+
   saveGameData();
   goToMain();
 }
