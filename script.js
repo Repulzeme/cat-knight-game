@@ -17,6 +17,11 @@ let gameData = JSON.parse(localStorage.getItem("catKnightData")) || {
   spells: {},
 };
 
+let activeQuestion = null;
+let activeSubject = "";
+let activeDifficulty = "";
+};
+
 function saveGameData() {
   localStorage.setItem("catKnightData", JSON.stringify(gameData));
 }
