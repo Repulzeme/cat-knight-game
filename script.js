@@ -97,8 +97,8 @@ function renderQuestion() {
     <div class="answers">
       ${q.options
         .map(
-          (opt, i) =>
-            `<button onclick="selectAnswer(${i})" id="opt-${i}">${opt}</button>`
+          (opt) =>
+            `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn">${opt}</button>`
         )
         .join("")}
     </div>
@@ -106,22 +106,27 @@ function renderQuestion() {
   `;
 }
 
-function selectAnswer(button, isCorrect) {
+function selectAnswer(button, selectedOption) {
   const allButtons = Array.from(document.querySelectorAll("#question-container button"));
   allButtons.forEach(btn => btn.disabled = true);
 
+  const correctOption = currentQuestion.options[currentQuestion.correct];
+  const isCorrect = selectedOption === correctOption;
+
   if (isCorrect) {
     button.classList.add("correct");
-    showMessage("✅ Correct!");
-    // Add XP logic here if needed
+    showFeedback("✅ Correct!");
+    xp += getXPGain(currentDifficulty); // optional function
   } else {
     button.classList.add("wrong");
-    showMessage("❌ Wrong!");
+    showFeedback("❌ Wrong!");
+
+    // Highlight the correct button
+    const correctBtn = allButtons.find(btn => btn.textContent === correctOption);
+    if (correctBtn) correctBtn.classList.add("correct");
   }
 
-  // Optional: highlight the correct answer
-  const correctBtn = allButtons.find(btn => btn.dataset.correct === "true");
-  if (correctBtn && !isCorrect) correctBtn.classList.add("correct");
+  updateStats();
 
   setTimeout(() => {
     goToMain();
