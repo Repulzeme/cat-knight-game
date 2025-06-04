@@ -97,9 +97,9 @@ function renderQuestion() {
     <div class="answers">
       ${q.options
         .map(opt => {
-  const isCorrect = opt === q.answer;
-  return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
-})
+          const isCorrect = opt === q.answer;
+          return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
+        })
         .join("")}
     </div>
     <div id="hint-msg"></div>
@@ -172,20 +172,18 @@ function useHint() {
 function useEliminate() {
   if (usedEliminate) return;
 
-  const buttons = Array.from(document.querySelectorAll("#answers button"));
+  const buttons = Array.from(document.querySelectorAll("#question-container .answer-btn"));
   const wrongButtons = buttons.filter(btn => btn.dataset.correct !== "true");
 
-  if (wrongButtons.length <= 1) return; // Prevent breaking if only one wrong option
+  if (wrongButtons.length < 2) return;
 
-  // Randomly remove two wrong answers
   const toRemove = [];
-  while (toRemove.length < 2 && wrongButtons.length > 0) {
-    const index = Math.floor(Math.random() * wrongButtons.length);
-    toRemove.push(wrongButtons.splice(index, 1)[0]);
+  while (toRemove.length < 2) {
+    const rand = wrongButtons[Math.floor(Math.random() * wrongButtons.length)];
+    if (!toRemove.includes(rand)) toRemove.push(rand);
   }
 
-  toRemove.forEach(btn => btn.style.display = "none");
-
+  toRemove.forEach(btn => btn.classList.add("hidden"));
   usedEliminate = true;
 }
 
