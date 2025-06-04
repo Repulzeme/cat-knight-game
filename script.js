@@ -109,14 +109,11 @@ function renderQuestion() {
 function selectAnswer(index) {
   const correct = currentQuestion.correct;
   const buttons = document.querySelectorAll(".answers button");
-  const feedback = document.createElement("div");
-  feedback.id = "feedback-message";
-  document.querySelector(".answers").after(feedback);
 
   // Disable all buttons
   buttons.forEach((btn) => btn.disabled = true);
 
-  // Style and show correct/wrong
+  // Highlight correct and selected
   if (index === correct) {
     buttons[index].classList.add("correct");
     const xpGained = currentDifficulty === "novice" ? 10 :
@@ -124,19 +121,33 @@ function selectAnswer(index) {
     xp += xpGained;
     localStorage.setItem("xp", xp);
     updateStats();
-    feedback.textContent = `✅ Correct! You earned ${xpGained} XP.`;
+
+    showFeedback(`✅ Correct! You earned ${xpGained} XP.`);
   } else {
     buttons[index].classList.add("wrong");
     buttons[correct].classList.add("correct");
-    feedback.textContent = "❌ Wrong answer.";
+    showFeedback("❌ Wrong answer.");
   }
 
-  // Return to main screen after 2s
+  // Auto return to main after delay
   setTimeout(() => {
     questionScreen.classList.add("hidden");
     mainScreen.classList.remove("hidden");
     renderZones();
   }, 2000);
+}
+
+function showFeedback(message) {
+  let feedback = document.getElementById("feedback-message");
+  if (!feedback) {
+    feedback = document.createElement("div");
+    feedback.id = "feedback-message";
+    const container = document.querySelector(".answers");
+    if (container) {
+      container.parentNode.insertBefore(feedback, container.nextSibling);
+    }
+  }
+  feedback.textContent = message;
 }
 
 function goToMain() {
