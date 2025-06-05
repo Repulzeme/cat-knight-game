@@ -28,6 +28,19 @@ const unlockConditions = {
   }
 };
 
+function isDifficultyUnlocked(difficulty, zone) {
+  const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
+  const levels = completedZones[zone] || [];
+
+  if (difficulty === "scholar") {
+    return levels.includes("novice");
+  } else if (difficulty === "wizard") {
+    return levels.includes("scholar");
+  }
+
+  return true; // Novice is always unlocked
+}
+
 function isSpellUnlocked(spellName) {
   const condition = unlockConditions[spellName];
   if (!condition) return false;
@@ -114,11 +127,10 @@ function showDifficulties(zone) {
   difficulties.forEach((level) => {
     const btn = document.createElement("button");
     btn.textContent = level;
-    const requiredXP = xpNeeded[level];
-    if (requiredXP && xp < requiredXP) {
-      btn.disabled = true;
-      btn.classList.add("locked");
-    }
+if (!isDifficultyUnlocked(level.toLowerCase(), zone)) {
+  btn.disabled = true;
+  btn.classList.add("locked");
+}
     btn.onclick = () => startQuiz(zone, level.toLowerCase());
     difficultyButtons.appendChild(btn);
   });
