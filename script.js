@@ -201,11 +201,14 @@ function selectAnswer(button, selectedOption) {
   const correctOption = currentQuestion.answer;
   const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
 
-  if (isCorrect) {
-    button.classList.add("correct");
-    showFeedback("✅ Correct!");
-    xp += getXPGain(currentDifficulty); // optional function
-    showXPGainBubble(xp);
+if (isCorrect) {
+  button.classList.add("correct");
+  const xpGain = getXPGain(currentDifficulty);
+  xp += xpGain;
+  showXPGainBubble(xpGain);
+  showFeedback("✅ Correct!", true);  // pass true for correct
+  updateSpellDisplay(); // immediately update unlocked spells
+}
 
 // ✅ Save completed difficulty per zone
 const completed = JSON.parse(localStorage.getItem("completedZones") || "{}");
@@ -234,17 +237,21 @@ setTimeout(() => {
 }, 1500);
 }
 
-function showFeedback(message) {
+function showFeedback(message, isCorrect) {
   let feedback = document.getElementById("feedback-message");
-  if (!feedback) {
-    feedback = document.createElement("div");
-    feedback.id = "feedback-message";
-    const container = document.querySelector(".answers");
-    if (container) {
-      container.parentNode.insertBefore(feedback, container.nextSibling);
-    }
-  }
   feedback.textContent = message;
+  feedback.classList.remove("correct", "wrong");
+
+  if (isCorrect) {
+    feedback.classList.add("correct");
+  } else {
+    feedback.classList.add("wrong");
+  }
+
+  feedback.style.opacity = 1;
+  setTimeout(() => {
+    feedback.style.opacity = 0;
+  }, 2000);
 }
 
 function goToMain() {
