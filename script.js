@@ -42,10 +42,35 @@ function isSpellUnlocked(spellName) {
   return hasXP || hasCompletedLevel;
 }
 
+function updateSpellDisplay() {
+  const hintBtn = document.getElementById("hint-btn");
+  const eliminateBtn = document.getElementById("eliminate-btn");
+
+  const hintMsg = document.getElementById("hint-msg");
+  const eliminateMsg = document.getElementById("eliminate-msg");
+
+  if (isSpellUnlocked("hint")) {
+    hintBtn.disabled = false;
+    hintMsg.textContent = "✅ Hint unlocked!";
+  } else {
+    hintBtn.disabled = true;
+    hintMsg.textContent = "🔒 Hint unlocks at 200 XP or all Novice zones";
+  }
+
+  if (isSpellUnlocked("eliminate")) {
+    eliminateBtn.disabled = false;
+    eliminateMsg.textContent = "✅ Eliminate unlocked!";
+  } else {
+    eliminateBtn.disabled = true;
+    eliminateMsg.textContent = "🔒 Eliminate unlocks at 500 XP or all Scholar zones";
+  }
+}
+
 function updateStats() {
   xpDisplay.textContent = `🔥 XP: ${xp} 📚 Streak: ${streak}`;
   localStorage.setItem("xp", xp);
   localStorage.setItem("streak", streak);
+  updateSpellDisplay();
 }
 
 function loadQuestions() {
