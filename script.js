@@ -46,17 +46,15 @@ function isSpellUnlocked(spellName) {
   if (!condition) return false;
 
   const hasXP = xp >= condition.xp;
-  const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
-  const zonesForLevel = Object.keys(completedZones).reduce((acc, zone) => {
-    acc[zone] = completedZones[zone];
-    return acc;
-  }, {});
 
-  const hasCompletedLevel = Object.keys(zonesForLevel).every(zone =>
-    zonesForLevel[zone].includes(condition.zonesCompleted)
+  const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
+  const allZones = Object.keys(questionsData);
+
+  const hasCompletedAll = allZones.every(zone =>
+    completedZones[zone]?.includes(condition.zonesCompleted)
   );
 
-  return hasXP || hasCompletedLevel;
+  return hasXP || hasCompletedAll;
 }
 
 function updateSpellDisplay() {
