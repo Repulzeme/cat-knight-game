@@ -92,14 +92,14 @@ button.locked {
 
 .xp-float {
   position: absolute;
-  left: 42%;                /* move slightly left (from 50%) */
-  top: 65%;
+  left: 30%;                /* move slightly left (from 50%) */
+  top: 75%;
   transform: translate(-50%, -50%);
   font-size: 32px;
   font-weight: bold;
   color: gold;
   opacity: 0;
-  transition: all 1.5s ease-out;  /* slower transition */
+  transition: all 2.5s ease-out;  /* slower transition */
   pointer-events: none;
   z-index: 1000;
 }
