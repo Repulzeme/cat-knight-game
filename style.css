@@ -92,23 +92,22 @@ button.locked {
 
 .xp-float {
   position: absolute;
-  left: 50%;
+  left: 42%;                /* move slightly left (from 50%) */
   top: 65%;
   transform: translate(-50%, -50%);
   font-size: 32px;
   font-weight: bold;
   color: gold;
   opacity: 0;
-  transition: all 0.8s ease-out;
+  transition: all 1.5s ease-out;  /* slower transition */
   pointer-events: none;
   z-index: 1000;
 }
 
 .xp-float.show {
-  top: 45%;
+  top: 45%;                 /* floats higher, but slowly */
   opacity: 1;
 }
-
 
 #spell-buttons button:hover {
   background-color: #277da1;
