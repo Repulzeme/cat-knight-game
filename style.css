@@ -127,25 +127,23 @@ button.locked {
   transform: translateX(-50%);
   font-size: 1.8rem;
   font-weight: bold;
-  padding: 8px 20px;
-  border-radius: 12px;
-  color: white;
   text-align: center;
   z-index: 100;
   opacity: 0;
-  transition: opacity 0.3s ease;
   pointer-events: none;
-  background-color: rgba(0, 0, 0, 0.5); /* Transparent bg */
+  transition: opacity 0.3s ease;
+  background: none;
+  border: none;
+  padding: 0.5rem 1rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* glow effect */
 }
 
 .feedback-msg.correct {
-  border: 3px solid #5BE77e; /* Green border */
-  color: #5BE77e;
+  color: #58e77e; /* Bright green text only */
 }
 
 .feedback-msg.wrong {
-  border: 3px solid #f76c6c; /* Red border */
-  color: #f76c6c;
+  color: #f76c6c; /* Bright red text only */
 }
 
 @keyframes bounce-in {
