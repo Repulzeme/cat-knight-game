@@ -227,10 +227,11 @@ if (!completed[currentZone].includes(currentDifficulty)) {
   }
 
   updateStats();
+  updateSpellDisplay();
 
-  setTimeout(() => {
-    goToMain();
-  }, 1500);
+setTimeout(() => {
+  goToMain();
+}, 1500);
 }
 
 function showFeedback(message) {
