@@ -25,8 +25,11 @@
 
     <section id="question-screen" class="hidden">
       <div class="spell-row">
-        <button onclick="useHint()" id="hint-btn">🔍 Hint</button>
-        <button onclick="useEliminate()" id="eliminate-btn">❌ Eliminate</button>
+         <button onclick="useHint()" id="hint-btn">🔍 Hint</button>
+         <div id="hint-msg" class="spell-msg"></div>
+
+         <button onclick="useEliminate()" id="eliminate-btn">❌ Eliminate</button>
+          <div id="eliminate-msg" class="spell-msg"></div>
       </div>
       <div id="question-container"></div>
       <button onclick="goToMain()">🔙 Back to Zones</button>
