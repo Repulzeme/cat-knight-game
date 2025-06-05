@@ -207,9 +207,6 @@ function selectAnswer(button, selectedOption) {
     xp += getXPGain(currentDifficulty); // optional function
     showXPGainBubble(xp);
 
-xp += getXPGain(currentDifficulty); // optional function
-showXPGainBubble(xp);
-
 // ✅ Save completed difficulty per zone
 const completed = JSON.parse(localStorage.getItem("completedZones") || "{}");
 if (!completed[currentZone]) {
