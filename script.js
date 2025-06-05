@@ -115,6 +115,24 @@ function getXPGain(difficulty) {
   }
 }
 
+function showXPBubble(amount) {
+  const bubble = document.createElement("div");
+  bubble.className = "xp-bubble";
+  bubble.textContent = `+${amount} XP`;
+
+  const container = document.querySelector("#question-container");
+  const rect = container.getBoundingClientRect();
+
+  bubble.style.left = `${rect.left + rect.width / 2 - 50}px`; // adjust horizontal
+  bubble.style.top = `${rect.top + window.scrollY + 100}px`; // adjust vertical
+
+  document.body.appendChild(bubble);
+
+  setTimeout(() => {
+    bubble.remove();
+  }, 1500);
+}
+
 function selectAnswer(button, selectedOption) {
   const allButtons = Array.from(document.querySelectorAll("#question-container button"));
   allButtons.forEach(btn => btn.disabled = true);
@@ -196,24 +214,6 @@ function checkStreak() {
     localStorage.setItem("lastPlayedDate", today);
     localStorage.setItem("streak", streak);
   }
-}
-
-function showXPBubble(amount) {
-  const bubble = document.createElement("div");
-  bubble.className = "xp-bubble";
-  bubble.textContent = `+${amount} XP`;
-
-  const container = document.querySelector("#question-container");
-  const rect = container.getBoundingClientRect();
-
-  bubble.style.left = `${rect.left + rect.width / 2 - 50}px`; // adjust horizontal
-  bubble.style.top = `${rect.top + window.scrollY + 100}px`; // adjust vertical
-
-  document.body.appendChild(bubble);
-
-  setTimeout(() => {
-    bubble.remove();
-  }, 1500);
 }
 
 window.onload = loadQuestions;
