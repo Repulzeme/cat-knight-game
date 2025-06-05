@@ -198,25 +198,22 @@ function checkStreak() {
   }
 }
 
-function showXPGainBubble(amount) {
-  const xpStats = document.getElementById("xp-stats");
+function showXPBubble(amount) {
   const bubble = document.createElement("div");
+  bubble.className = "xp-bubble";
   bubble.textContent = `+${amount} XP`;
-  bubble.style.position = "absolute";
-  bubble.style.left = xpStats.offsetLeft + "px";
-  bubble.style.top = (xpStats.offsetTop - 10) + "px";
-  bubble.style.color = "gold";
-  bubble.style.fontWeight = "bold";
-  bubble.style.transition = "all 1s ease-out";
-  bubble.style.opacity = "1";
+
+  const container = document.querySelector("#question-container");
+  const rect = container.getBoundingClientRect();
+
+  bubble.style.left = `${rect.left + rect.width / 2 - 50}px`; // adjust horizontal
+  bubble.style.top = `${rect.top + window.scrollY + 100}px`; // adjust vertical
+
   document.body.appendChild(bubble);
 
-  requestAnimationFrame(() => {
-    bubble.style.transform = "translateY(-30px)";
-    bubble.style.opacity = "0";
-  });
-
-  setTimeout(() => bubble.remove(), 1000);
+  setTimeout(() => {
+    bubble.remove();
+  }, 1500);
 }
 
 window.onload = loadQuestions;
