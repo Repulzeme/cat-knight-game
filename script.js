@@ -91,13 +91,14 @@ function updateStats() {
 
 function loadQuestions() {
   fetch("questions.json")
+    .then((res) => res.json())
     .then((data) => {
-  questionsData = data;
-  renderZones();
-  updateStats();       // This updates XP and streak
-  updateSpellDisplay(); // ✅ NOW we call spell display logic here, with proper XP
-  checkStreak();
-});
+      questionsData = data;
+      renderZones();
+      updateStats();
+      updateSpellDisplay();
+      checkStreak();
+    });
 }
 
 function renderZones() {
