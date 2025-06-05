@@ -237,9 +237,11 @@ function selectAnswer(button, selectedOption) {
 }
 
 function showFeedback(message, isCorrect) {
-  let feedback = document.getElementById("feedback-message");
+  const feedback = document.getElementById("feedback-message");
   feedback.textContent = message;
+
   feedback.classList.remove("correct", "wrong", "show");
+  feedback.offsetWidth; // Force reflow for animation reset
 
   if (isCorrect) {
     feedback.classList.add("correct");
@@ -247,11 +249,8 @@ function showFeedback(message, isCorrect) {
     feedback.classList.add("wrong");
   }
 
-  // Trigger reflow to restart animation
-  void feedback.offsetWidth;
   feedback.classList.add("show");
 
-  // Auto-hide after delay
   setTimeout(() => {
     feedback.classList.remove("show");
   }, 2000);
