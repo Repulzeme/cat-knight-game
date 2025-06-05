@@ -112,3 +112,10 @@ button.locked {
 #spell-buttons button:hover {
   background-color: #277da1;
 }
+
+.spell-msg {
+  font-size: 0.9em;
+  color: gold;
+  text-align: center;
+  margin-bottom: 10px;
+}
