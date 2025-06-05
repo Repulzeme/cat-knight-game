@@ -28,6 +28,20 @@ const unlockConditions = {
   }
 };
 
+function isSpellUnlocked(spellName) {
+  const condition = unlockConditions[spellName];
+  if (!condition) return false;
+
+  const hasXP = xp >= condition.xp;
+  const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
+  const zonesForLevel = Object.keys(completedZones).filter(zone =>
+    completedZones[zone]?.includes(condition.zonesCompleted)
+  );
+
+  const hasCompletedLevel = zonesForLevel.length >= 5;
+  return hasXP || hasCompletedLevel;
+}
+
 function updateStats() {
   xpDisplay.textContent = `🔥 XP: ${xp} 📚 Streak: ${streak}`;
   localStorage.setItem("xp", xp);
