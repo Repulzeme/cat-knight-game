@@ -47,11 +47,15 @@ function isSpellUnlocked(spellName) {
 
   const hasXP = xp >= condition.xp;
   const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
-  const zonesForLevel = Object.keys(completedZones).filter(zone =>
-    completedZones[zone]?.includes(condition.zonesCompleted)
+  const zonesForLevel = Object.keys(completedZones).reduce((acc, zone) => {
+    acc[zone] = completedZones[zone];
+    return acc;
+  }, {});
+
+  const hasCompletedLevel = Object.keys(zonesForLevel).every(zone =>
+    zonesForLevel[zone].includes(condition.zonesCompleted)
   );
 
-  const hasCompletedLevel = zonesForLevel.length >= 5;
   return hasXP || hasCompletedLevel;
 }
 
