@@ -105,9 +105,10 @@ button.locked {
 }
 
 .xp-float.show {
-  top: 50%;
+  top: 45%;
   opacity: 1;
 }
+
 
 #spell-buttons button:hover {
   background-color: #277da1;
