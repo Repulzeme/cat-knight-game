@@ -17,6 +17,17 @@ const difficultyButtons = document.getElementById("difficulty-buttons");
 const zoneTitle = document.getElementById("zone-title");
 const questionContainer = document.getElementById("question-container");
 
+const unlockConditions = {
+  hint: {
+    xp: 200,
+    zonesCompleted: "novice"
+  },
+  eliminate: {
+    xp: 500,
+    zonesCompleted: "scholar"
+  }
+};
+
 function updateStats() {
   xpDisplay.textContent = `🔥 XP: ${xp} 📚 Streak: ${streak}`;
   localStorage.setItem("xp", xp);
