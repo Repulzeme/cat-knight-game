@@ -115,22 +115,19 @@ function getXPGain(difficulty) {
   }
 }
 
-function showXPBubble(amount) {
+function showXPGainBubble(xp) {
   const bubble = document.createElement("div");
-  bubble.className = "xp-bubble";
-  bubble.textContent = `+${amount} XP`;
-
-  const container = document.querySelector("#question-container");
-  const rect = container.getBoundingClientRect();
-
-  bubble.style.left = `${rect.left + rect.width / 2 - 50}px`; // adjust horizontal
-  bubble.style.top = `${rect.top + window.scrollY + 100}px`; // adjust vertical
-
+  bubble.className = "xp-float";
+  bubble.textContent = `+${xp} XP`;
   document.body.appendChild(bubble);
 
+  // Trigger animation
+  setTimeout(() => bubble.classList.add("show"), 10);
+
+  // Remove after animation
   setTimeout(() => {
     bubble.remove();
-  }, 1500);
+  }, 2000);
 }
 
 function selectAnswer(button, selectedOption) {
