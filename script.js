@@ -87,18 +87,17 @@ function updateStats() {
   xpDisplay.textContent = `🔥 XP: ${xp} 📚 Streak: ${streak}`;
   localStorage.setItem("xp", xp);
   localStorage.setItem("streak", streak);
-  updateSpellDisplay();
 }
 
 function loadQuestions() {
   fetch("questions.json")
-    .then((res) => res.json())
     .then((data) => {
-      questionsData = data;
-      renderZones();
-      updateStats();
-      checkStreak();
-    });
+  questionsData = data;
+  renderZones();
+  updateStats();       // This updates XP and streak
+  updateSpellDisplay(); // ✅ NOW we call spell display logic here, with proper XP
+  checkStreak();
+});
 }
 
 function renderZones() {
@@ -208,6 +207,20 @@ function selectAnswer(button, selectedOption) {
     showFeedback("✅ Correct!");
     xp += getXPGain(currentDifficulty); // optional function
     showXPGainBubble(xp);
+
+xp += getXPGain(currentDifficulty); // optional function
+showXPGainBubble(xp);
+
+// ✅ Save completed difficulty per zone
+const completed = JSON.parse(localStorage.getItem("completedZones") || "{}");
+if (!completed[currentZone]) {
+  completed[currentZone] = [];
+}
+if (!completed[currentZone].includes(currentDifficulty)) {
+  completed[currentZone].push(currentDifficulty);
+  localStorage.setItem("completedZones", JSON.stringify(completed));
+}
+
   } else {
     button.classList.add("wrong");
     showFeedback("❌ Wrong!");
