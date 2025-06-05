@@ -119,3 +119,20 @@ button.locked {
   text-align: center;
   margin-bottom: 10px;
 }
+
+.feedback-msg {
+  font-size: 1.2rem;
+  text-align: center;
+  margin: 10px 0;
+  font-weight: bold;
+  color: white;
+  transition: opacity 0.3s ease;
+}
+
+.feedback-msg.correct {
+  color: #5be77e; /* bright green */
+}
+
+.feedback-msg.wrong {
+  color: #f76c6c; /* bright red */
+}
