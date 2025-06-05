@@ -239,7 +239,7 @@ function selectAnswer(button, selectedOption) {
 function showFeedback(message, isCorrect) {
   let feedback = document.getElementById("feedback-message");
   feedback.textContent = message;
-  feedback.classList.remove("correct", "wrong");
+  feedback.classList.remove("correct", "wrong", "show");
 
   if (isCorrect) {
     feedback.classList.add("correct");
@@ -247,9 +247,13 @@ function showFeedback(message, isCorrect) {
     feedback.classList.add("wrong");
   }
 
-  feedback.style.opacity = 1;
+  // Trigger reflow to restart animation
+  void feedback.offsetWidth;
+  feedback.classList.add("show");
+
+  // Auto-hide after delay
   setTimeout(() => {
-    feedback.style.opacity = 0;
+    feedback.classList.remove("show");
   }, 2000);
 }
 
