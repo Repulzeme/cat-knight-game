@@ -201,24 +201,23 @@ function selectAnswer(button, selectedOption) {
   const correctOption = currentQuestion.answer;
   const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
 
-if (isCorrect) {
-  button.classList.add("correct");
-  const xpGain = getXPGain(currentDifficulty);
-  xp += xpGain;
-  showXPGainBubble(xpGain);
-  showFeedback("✅ Correct!", true);  // pass true for correct
-  updateSpellDisplay(); // immediately update unlocked spells
-}
+  if (isCorrect) {
+    button.classList.add("correct");
+    const xpGain = getXPGain(currentDifficulty);
+    xp += xpGain;
+    showXPGainBubble(xpGain);
+    showFeedback("✅ Correct!", true);
+    updateSpellDisplay();
 
-// ✅ Save completed difficulty per zone
-const completed = JSON.parse(localStorage.getItem("completedZones") || "{}");
-if (!completed[currentZone]) {
-  completed[currentZone] = [];
-}
-if (!completed[currentZone].includes(currentDifficulty)) {
-  completed[currentZone].push(currentDifficulty);
-  localStorage.setItem("completedZones", JSON.stringify(completed));
-}
+    // ✅ Save completed difficulty per zone
+    const completed = JSON.parse(localStorage.getItem("completedZones") || "{}");
+    if (!completed[currentZone]) {
+      completed[currentZone] = [];
+    }
+    if (!completed[currentZone].includes(currentDifficulty)) {
+      completed[currentZone].push(currentDifficulty);
+      localStorage.setItem("completedZones", JSON.stringify(completed));
+    }
 
   } else {
     button.classList.add("wrong");
@@ -232,9 +231,9 @@ if (!completed[currentZone].includes(currentDifficulty)) {
   updateStats();
   updateSpellDisplay();
 
-setTimeout(() => {
-  goToMain();
-}, 1500);
+  setTimeout(() => {
+    goToMain();
+  }, 1500);
 }
 
 function showFeedback(message, isCorrect) {
