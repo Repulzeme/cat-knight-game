@@ -154,7 +154,7 @@ button.locked {
 }
 
 .feedback-msg.show {
-  animation: bounce-in 1.2s ease-out forwards;
+  animation: bounce-in 2.5s ease-out forwards;
 }
 
 #question-container button:first-child {
