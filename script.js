@@ -264,7 +264,7 @@ function showFeedback(message, isCorrect) {
 
   setTimeout(() => {
     feedback.classList.remove("show");
-  }, 2000);
+  }, 2900);
 }
 
 function goToMain() {
