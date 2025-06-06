@@ -209,6 +209,9 @@ function selectAnswer(button, selectedOption) {
   }
 });
 
+document.getElementById("back-btn").style.display = "none";
+selectedBtn.classList.add("bounce-answer");
+
 // Move selected button to top
 container.prepend(selectedBtn);
  
