@@ -244,7 +244,7 @@ container.prepend(selectedBtn);
 
   setTimeout(() => {
     goToMain();
-  }, 1500);
+  }, 3000);
 }
 
 function showFeedback(message, isCorrect) {
