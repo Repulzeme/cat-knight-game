@@ -200,7 +200,18 @@ function selectAnswer(button, selectedOption) {
 
   const correctOption = currentQuestion.answer;
   const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
+  const selectedBtn = button;
+  const container = document.getElementById("question-container");
+  const allAnswers = Array.from(container.querySelectorAll("button"));
+  allAnswers.forEach(btn => {
+    if (btn !== selectedBtn) {
+      btn.style.display = "none";
+  }
+});
 
+// Move selected button to top
+container.prepend(selectedBtn);
+ 
   if (isCorrect) {
     button.classList.add("correct");
     const xpGain = getXPGain(currentDifficulty);
