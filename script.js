@@ -156,18 +156,28 @@ function startQuiz(zone, difficulty) {
 
 function renderQuestion() {
   const q = currentQuestion;
-  questionContainer.innerHTML = `
-    <h3>${q.question}</h3>
+
+  // Show question in separate div
+  const questionTextDiv = document.getElementById("question-text");
+  questionTextDiv.textContent = q.question;
+
+  // Render answer buttons
+  const answersHTML = q.options
+    .map(opt => {
+      const isCorrect = opt === q.answer;
+      return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
+    })
+    .join("");
+
+  const container = document.getElementById("question-container");
+  container.innerHTML = `
     <div class="answers">
-      ${q.options
-        .map(opt => {
-          const isCorrect = opt === q.answer;
-          return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
-        })
-        .join("")}
+      ${answersHTML}
     </div>
-    <div id="hint-msg"></div>
   `;
+
+  // Re-append questionTextDiv at the top of the container
+  container.prepend(questionTextDiv);
 }
 
 function getXPGain(difficulty) {
