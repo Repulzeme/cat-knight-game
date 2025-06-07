@@ -180,28 +180,20 @@ function loadNextQuestion() {
 function renderQuestion() {
   const q = currentQuestion;
 
-  const container = document.getElementById("question-container");
-
-  // Clear the entire container
-  container.innerHTML = "";
-
-  // Create and add question text first
-  const questionTextDiv = document.createElement("div");
-  questionTextDiv.id = "question-text";
-  questionTextDiv.className = "question-text";
+  const questionTextDiv = document.getElementById("question-text");
   questionTextDiv.textContent = q.question;
-  container.appendChild(questionTextDiv);
 
-  // Then create and add answer buttons
-  q.options.forEach(opt => {
-    const isCorrect = opt === q.answer;
-    const button = document.createElement("button");
-    button.className = "answer-btn";
-    button.setAttribute("data-correct", isCorrect);
-    button.setAttribute("onclick", `selectAnswer(this, '${opt.replace(/'/g, "\\'")}')`);
-    button.textContent = opt;
-    container.appendChild(button);
-  });
+  const answersHTML = q.options
+    .map(opt => {
+      const isCorrect = opt === q.answer;
+      return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
+    })
+    .join("");
+
+  const container = document.getElementById("question-container");
+  container.innerHTML = `
+    <div class="answers">${answersHTML}</div>
+  `;
 }
 
 function getXPGain(difficulty) {
