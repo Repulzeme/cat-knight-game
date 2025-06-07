@@ -161,7 +161,9 @@ function startQuiz(zone, difficulty) {
 
   // Pick random question from the remaining ones
   currentQuestion = unansweredPool[Math.floor(Math.random() * unansweredPool.length)];
-
+  usedHint = false;
+  usedEliminate = false;
+  
   showScreen("question-screen");
   renderQuestion();
 }
@@ -244,6 +246,7 @@ function selectAnswer(button, selectedOption) {
     selectedBtn.classList.add("correct");
     const xpGain = getXPGain(currentDifficulty);
     xp += xpGain;
+    updateStats();
     showXPGainBubble(xpGain);
     showFeedback("✅ Correct!", true);
     updateSpellDisplay();
@@ -262,6 +265,12 @@ function selectAnswer(button, selectedOption) {
   if (!completed[currentZone][currentDifficulty].includes(currentQuestion.question)) {
     completed[currentZone][currentDifficulty].push(currentQuestion.question);
     localStorage.setItem("completedQuestions", JSON.stringify(completed));
+    // Save level completion status
+const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
+if (!completedZones[currentZone]) completedZones[currentZone] = [];
+if (!completedZones[currentZone].includes(currentDifficulty)) {
+  completedZones[currentZone].push(currentDifficulty);
+  localStorage.setItem("completedZones", JSON.stringify(completedZones));
   }
 
   checkStreak();
