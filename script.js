@@ -364,4 +364,3 @@ window.onload = () => {
   window.showScreen = showScreen;
   window.renderQuestion = renderQuestion;
   window.selectAnswer = selectAnswer;
-};
