@@ -140,6 +140,11 @@ if (!isDifficultyUnlocked(level.toLowerCase(), zone)) {
   });
 }
 
+function hasCompletedLevel(zone, difficulty, questionText) {
+  const completed = JSON.parse(localStorage.getItem("completedQuestions") || "{}");
+  return completed?.[zone]?.[difficulty]?.includes(questionText);
+}
+
 function startQuiz(zone, difficulty) {
   const questions = questionsData[zone][difficulty];
 
