@@ -345,6 +345,18 @@ function checkStreak() {
     localStorage.setItem("lastPlayedDate", today);
     localStorage.setItem("streak", streak);
   }
+
+function showScreen(screenId) {
+  const screens = document.querySelectorAll("section");
+  screens.forEach(screen => {
+    if (screen.id === screenId) {
+      screen.classList.remove("hidden");
+    } else {
+      screen.classList.add("hidden");
+    }
+  });
+}
+
 }
 
 window.onload = loadQuestions;
