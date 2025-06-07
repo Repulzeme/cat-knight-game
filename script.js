@@ -146,11 +146,12 @@ function hasCompletedLevel(zone, difficulty, questionText) {
 }
 
 function startQuiz(zone, difficulty) {
+  currentZone = zone;
+  currentDifficulty = difficulty;
+
   const questions = questionsData[zone][difficulty];
-
-  const pool = questions; // ✅ Define the missing variable
-
-  // Filter out already completed questions
+  const pool = questions;
+  
   const unansweredPool = pool.filter(q => !hasCompletedLevel(zone, difficulty, q.question));
 
   if (unansweredPool.length === 0) {
@@ -264,6 +265,10 @@ function selectAnswer(button, selectedOption) {
   }
 
   checkStreak();
+
+  setTimeout(() => {
+    goToMain();
+  }, 3000);
 }
     
 function showFeedback(message, isCorrect) {
