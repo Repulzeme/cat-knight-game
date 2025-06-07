@@ -340,6 +340,7 @@ function showScreen(screenId) {
 
 window.onload = () => {
   loadQuestions();
+
   // Define your global functions here if needed
   window.startQuiz = startQuiz;
   window.showScreen = showScreen;
