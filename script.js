@@ -141,8 +141,7 @@ if (!isDifficultyUnlocked(level.toLowerCase(), zone)) {
 }
 
 function startQuiz(zone, difficulty) {
-  currentZone = zone;
-  currentDifficulty = difficulty;
+  const questions = questionsData[zone][difficulty];
 
   const pool = getQuestionsForZone(zone, difficulty);
 
