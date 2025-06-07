@@ -177,7 +177,7 @@ function renderQuestion() {
   `;
 
   // Re-append questionTextDiv at the top of the container
-  container.prepend(questionTextDiv);
+  
 }
 
 function getXPGain(difficulty) {
