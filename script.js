@@ -143,7 +143,7 @@ if (!isDifficultyUnlocked(level.toLowerCase(), zone)) {
 function startQuiz(zone, difficulty) {
   const questions = questionsData[zone][difficulty];
 
-  const pool = getQuestionsForZone(zone, difficulty);
+  const pool = questionsData[zone][difficulty];
 
   // Filter out already completed questions
   const unansweredPool = pool.filter(q => !hasCompletedLevel(zone, difficulty, q.question));
