@@ -234,57 +234,46 @@ function selectAnswer(button, selectedOption) {
 
   const correctOption = currentQuestion.answer;
   const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
+
   const selectedBtn = button;
-  const container = document.getElementById("question-container");
-  const allAnswers = Array.from(container.querySelectorAll("button"));
+  const allAnswers = Array.from(document.querySelectorAll("#question-container button"));
+
+  // Hide unselected buttons
   allAnswers.forEach(btn => {
     if (btn !== selectedBtn) {
       btn.style.display = "none";
-  }
-});
+    }
+  });
 
-document.getElementById("back-btn").style.display = "none";
-selectedBtn.classList.add("bounce-answer");
+  selectedBtn.classList.add("bounce-answer");
 
   if (isCorrect) {
-    button.classList.add("correct");
+    selectedBtn.classList.add("correct");
     const xpGain = getXPGain(currentDifficulty);
     xp += xpGain;
     showXPGainBubble(xpGain);
     showFeedback("✅ Correct!", true);
     updateSpellDisplay();
-    setTimeout(() => {
-    loadNextQuestion();
-}, 1200);
-
-
-    // ✅ Save completed difficulty per zone
-    const completed = JSON.parse(localStorage.getItem("completedZones") || "{}");
-    if (!completed[currentZone]) {
-      completed[currentZone] = [];
-    }
-    if (!completed[currentZone].includes(currentDifficulty)) {
-      completed[currentZone].push(currentDifficulty);
-      localStorage.setItem("completedZones", JSON.stringify(completed));
-    }
-
   } else {
-    button.classList.add("wrong");
-    showFeedback("❌ Wrong!");
-
-    // Highlight the correct button
-    const correctBtn = allButtons.find(btn => btn.textContent === correctOption);
-    if (correctBtn) correctBtn.classList.add("correct");
+    selectedBtn.classList.add("wrong");
+    showFeedback("❌ Wrong!", false);
   }
 
-  updateStats();
-  updateSpellDisplay();
+  // Hide back button (optional, you can skip this if you want it to stay)
+  document.getElementById("back-btn").style.display = "none";
 
-  setTimeout(() => {
-    goToMain();
-  }, 3000);
+  // Save completed question
+  const completed = JSON.parse(localStorage.getItem("completedQuestions") || "{}");
+  if (!completed[currentZone]) completed[currentZone] = {};
+  if (!completed[currentZone][currentDifficulty]) completed[currentZone][currentDifficulty] = [];
+  if (!completed[currentZone][currentDifficulty].includes(currentQuestion.question)) {
+    completed[currentZone][currentDifficulty].push(currentQuestion.question);
+    localStorage.setItem("completedQuestions", JSON.stringify(completed));
+  }
+
+  checkStreak();
 }
-
+    
 function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
   feedback.textContent = message;
