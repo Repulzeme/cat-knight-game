@@ -141,23 +141,24 @@ if (!isDifficultyUnlocked(level.toLowerCase(), zone)) {
 }
 
 function startQuiz(zone, difficulty) {
-  const allQuestions = questionsData[zone]?.[difficulty];
-  if (!allQuestions || allQuestions.length === 0) {
-    alert("No questions available.");
+  currentZone = zone;
+  currentDifficulty = difficulty;
+
+  const pool = getQuestionsForZone(zone, difficulty);
+
+  // Filter out already completed questions
+  const unansweredPool = pool.filter(q => !hasCompletedLevel(zone, difficulty, q.question));
+
+  if (unansweredPool.length === 0) {
+    document.getElementById("question-container").innerHTML = "<p>No more questions available for this difficulty.</p>";
     return;
   }
 
-  currentZone = zone;
-  currentDifficulty = difficulty;
-  remainingQuestions = [...allQuestions]; // clone to avoid modifying original
+  // Pick random question from the remaining ones
+  currentQuestion = unansweredPool[Math.floor(Math.random() * unansweredPool.length)];
 
-  usedEliminate = false;
-  usedHint = false;
-
-  difficultyScreen.classList.add("hidden");
-  questionScreen.classList.remove("hidden");
-
-  loadNextQuestion();
+  showScreen("question-screen");
+  renderQuestion();
 }
 
 function loadNextQuestion() {
