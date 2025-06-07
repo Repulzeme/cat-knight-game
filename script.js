@@ -157,11 +157,11 @@ function startQuiz(zone, difficulty) {
 function renderQuestion() {
   const q = currentQuestion;
 
-  // Show question in separate div
+  // Update the question text
   const questionTextDiv = document.getElementById("question-text");
   questionTextDiv.textContent = q.question;
 
-  // Render answer buttons
+  // Create answer buttons
   const answersHTML = q.options
     .map(opt => {
       const isCorrect = opt === q.answer;
@@ -169,15 +169,18 @@ function renderQuestion() {
     })
     .join("");
 
+  // Insert only the answers into the container (not the question div)
   const container = document.getElementById("question-container");
-  container.innerHTML = `
-    <div class="answers">
-      ${answersHTML}
-    </div>
-  `;
 
-  // Re-append questionTextDiv at the top of the container
-  
+  // Clear old buttons but keep the question div
+  const oldButtons = container.querySelectorAll(".answer-btn");
+  oldButtons.forEach(btn => btn.remove());
+
+  // Append answers after the question
+  const answersWrapper = document.createElement("div");
+  answersWrapper.className = "answers";
+  answersWrapper.innerHTML = answersHTML;
+  container.appendChild(answersWrapper);
 }
 
 function getXPGain(difficulty) {
