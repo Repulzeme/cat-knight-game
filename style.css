@@ -173,9 +173,10 @@ button.locked {
   animation: bounce-answer 0.6s ease;
 }
 
-.question-text {
+#question-text {
   font-weight: bold;
-  font-size: 1.2rem;
-  margin-bottom: 15px;
+  font-size: 1.1rem;
+  margin-bottom: 16px;
   text-align: center;
 }
+
