@@ -7,6 +7,8 @@ let currentDifficulty = "";
 let currentQuestion = null;
 let usedEliminate = false;
 let usedHint = false;
+let remainingQuestions = [];
+
 
 const xpDisplay = document.getElementById("xp-stats");
 const zoneButtons = document.getElementById("zone-buttons");
@@ -139,18 +141,34 @@ if (!isDifficultyUnlocked(level.toLowerCase(), zone)) {
 }
 
 function startQuiz(zone, difficulty) {
-  const questions = questionsData[zone]?.[difficulty];
-  if (!questions || questions.length === 0) {
+  const allQuestions = questionsData[zone]?.[difficulty];
+  if (!allQuestions || allQuestions.length === 0) {
     alert("No questions available.");
     return;
   }
+
+  currentZone = zone;
   currentDifficulty = difficulty;
-  const randomIndex = Math.floor(Math.random() * questions.length);
-  currentQuestion = questions[randomIndex];
+  remainingQuestions = [...allQuestions]; // clone to avoid modifying original
+
   usedEliminate = false;
   usedHint = false;
+
   difficultyScreen.classList.add("hidden");
   questionScreen.classList.remove("hidden");
+
+  loadNextQuestion();
+}
+
+function loadNextQuestion() {
+  if (remainingQuestions.length === 0) {
+    alert("You've answered all questions in this set!");
+    goToMain();
+    return;
+  }
+
+  const randomIndex = Math.floor(Math.random() * remainingQuestions.length);
+  currentQuestion = remainingQuestions.splice(randomIndex, 1)[0]; // remove from pool
   renderQuestion();
 }
 
@@ -232,6 +250,10 @@ selectedBtn.classList.add("bounce-answer");
     showXPGainBubble(xpGain);
     showFeedback("✅ Correct!", true);
     updateSpellDisplay();
+    setTimeout(() => {
+    loadNextQuestion();
+}, 1200);
+
 
     // ✅ Save completed difficulty per zone
     const completed = JSON.parse(localStorage.getItem("completedZones") || "{}");
