@@ -175,30 +175,28 @@ function loadNextQuestion() {
 function renderQuestion() {
   const q = currentQuestion;
 
-  // Update the question text
-  const questionTextDiv = document.getElementById("question-text");
-  questionTextDiv.textContent = q.question;
-
-  // Create answer buttons
-  const answersHTML = q.options
-    .map(opt => {
-      const isCorrect = opt === q.answer;
-      return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
-    })
-    .join("");
-
-  // Insert only the answers into the container (not the question div)
   const container = document.getElementById("question-container");
 
-  // Clear old buttons but keep the question div
-  const oldButtons = container.querySelectorAll(".answer-btn");
-  oldButtons.forEach(btn => btn.remove());
+  // Clear the entire container
+  container.innerHTML = "";
 
-  // Append answers after the question
-  const answersWrapper = document.createElement("div");
-  answersWrapper.className = "answers";
-  answersWrapper.innerHTML = answersHTML;
-  container.appendChild(answersWrapper);
+  // Create and add question text first
+  const questionTextDiv = document.createElement("div");
+  questionTextDiv.id = "question-text";
+  questionTextDiv.className = "question-text";
+  questionTextDiv.textContent = q.question;
+  container.appendChild(questionTextDiv);
+
+  // Then create and add answer buttons
+  q.options.forEach(opt => {
+    const isCorrect = opt === q.answer;
+    const button = document.createElement("button");
+    button.className = "answer-btn";
+    button.setAttribute("data-correct", isCorrect);
+    button.setAttribute("onclick", `selectAnswer(this, '${opt.replace(/'/g, "\\'")}')`);
+    button.textContent = opt;
+    container.appendChild(button);
+  });
 }
 
 function getXPGain(difficulty) {
