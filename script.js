@@ -326,6 +326,7 @@ function checkStreak() {
     localStorage.setItem("lastPlayedDate", today);
     localStorage.setItem("streak", streak);
   }
+}
 
 function showScreen(screenId) {
   const screens = document.querySelectorAll("section");
