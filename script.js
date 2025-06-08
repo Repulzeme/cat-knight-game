@@ -256,7 +256,7 @@ function selectAnswer(event) {
   }
 
   updateStats();
-
+  updateSpellDisplay();
   if (selectedAnswer === correctAnswer) {
   unlockNextDifficulty(currentZone, currentDifficulty);
 }
