@@ -343,6 +343,15 @@ function showScreen(screenId) {
   });
 }
 
+function unlockNextDifficulty(zone, difficulty) {
+  const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
+  if (!completedZones[zone]) completedZones[zone] = [];
+  if (!completedZones[zone].includes(difficulty)) {
+    completedZones[zone].push(difficulty);
+    localStorage.setItem("completedZones", JSON.stringify(completedZones));
+  }
+}
+
 window.onload = () => {
   loadQuestions();
 
