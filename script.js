@@ -267,18 +267,24 @@ function selectAnswer(button, selectedOption) {
     localStorage.setItem("completedQuestions", JSON.stringify(completed));
     // Save level completion status
 const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
-if (!completedZones[currentZone]) completedZones[currentZone] = [];
-if (!completedZones[currentZone].includes(currentDifficulty)) {
-  completedZones[currentZone].push(currentDifficulty);
-  localStorage.setItem("completedZones", JSON.stringify(completedZones));
-  }
+  if (!completed[currentZone][currentDifficulty].includes(currentQuestion.question)) {
+    completed[currentZone][currentDifficulty].push(currentQuestion.question);
+    localStorage.setItem("completedQuestions", JSON.stringify(completed));
 
-  checkStreak();
+    // Save level completion status
+    const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
+    if (!completedZones[currentZone]) completedZones[currentZone] = [];
+    if (!completedZones[currentZone].includes(currentDifficulty)) {
+      completedZones[currentZone].push(currentDifficulty);
+      localStorage.setItem("completedZones", JSON.stringify(completedZones));
+    }
 
-  setTimeout(() => {
-    goToMain();
-  }, 3000);
-}
+    checkStreak();
+
+    setTimeout(() => {
+      goToMain();
+    }, 3000);
+  } // ✅ This closes the big if block correctly
     
 function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
