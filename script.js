@@ -71,7 +71,7 @@ function updateSpellDisplay() {
     hintMsg.textContent = "✅ Hint unlocked!";
   } else {
     hintBtn.disabled = true;
-    hintMsg.textContent = "🔒 Hint unlocks at 200 XP or all Novice zones";
+    hintMsg.textContent = "🔒 Hint unlocks at 200 Knowledge or all Novice zones";
   }
 
   if (isSpellUnlocked("eliminate")) {
@@ -79,12 +79,12 @@ function updateSpellDisplay() {
     eliminateMsg.textContent = "✅ Eliminate unlocked!";
   } else {
     eliminateBtn.disabled = true;
-    eliminateMsg.textContent = "🔒 Eliminate unlocks at 500 XP or all Scholar zones";
+    eliminateMsg.textContent = "🔒 Eliminate unlocks at 500 Knowledge or all Scholar zones";
   }
 }
 
 function updateStats() {
-  xpDisplay.textContent = `🔥 XP: ${xp} 📚 Streak: ${streak}`;
+  xpDisplay.textContent = `📚 Knowledge: ${xp} 🔥 Streak: ${streak}`;
   localStorage.setItem("xp", xp);
   localStorage.setItem("streak", streak);
 }
@@ -211,7 +211,7 @@ function getXPGain(difficulty) {
 function showXPGainBubble(xp) {
   const bubble = document.createElement("div");
   bubble.className = "xp-float";
-  bubble.textContent = `+${xp} XP`;
+  bubble.textContent = `+${xp} Knowledge`;
   document.body.appendChild(bubble);
 
   // Trigger animation
