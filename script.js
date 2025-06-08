@@ -223,69 +223,56 @@ function showXPGainBubble(xp) {
   }, 2000);
 }
 
-function selectAnswer(button, selectedOption) {
-  const allButtons = Array.from(document.querySelectorAll("#question-container button"));
-  allButtons.forEach(btn => btn.disabled = true);
+function selectAnswer(e) {
+  const selectedBtn = e.target;
+  const selectedAnswer = selectedBtn.textContent;
+  const correctAnswer = currentQuestion.answer;
 
-  const correctOption = currentQuestion.answer;
-  const isCorrect = selectedOption.trim().toLowerCase() === correctOption.trim().toLowerCase();
-
-  const selectedBtn = button;
-  const allAnswers = Array.from(document.querySelectorAll("#question-container button"));
-
-  // Hide unselected buttons
-  allAnswers.forEach(btn => {
+  const allButtons = document.querySelectorAll("#question-container button");
+  allButtons.forEach(btn => {
+    btn.disabled = true;
+    if (btn.textContent === correctAnswer) {
+      btn.classList.add("correct");
+    } else {
+      btn.classList.add("incorrect");
+    }
     if (btn !== selectedBtn) {
       btn.style.display = "none";
     }
   });
 
-  selectedBtn.classList.add("bounce-answer");
+  // Show feedback
+  const feedback = document.getElementById("feedback-message");
+  feedback.textContent = selectedAnswer === correctAnswer ? "✅ Correct!" : "❌ Incorrect!";
+  feedback.classList.remove("hidden");
+  feedback.classList.add("feedback-bounce");
 
-  if (isCorrect) {
-    selectedBtn.classList.add("correct");
-    const xpGain = getXPGain(currentDifficulty);
-    xp += xpGain;
-    updateStats();
-    showXPGainBubble(xpGain);
-    showFeedback("✅ Correct!", true);
-    updateSpellDisplay();
+  // XP gain logic
+  const xpEarned = selectedAnswer === correctAnswer ? 10 : 0;
+  if (xpEarned > 0) {
+    xp += xpEarned;
+    streak++;
+    showXPGainBubble("+10 XP");
   } else {
-    selectedBtn.classList.add("wrong");
-    showFeedback("❌ Wrong!", false);
+    streak = 0;
+    showXPGainBubble("+0 XP");
   }
 
-  // Hide back button (optional, you can skip this if you want it to stay)
-  document.getElementById("back-btn").style.display = "none";
+  updateXP();
+  saveProgress();
 
-  // Save completed question
-  const completed = JSON.parse(localStorage.getItem("completedQuestions") || "{}");
-  if (!completed[currentZone]) completed[currentZone] = {};
-  if (!completed[currentZone][currentDifficulty]) completed[currentZone][currentDifficulty] = [];
-  if (!completed[currentZone][currentDifficulty].includes(currentQuestion.question)) {
-    completed[currentZone][currentDifficulty].push(currentQuestion.question);
-    localStorage.setItem("completedQuestions", JSON.stringify(completed));
-    // Save level completion status
-const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
-  if (!completed[currentZone][currentDifficulty].includes(currentQuestion.question)) {
-    completed[currentZone][currentDifficulty].push(currentQuestion.question);
-    localStorage.setItem("completedQuestions", JSON.stringify(completed));
+  // Unlock next difficulty if correct
+  if (selectedAnswer === correctAnswer) {
+    unlockNextDifficulty(currentZone, currentDifficulty);
+  }
 
-    // Save level completion status
-    const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
-    if (!completedZones[currentZone]) completedZones[currentZone] = [];
-    if (!completedZones[currentZone].includes(currentDifficulty)) {
-      completedZones[currentZone].push(currentDifficulty);
-      localStorage.setItem("completedZones", JSON.stringify(completedZones));
-    }
-
-    checkStreak();
-
-    setTimeout(() => {
-      goToMain();
-    }, 3000);
-  } // ✅ This closes the big if block correctly
-    
+  // Go back to zone screen after delay
+  setTimeout(() => {
+    feedback.classList.add("hidden");
+    goToMain();
+  }, 3000);
+}
+ 
 function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
   feedback.textContent = message;
