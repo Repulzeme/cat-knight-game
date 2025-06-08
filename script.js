@@ -246,7 +246,7 @@ function selectAnswer(event) {
   feedback.classList.remove("hidden");
   feedback.classList.add("feedback-bounce");
 
-  const xpEarned = selectedAnswer === correctAnswer ? 10 : 0;
+  const xpEarned = selectedAnswer === correctAnswer ? getXPGain(currentDifficulty) : 0;
   if (xpEarned > 0) {
     xp += xpEarned;
     streak++;
