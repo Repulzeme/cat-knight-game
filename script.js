@@ -382,6 +382,29 @@ function unlockNextDifficulty(zone, difficulty) {
   }
 }
 
+function showResultScreen(isCorrect, questionObj, xpEarned, streakIncreased) {
+  document.getElementById("question-screen").classList.add("hidden");
+  document.getElementById("result-screen").classList.remove("hidden");
+
+  document.getElementById("result-feedback").textContent = isCorrect ? "✅ Correct!" : "❌ Wrong!";
+  document.getElementById("result-question").textContent = questionObj.question;
+  document.getElementById("result-answer").textContent = `Answer: ${questionObj.answer}`;
+  document.getElementById("result-knowledge").textContent = xpEarned > 0 ? `📘 +${xpEarned} Knowledge!` : "";
+
+  document.getElementById("result-streak").textContent = streakIncreased ? "🔥 Daily Streak increased!" : "";
+
+  // Optional: rotate fun facts
+  const funFacts = [
+    "The Eiffel Tower can be 15 cm taller during hot days!",
+    "Sharks predate trees by over 200 million years.",
+    "Honey never spoils. You could eat 3000-year-old honey!",
+    "Octopuses have three hearts and blue blood.",
+    "Bananas are berries, but strawberries are not."
+  ];
+  const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
+  document.getElementById("result-funfact").textContent = `💡 Fun Fact: ${fact}`;
+}
+
 window.onload = () => {
   loadQuestions();
 
