@@ -241,10 +241,16 @@ function selectAnswer(event) {
     }
   });
 
-  const feedback = document.getElementById("feedback-message");
-  feedback.textContent = selectedAnswer === correctAnswer ? "✅ Correct!" : "❌ Incorrect!";
-  feedback.classList.remove("hidden");
-  feedback.classList.add("feedback-bounce");
+ const feedback = document.getElementById("feedback-message");
+const isCorrect = selectedAnswer === correctAnswer;
+feedback.textContent = isCorrect ? "✅ Correct!" : "❌ Incorrect!";
+feedback.classList.remove("hidden", "correct", "wrong");
+feedback.classList.add(isCorrect ? "correct" : "wrong", "feedback-bounce");
+
+// Optional: remove bounce class after animation
+setTimeout(() => {
+  feedback.classList.remove("feedback-bounce");
+}, 700);
 
   const xpEarned = selectedAnswer === correctAnswer ? getXPGain(currentDifficulty) : 0;
   if (xpEarned > 0) {
