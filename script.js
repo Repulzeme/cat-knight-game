@@ -256,7 +256,6 @@ function selectAnswer(event) {
   }
 
   updateStats();
-  saveProgress();
 
   if (selectedAnswer === correctAnswer) {
     unlockNextDifficulty(currentZone, currentDifficulty);
