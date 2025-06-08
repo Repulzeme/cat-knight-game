@@ -54,8 +54,14 @@ button.locked {
   margin-top: 1rem;
 }
 
+.incorrect {
+  background-color: #8b0000 !important;
+  color: white;
+}
+
 .correct {
-  background-color: #4caf50 !important;
+  background-color: #228B22 !important;
+  color: white;
 }
 
 .wrong {
