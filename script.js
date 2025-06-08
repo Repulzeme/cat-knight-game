@@ -245,7 +245,7 @@ const feedback = document.getElementById("feedback-message");
 const isCorrect = selectedAnswer === correctAnswer;
 feedback.textContent = isCorrect ? "✅ Correct!" : "❌ Incorrect!";
 feedback.classList.remove("hidden", "correct", "wrong", "show");
-void feedback.offsetWidth; // Force reflow
+void feedback.offsetWidth; // force reflow
 feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
 
 setTimeout(() => {
@@ -253,37 +253,26 @@ setTimeout(() => {
   feedback.classList.add("hidden");
 }, 3000);
 
-  const xpEarned = selectedAnswer === correctAnswer ? getXPGain(currentDifficulty) : 0;
- if (xpEarned > 0) {
+const xpEarned = selectedAnswer === correctAnswer ? getXPGain(currentDifficulty) : 0;
+if (xpEarned > 0) {
   xp += xpEarned;
 
   const today = new Date().toISOString().split("T")[0];
   const lastPlayDate = localStorage.getItem("lastPlayDate");
 
+  let streakIncreased = false;
   if (lastPlayDate !== today) {
-  streak++;
-  localStorage.setItem("lastPlayDate", today);
-  localStorage.setItem("streak", streak);
+    streak++;
+    localStorage.setItem("lastPlayDate", today);
+    localStorage.setItem("streak", streak);
+    streakIncreased = true;
+  }
 
-  // Show streak increase message
-  const streakMsg = document.createElement("div");
-  streakMsg.className = "feedback-msg show correct";
-  streakMsg.textContent = "🔥 Streak increased!";
-  document.body.appendChild(streakMsg);
-
-  setTimeout(() => {
-    streakMsg.classList.remove("show");
-    setTimeout(() => {
-      streakMsg.remove();
-    }, 300);
-  }, 2000);
-}
-
-  showXPGainBubble(xpEarned);
+  showResultScreen(isCorrect, currentQuestion, xpEarned, streakIncreased);
 } else {
   streak = 0;
 }
-  
+
   updateStats();
   updateSpellDisplay();
   if (selectedAnswer === correctAnswer) {
