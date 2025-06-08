@@ -135,7 +135,7 @@ if (!isDifficultyUnlocked(level.toLowerCase(), zone)) {
   btn.disabled = true;
   btn.classList.add("locked");
 }
-    btn.onclick = () => startQuiz(zone, level.toLowerCase());
+    btn.setAttribute("onclick", `startQuiz('${zone}', '${level.toLowerCase()}')`);
     difficultyButtons.appendChild(btn);
   });
 }
