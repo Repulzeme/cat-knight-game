@@ -250,7 +250,7 @@ function selectAnswer(event) {
   if (xpEarned > 0) {
     xp += xpEarned;
     streak++;
-    showXPGainBubble("+10 XP");
+    showXPGainBubble(10);
   } else {
     streak = 0;
     showXPGainBubble("+0 XP");
