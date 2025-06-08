@@ -166,6 +166,8 @@ function startQuiz(zone, difficulty) {
   
   showScreen("question-screen");
   renderQuestion();
+  
+  console.log("Quiz started with difficulty:", difficulty);
 }
 
 function loadNextQuestion() {
