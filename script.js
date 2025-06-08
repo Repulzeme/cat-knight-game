@@ -258,15 +258,18 @@ function selectAnswer(event) {
   updateStats();
 
   if (selectedAnswer === correctAnswer) {
-    unlockNextDifficulty(currentZone, currentDifficulty);
-  }
-
-  setTimeout(() => {
-    feedback.classList.add("hidden");
-    goToMain();
-  }, 3000);
+  unlockNextDifficulty(currentZone, currentDifficulty);
 }
 
+setTimeout(() => {
+  feedback.classList.add("hidden");
+
+  // 🔧 Redraw difficulty screen to reflect unlock
+  showDifficulties(currentZone);
+
+  goToMain(); // or call goToMain() after showDifficulties, depending on your logic
+}, 3000);
+}
 
 function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
