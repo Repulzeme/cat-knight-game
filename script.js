@@ -261,10 +261,23 @@ setTimeout(() => {
   const lastPlayDate = localStorage.getItem("lastPlayDate");
 
   if (lastPlayDate !== today) {
-    streak++;
-    localStorage.setItem("lastPlayDate", today);
-    localStorage.setItem("streak", streak);
-  }
+  streak++;
+  localStorage.setItem("lastPlayDate", today);
+  localStorage.setItem("streak", streak);
+
+  // Show streak increase message
+  const streakMsg = document.createElement("div");
+  streakMsg.className = "feedback-msg show correct";
+  streakMsg.textContent = "🔥 Streak increased!";
+  document.body.appendChild(streakMsg);
+
+  setTimeout(() => {
+    streakMsg.classList.remove("show");
+    setTimeout(() => {
+      streakMsg.remove();
+    }, 300);
+  }, 2000);
+}
 
   showXPGainBubble(xpEarned);
 } else {
