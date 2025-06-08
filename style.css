@@ -194,3 +194,24 @@ button.locked {
   text-align: center;
 }
 
+#result-screen {
+  padding: 20px;
+  text-align: center;
+}
+
+.result-block {
+  margin: 12px 0;
+  font-size: 1.2rem;
+  animation: fade-in 0.5s ease;
+}
+
+.result-block.fun-fact {
+  font-style: italic;
+  color: #ffd700;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
