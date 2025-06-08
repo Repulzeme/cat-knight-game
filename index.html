@@ -24,17 +24,20 @@
     </section>
 
     <section id="question-screen" class="hidden">
-      <div class="spell-row">
-         <button onclick="useHint()" id="hint-btn">🔍 Hint</button>
-         <div id="hint-msg" class="spell-msg"></div>
+  <div class="spell-row">
+     <button onclick="useHint()" id="hint-btn">🔍 Hint</button>
+     <div id="hint-msg" class="spell-msg"></div>
 
-         <button onclick="useEliminate()" id="eliminate-btn">❌ Eliminate</button>
-          <div id="eliminate-msg" class="spell-msg"></div>
-      </div>
-      <div id="question-container">
-      <div id="question-text" class="question-text"></div>
-      <button id="back-btn" onclick="goToMain()">🔙 Back to Zones</button>
-    </section>
+     <button onclick="useEliminate()" id="eliminate-btn">❌ Eliminate</button>
+        <div id="eliminate-msg" class="spell-msg"></div>
+        </div>
+
+        <div id="question-container">
+        <div id="question-text" class="question-text"></div>
+        <div id="answers-container" class="answers"></div>
+       <button id="back-btn" onclick="goToMain()">🔙 Back to Zones</button>
+     </div>
+   </section>
   </main>
 
   <script src="script.js"></script>
