@@ -191,14 +191,12 @@ function renderQuestion() {
   const answersHTML = q.options
     .map(opt => {
       const isCorrect = opt === q.answer;
-      return `<button onclick="selectAnswer(this, '${opt.replace(/'/g, "\\'")}')" class="answer-btn" data-correct="${isCorrect}">${opt}</button>`;
+      return `<button onclick="selectAnswer(event)" class="answer-btn" data-answer="${opt}" data-correct="${isCorrect}">${opt}</button>`;
     })
     .join("");
 
-  const container = document.getElementById("question-container");
-  container.innerHTML = `
-    <div class="answers">${answersHTML}</div>
-  `;
+  const answersContainer = document.getElementById("answers-container");
+  answersContainer.innerHTML = answersHTML;
 }
 
 function getXPGain(difficulty) {
@@ -225,15 +223,15 @@ function showXPGainBubble(xp) {
   }, 2000);
 }
 
-function selectAnswer(e) {
-  const selectedBtn = e.target;
-  const selectedAnswer = selectedBtn.textContent;
+function selectAnswer(event) {
+  const selectedBtn = event.target;
+  const selectedAnswer = selectedBtn.dataset.answer;
   const correctAnswer = currentQuestion.answer;
 
-  const allButtons = document.querySelectorAll("#question-container button");
+  const allButtons = document.querySelectorAll("#answers-container button");
   allButtons.forEach(btn => {
     btn.disabled = true;
-    if (btn.textContent === correctAnswer) {
+    if (btn.dataset.answer === correctAnswer) {
       btn.classList.add("correct");
     } else {
       btn.classList.add("incorrect");
@@ -243,13 +241,11 @@ function selectAnswer(e) {
     }
   });
 
-  // Show feedback
   const feedback = document.getElementById("feedback-message");
   feedback.textContent = selectedAnswer === correctAnswer ? "✅ Correct!" : "❌ Incorrect!";
   feedback.classList.remove("hidden");
   feedback.classList.add("feedback-bounce");
 
-  // XP gain logic
   const xpEarned = selectedAnswer === correctAnswer ? 10 : 0;
   if (xpEarned > 0) {
     xp += xpEarned;
@@ -263,18 +259,17 @@ function selectAnswer(e) {
   updateXP();
   saveProgress();
 
-  // Unlock next difficulty if correct
   if (selectedAnswer === correctAnswer) {
     unlockNextDifficulty(currentZone, currentDifficulty);
   }
 
-  // Go back to zone screen after delay
   setTimeout(() => {
     feedback.classList.add("hidden");
     goToMain();
   }, 3000);
 }
- 
+
+
 function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
   feedback.textContent = message;
