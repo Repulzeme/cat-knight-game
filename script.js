@@ -256,7 +256,7 @@ function selectAnswer(event) {
     showXPGainBubble("+0 XP");
   }
 
-  updateXP();
+  updateStats();
   saveProgress();
 
   if (selectedAnswer === correctAnswer) {
