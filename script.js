@@ -254,14 +254,23 @@ setTimeout(() => {
 }, 3000);
 
   const xpEarned = selectedAnswer === correctAnswer ? getXPGain(currentDifficulty) : 0;
-  if (xpEarned > 0) {
-    xp += xpEarned;
+ if (xpEarned > 0) {
+  xp += xpEarned;
+
+  const today = new Date().toISOString().split("T")[0];
+  const lastPlayDate = localStorage.getItem("lastPlayDate");
+
+  if (lastPlayDate !== today) {
     streak++;
-    showXPGainBubble(10);
-  } else {
-    streak = 0;
+    localStorage.setItem("lastPlayDate", today);
+    localStorage.setItem("streak", streak);
   }
 
+  showXPGainBubble(xpEarned);
+} else {
+  streak = 0;
+}
+  
   updateStats();
   updateSpellDisplay();
   if (selectedAnswer === correctAnswer) {
