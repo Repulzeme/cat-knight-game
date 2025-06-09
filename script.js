@@ -5,6 +5,7 @@ let questionsData = {};
 let currentZone = "";
 let currentDifficulty = "";
 let currentQuestion = null;
+let attemptCount = 0;
 let usedEliminate = false;
 let usedHint = false;
 let remainingQuestions = [];
@@ -233,64 +234,52 @@ function selectAnswer(event) {
     btn.disabled = true;
     if (btn.dataset.answer === correctAnswer) {
       btn.classList.add("correct");
-    } else {
-      btn.classList.add("incorrect");
-    }
-    if (btn !== selectedBtn) {
-      btn.style.display = "none";
+    } else if (btn === selectedBtn) {
+      btn.classList.add("wrong");
     }
   });
 
-const feedback = document.getElementById("feedback-message");
-const isCorrect = selectedAnswer === correctAnswer;
-feedback.textContent = isCorrect ? "✅ Correct!" : "❌ Incorrect!";
-feedback.classList.remove("hidden", "correct", "wrong", "show");
-void feedback.offsetWidth; // force reflow
-feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
-
-setTimeout(() => {
-  feedback.classList.remove("show", "feedback-bounce");
-  feedback.classList.add("hidden");
-}, 3000);
-
-const xpEarned = selectedAnswer === correctAnswer ? getXPGain(currentDifficulty) : 0;
-if (xpEarned > 0) {
-  xp += xpEarned;
-
-  const today = new Date().toISOString().split("T")[0];
-  const lastPlayDate = localStorage.getItem("lastPlayDate");
-
-  let streakIncreased = false;
-  if (lastPlayDate !== today) {
+  // Check if correct
+  if (selectedAnswer === correctAnswer) {
+    const xpGain = getXPGain(currentDifficulty, attemptCount);
+    knowledge += xpGain;
     streak++;
-    localStorage.setItem("lastPlayDate", today);
-    localStorage.setItem("streak", streak);
-    streakIncreased = true;
+
+    showResultScreen(true, xpGain, currentQuestion.funFact, currentZone, currentDifficulty);
+    attemptCount = 0;
+  } else {
+    attemptCount++;
+
+    // Fade the selected wrong button
+    selectedBtn.classList.add("faded");
+    selectedBtn.disabled = true;
+    selectedBtn.style.opacity = "0.5";
+    selectedBtn.style.pointerEvents = "none";
+
+    if (attemptCount === 1) {
+      showMessage("❌ Try again!");
+      setTimeout(() => renderQuestion(currentQuestion), 1500);
+    } else if (attemptCount === 2) {
+      showMessage("💡 Hint: " + currentQuestion.hint);
+      setTimeout(() => renderQuestion(currentQuestion), 2500);
+    } else {
+      showMessage("❌ Correct answer was: " + correctAnswer);
+      streak = 0;
+      setTimeout(() => {
+        attemptCount = 0;
+        goToZoneSelect();
+      }, 3500);
+    }
   }
-
-let unlockedScholar = false;
-let unlockedWizard = false;
-
-if (selectedAnswer === correctAnswer) {
-  ({ unlockedScholar, unlockedWizard } = unlockNextDifficulty(currentZone, currentDifficulty));
-}
-  
-showResultScreen(isCorrect, currentQuestion, xpEarned, streakIncreased, unlockedScholar, unlockedWizard);
-} else {
-  streak = 0;
 }
 
-  updateStats();
-  updateSpellDisplay();
-
-setTimeout(() => {
-  feedback.classList.add("hidden");
-
-  // 🔧 Redraw difficulty screen to reflect unlock
-  showDifficulties(currentZone);
-
-  goToMain();
-}, 7000);
+function getXPGain(difficulty, attemptCount) {
+  const xpTable = {
+    Novice: [10, 5, 2, 0],
+    Scholar: [20, 10, 5, 0],
+    Wizard: [30, 15, 10, 0],
+  };
+  return xpTable[difficulty][attemptCount] || 0;
 }
 
 function showFeedback(message, isCorrect) {
