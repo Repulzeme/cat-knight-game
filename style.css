@@ -215,3 +215,11 @@ button.locked {
   to { opacity: 1; transform: translateY(0); }
 }
 
+#result-unlock {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffd700; /* gold */
+  text-align: center;
+  margin-top: 1rem;
+}
+
