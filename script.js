@@ -282,7 +282,6 @@ showResultScreen(isCorrect, currentQuestion, xpEarned, streakIncreased, unlocked
 
   updateStats();
   updateSpellDisplay();
-}
 
 setTimeout(() => {
   feedback.classList.add("hidden");
@@ -292,6 +291,7 @@ setTimeout(() => {
 
   goToMain();
 }, 10000);
+}
 
 function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
