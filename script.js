@@ -268,15 +268,14 @@ if (xpEarned > 0) {
     streakIncreased = true;
   }
 
-  showResultScreen(isCorrect, currentQuestion, xpEarned, streakIncreased);
+  const { unlockedScholar, unlockedWizard } = unlockNextDifficulty(currentZone, currentDifficulty);
+showResultScreen(isCorrect, currentQuestion, xpEarned, streakIncreased, unlockedScholar, unlockedWizard);
 } else {
   streak = 0;
 }
 
   updateStats();
   updateSpellDisplay();
-  if (selectedAnswer === correctAnswer) {
-  unlockNextDifficulty(currentZone, currentDifficulty);
 }
 
 setTimeout(() => {
