@@ -229,3 +229,10 @@ button.locked {
   font-size: 1.05rem;
 }
 
+/* Faded out answer */
+.faded-wrong {
+  opacity: 0.4;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
