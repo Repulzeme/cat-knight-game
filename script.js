@@ -286,7 +286,7 @@ setTimeout(() => {
   showDifficulties(currentZone);
 
   goToMain(); // or call goToMain() after showDifficulties, depending on your logic
-}, 3000);
+}, 10000);
 }
 
 function showFeedback(message, isCorrect) {
@@ -310,9 +310,10 @@ function showFeedback(message, isCorrect) {
 }
 
 function goToMain() {
-  questionScreen.classList.add("hidden");
-  difficultyScreen.classList.add("hidden");
-  mainScreen.classList.remove("hidden");
+  document.getElementById("main-screen").classList.remove("hidden");
+  document.getElementById("difficulty-screen").classList.add("hidden");
+  document.getElementById("question-screen").classList.add("hidden");
+  document.getElementById("result-screen").classList.add("hidden");
   renderZones();
 }
 
