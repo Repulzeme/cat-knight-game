@@ -366,13 +366,31 @@ function showScreen(screenId) {
 function unlockNextDifficulty(zone, difficulty) {
   const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
   if (!completedZones[zone]) completedZones[zone] = [];
+
+  let unlockedScholar = false;
+  let unlockedWizard = false;
+
   if (!completedZones[zone].includes(difficulty)) {
     completedZones[zone].push(difficulty);
     localStorage.setItem("completedZones", JSON.stringify(completedZones));
   }
+
+  if (difficulty === "novice" && !completedZones[zone].includes("scholar")) {
+    unlockedScholar = true;
+    completedZones[zone].push("scholar");
+  }
+
+  if (difficulty === "scholar" && !completedZones[zone].includes("wizard")) {
+    unlockedWizard = true;
+    completedZones[zone].push("wizard");
+  }
+
+  localStorage.setItem("completedZones", JSON.stringify(completedZones));
+
+  return { unlockedScholar, unlockedWizard };
 }
 
-function showResultScreen(isCorrect, questionObj, xpEarned, streakIncreased) {
+function showResultScreen(isCorrect, questionObj, xpEarned, streakIncreased, unlockedScholar, unlockedWizard) {
   document.getElementById("question-screen").classList.add("hidden");
   document.getElementById("result-screen").classList.remove("hidden");
 
@@ -395,6 +413,7 @@ const fact = funFacts.length > 0
   ? funFacts[Math.floor(Math.random() * funFacts.length)]
   : "Did you know? The Cat Knight learns something every day!";
 document.getElementById("result-funfact").innerHTML = `💡 <span class="fun-fact-text">Fun Fact: ${fact}</span>`;
+document.getElementById("result-unlock").textContent = "";
   
 // Show unlock message if any new difficulty was unlocked
 if (unlockedScholar || unlockedWizard) {
@@ -406,6 +425,8 @@ if (unlockedScholar || unlockedWizard) {
   document.getElementById("result-unlock").textContent = "";
   
 }
+setTimeout(() => goToMain(), 10000);
+ 
 }
 window.onload = () => {
   loadQuestions();
