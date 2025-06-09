@@ -236,3 +236,8 @@ button.locked {
   transition: opacity 0.3s ease;
 }
 
+button.faded {
+  opacity: 0.5;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
