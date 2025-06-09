@@ -391,8 +391,20 @@ function showResultScreen(isCorrect, questionObj, xpEarned, streakIncreased) {
     "Octopuses have three hearts and blue blood.",
     "Bananas are berries, but strawberries are not."
   ];
-  const fact = funFacts[Math.floor(Math.random() * funFacts.length)];
-  document.getElementById("result-funfact").textContent = `💡 Fun Fact: ${fact}`;
+const fact = funFacts.length > 0
+  ? funFacts[Math.floor(Math.random() * funFacts.length)]
+  : "Did you know? The Cat Knight learns something every day!";
+document.getElementById("result-funfact").innerHTML = `💡 <span class="fun-fact-text">Fun Fact: ${fact}</span>`;
+  
+// Show unlock message if any new difficulty was unlocked
+if (unlockedScholar || unlockedWizard) {
+  const unlocked = [];
+  if (unlockedScholar) unlocked.push("Scholar");
+  if (unlockedWizard) unlocked.push("Wizard");
+  document.getElementById("result-unlock").textContent = `🎉 ${unlocked.join(" & ")} difficulty unlocked!`;
+} else {
+  document.getElementById("result-unlock").textContent = "";
+  
 }
 
 window.onload = () => {
