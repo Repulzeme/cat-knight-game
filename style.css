@@ -223,3 +223,9 @@ button.locked {
   margin-top: 1rem;
 }
 
+.fun-fact-text {
+  font-style: italic;
+  color: #ffd86a; /* soft yellow */
+  font-size: 1.05rem;
+}
+
