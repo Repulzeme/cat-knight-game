@@ -268,7 +268,13 @@ if (xpEarned > 0) {
     streakIncreased = true;
   }
 
-  const { unlockedScholar, unlockedWizard } = unlockNextDifficulty(currentZone, currentDifficulty);
+let unlockedScholar = false;
+let unlockedWizard = false;
+
+if (selectedAnswer === correctAnswer) {
+  ({ unlockedScholar, unlockedWizard } = unlockNextDifficulty(currentZone, currentDifficulty));
+}
+  
 showResultScreen(isCorrect, currentQuestion, xpEarned, streakIncreased, unlockedScholar, unlockedWizard);
 } else {
   streak = 0;
