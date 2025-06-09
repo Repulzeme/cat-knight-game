@@ -406,7 +406,7 @@ if (unlockedScholar || unlockedWizard) {
   document.getElementById("result-unlock").textContent = "";
   
 }
-
+}
 window.onload = () => {
   loadQuestions();
 
