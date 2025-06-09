@@ -183,21 +183,26 @@ function loadNextQuestion() {
   renderQuestion();
 }
 
-function renderQuestion() {
-  const q = currentQuestion;
 
-  const questionTextDiv = document.getElementById("question-text");
-  questionTextDiv.textContent = q.question;
+function renderQuestion(questionData = null) {
+  const questionObj = questionData || getRandomQuestion(); // fallback if not provided
+  currentQuestion = questionObj; // store for retries
+  currentQuestionData = questionObj; // also track in global for backup
 
-  const answersHTML = q.options
-    .map(opt => {
-      const isCorrect = opt === q.answer;
-      return `<button onclick="selectAnswer(event)" class="answer-btn" data-answer="${opt}" data-correct="${isCorrect}">${opt}</button>`;
-    })
-    .join("");
-
+  const questionContainer = document.getElementById("question-container");
   const answersContainer = document.getElementById("answers-container");
-  answersContainer.innerHTML = answersHTML;
+
+  questionContainer.textContent = questionObj.question;
+  answersContainer.innerHTML = "";
+
+  questionObj.answers.forEach((answer, index) => {
+    const btn = document.createElement("button");
+    btn.className = "answer-btn";
+    btn.dataset.answer = answer;
+    btn.textContent = answer;
+    btn.addEventListener("click", selectAnswer);
+    answersContainer.appendChild(btn);
+  });
 }
 
 function getXPGain(difficulty) {
