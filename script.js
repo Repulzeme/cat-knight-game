@@ -290,7 +290,7 @@ setTimeout(() => {
   showDifficulties(currentZone);
 
   goToMain();
-}, 10000);
+}, 7000);
 }
 
 function showFeedback(message, isCorrect) {
@@ -429,7 +429,7 @@ if (unlockedScholar || unlockedWizard) {
   document.getElementById("result-unlock").textContent = "";
   
 }
-setTimeout(() => goToMain(), 10000);
+setTimeout(() => goToMain(), 7000);
  
 }
 window.onload = () => {
