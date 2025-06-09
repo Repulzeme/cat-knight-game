@@ -290,9 +290,8 @@ setTimeout(() => {
   // 🔧 Redraw difficulty screen to reflect unlock
   showDifficulties(currentZone);
 
-  goToMain(); // or call goToMain() after showDifficulties, depending on your logic
+  goToMain();
 }, 10000);
-}
 
 function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
