@@ -8,7 +8,7 @@ let currentQuestion = null;
 let usedEliminate = false;
 let usedHint = false;
 let remainingQuestions = [];
-
+let attemptCount = 0;
 
 const xpDisplay = document.getElementById("xp-stats");
 const zoneButtons = document.getElementById("zone-buttons");
@@ -184,6 +184,7 @@ function loadNextQuestion() {
 
 function renderQuestion() {
   const q = currentQuestion;
+  attemptCount = 0; // 👈 Add this here
 
   const questionTextDiv = document.getElementById("question-text");
   questionTextDiv.textContent = q.question;
@@ -208,6 +209,20 @@ function getXPGain(difficulty) {
   }
 }
 
+function gainXP(amount) {
+  xp += amount;
+  updateStats();
+  showXPGainBubble(amount);
+}
+
+function autoShowHint() {
+  const q = currentQuestion;
+  const hint = q.hint || "Think carefully!"; // fallback if no hint field exists
+  const hintDiv = document.getElementById("hint-container");
+  hintDiv.textContent = `💡 Hint: ${hint}`;
+  hintDiv.classList.remove("hidden");
+}
+
 function showXPGainBubble(xp) {
   const bubble = document.createElement("div");
   bubble.className = "xp-float";
@@ -225,26 +240,46 @@ function showXPGainBubble(xp) {
 
 function selectAnswer(event) {
   const selectedBtn = event.target;
-  const selectedAnswer = selectedBtn.dataset.answer;
-  const correctAnswer = currentQuestion.answer;
+const selectedAnswer = selectedBtn.dataset.answer;
+const correctAnswer = currentQuestion.answer;
+const allButtons = document.querySelectorAll("#answers-container button");
 
-  const allButtons = document.querySelectorAll("#answers-container button");
-  allButtons.forEach(btn => {
-    btn.disabled = true;
-    if (btn.dataset.answer === correctAnswer) {
-      btn.classList.add("correct");
-    } else {
-      btn.classList.add("incorrect");
-    }
-    if (btn !== selectedBtn) {
-      btn.style.display = "none";
-    }
-  });
+attemptCount++;
 
-const feedback = document.getElementById("feedback-message");
-const isCorrect = selectedAnswer === correctAnswer;
-feedback.textContent = isCorrect ? "✅ Correct!" : "❌ Incorrect!";
-feedback.classList.remove("hidden", "correct", "wrong", "show");
+if (selectedAnswer === correctAnswer) {
+  selectedBtn.classList.add("correct");
+
+  const xpEarned = attemptCount === 1 ? getXPGain(currentDifficulty)
+                  : attemptCount === 2 ? Math.floor(getXPGain(currentDifficulty) / 2)
+                  : Math.floor(getXPGain(currentDifficulty) / 3);
+
+  showFeedback(`✅ Correct! +${xpEarned} XP`, true);
+  gainXP(xpEarned); // we’ll define gainXP if needed next
+  setTimeout(() => loadNextQuestion(), 1200);
+} else {
+  selectedBtn.classList.add("incorrect");
+  showFeedback("❌ Try again!", false);
+  selectedBtn.disabled = true;
+
+  if (attemptCount === 2) {
+    showFeedback("🧠 Here's a hint!", false);
+    autoShowHint(); // we’ll define this next if needed
+  } else if (attemptCount >= 3) {
+    showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+    allButtons.forEach((btn) => {
+      if (btn.dataset.answer === correctAnswer) {
+        btn.classList.add("correct");
+      }
+    });
+    setTimeout(() => loadNextQuestion(), 1500);
+  }
+}
+
+allButtons.forEach((btn) => {
+  if (btn !== selectedBtn) {
+    btn.style.display = "none";
+  }
+});
 void feedback.offsetWidth; // force reflow
 feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
 
