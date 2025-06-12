@@ -258,8 +258,21 @@ if (selectedAnswer === correctAnswer) {
                   : Math.floor(getXPGain(currentDifficulty) / 3);
 
 gainXP(xpEarned);
-const streakIncreased = true; // or set based on your logic
-showResultScreen(true, currentQuestion, xpEarned, streakIncreased, false, false);
+
+// 🔓 Check for unlocks
+const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
+const unlockedWizard = currentDifficulty === "scholar" && checkAllZonesCompleted("scholar");
+
+// Mark them as unlocked
+if (unlockedScholar) unlockedDifficulties.push("scholar");
+if (unlockedWizard) unlockedDifficulties.push("wizard");
+localStorage.setItem("unlockedDifficulties", JSON.stringify(unlockedDifficulties));
+
+// 🔥 Optional: Streak bonus if first try
+const streakIncreased = attemptCount === 1;
+
+// Show result screen
+showResultScreen(true, currentQuestion, xpEarned, streakIncreased, unlockedScholar, unlockedWizard);
 } else {
   selectedBtn.classList.add("incorrect");
   showFeedback("❌ Try again!", false);
