@@ -259,6 +259,7 @@ if (selectedAnswer === correctAnswer) {
                   : Math.floor(getXPGain(currentDifficulty) / 3);
 
 gainXP(xpEarned);
+checkSpellUnlocks(); // 🧙‍♂️ Check spell unlocks based on new XP
 
 // 🔓 Check for unlocks
 const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
@@ -457,6 +458,19 @@ function unlockNextDifficulty(zone, difficulty) {
   localStorage.setItem("completedZones", JSON.stringify(completedZones));
 
   return { unlockedScholar, unlockedWizard };
+}
+
+function checkSpellUnlocks() {
+  if (!unlockedSpells.includes("hint") && xp >= 200) {
+    unlockedSpells.push("hint");
+    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
+    updateSpellUI();
+  }
+  if (!unlockedSpells.includes("eliminate") && xp >= 500) {
+    unlockedSpells.push("eliminate");
+    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
+    updateSpellUI();
+  }
 }
 
 function showResultScreen(isCorrect, questionObj, xpEarned, streakIncreased, unlockedScholar, unlockedWizard) {
