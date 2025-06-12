@@ -262,8 +262,22 @@ function selectAnswer(event) {
 
   const isCorrect = selectedAnswer === correctAnswer;
 
-  if (isCorrect) {
-    selectedBtn.classList.add("correct");
+if (isCorrect) {
+  // Existing code:
+  selectedBtn.classList.add("correct");
+
+  // ADD THIS block to mark the current zone as completed:
+  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+  if (!completedZones[currentZone]) {
+    completedZones[currentZone] = [];
+  }
+  if (!completedZones[currentZone].includes(currentDifficulty)) {
+    completedZones[currentZone].push(currentDifficulty);
+    localStorage.setItem("completedZones", JSON.stringify(completedZones));
+  }
+
+  // ...then keep your xp gain / spell check / difficulty unlock logic
+}
 
     const xpEarned =
       attemptCount === 1
