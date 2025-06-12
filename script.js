@@ -340,8 +340,8 @@ function showFeedback(message, isCorrect) {
   const feedback = document.getElementById("feedback-message");
   feedback.textContent = message;
 
-  feedback.classList.remove("correct", "wrong", "show");
-  feedback.offsetWidth; // Force reflow for animation reset
+  feedback.classList.remove("correct", "wrong", "show", "hidden");
+  void feedback.offsetWidth; // 🔁 Force reflow for animation
 
   if (isCorrect) {
     feedback.classList.add("correct");
@@ -351,9 +351,11 @@ function showFeedback(message, isCorrect) {
 
   feedback.classList.add("show");
 
+  // Optional: auto-hide after delay
   setTimeout(() => {
+    feedback.classList.add("hidden");
     feedback.classList.remove("show");
-  }, 2900);
+  }, 3000);
 }
 
 function goToMain() {
