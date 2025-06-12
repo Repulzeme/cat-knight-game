@@ -257,10 +257,9 @@ if (selectedAnswer === correctAnswer) {
                   : attemptCount === 2 ? Math.floor(getXPGain(currentDifficulty) / 2)
                   : Math.floor(getXPGain(currentDifficulty) / 3);
 
-showFeedback(`✅ Correct! +${xpEarned} XP`, true);
 gainXP(xpEarned);
-allButtons.forEach(btn => btn.disabled = true); // 👈 add this
-setTimeout(() => loadNextQuestion(), 1200);
+const streakIncreased = true; // or set based on your logic
+showResultScreen(true, currentQuestion, xpEarned, streakIncreased, false, false);
 } else {
   selectedBtn.classList.add("incorrect");
   showFeedback("❌ Try again!", false);
