@@ -439,12 +439,12 @@ function checkSpellUnlocks() {
   if (!unlockedSpells.includes("hint") && xp >= 200) {
     unlockedSpells.push("hint");
     localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
-    updateSpellUI();
+    updateSpellDisplay();
   }
   if (!unlockedSpells.includes("eliminate") && xp >= 500) {
     unlockedSpells.push("eliminate");
     localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
-    updateSpellUI();
+    updateSpellDisplay();
   }
 }
 
