@@ -249,6 +249,7 @@ const correctAnswer = currentQuestion.answer;
 const allButtons = document.querySelectorAll("#answers-container button");
 
 attemptCount++;
+allButtons.forEach(btn => btn.disabled = true); // Disable all buttons instantly
 
 if (selectedAnswer === correctAnswer) {
   selectedBtn.classList.add("correct");
@@ -290,18 +291,18 @@ allButtons.forEach((btn) => {
   }
 });
 
-// restore feedback animation logic 👇
-const feedback = document.getElementById("feedback-message");
-const isCorrect = selectedAnswer === correctAnswer;
-feedback.classList.remove("hidden", "correct", "wrong", "show");
-void feedback.offsetWidth;
-feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
+if (!streakIncreased) {
+  const feedback = document.getElementById("feedback-message");
+  const isCorrect = selectedAnswer === correctAnswer;
+  feedback.classList.remove("hidden", "correct", "wrong", "show");
+  void feedback.offsetWidth;
+  feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
 
-setTimeout(() => {
-  feedback.classList.remove("show", "feedback-bounce");
-  feedback.classList.add("hidden");
-}, 3000);
-  }
+  setTimeout(() => {
+    feedback.classList.remove("show", "feedback-bounce");
+    feedback.classList.add("hidden");
+  }, 3000);
+}
 }
 
 allButtons.forEach((btn) => {
