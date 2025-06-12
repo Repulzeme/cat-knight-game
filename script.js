@@ -31,6 +31,12 @@ const unlockConditions = {
   }
 };
 
+function checkAllZonesCompleted(difficulty) {
+  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+  const zones = Object.keys(questionsData);
+  return zones.every(zone => completedZones[zone]?.includes(difficulty));
+}
+
 function isDifficultyUnlocked(difficulty, zone) {
   const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
   const levels = completedZones[zone] || [];
@@ -241,12 +247,6 @@ function showXPGainBubble(xp) {
   setTimeout(() => {
     bubble.remove();
   }, 2000);
-}
-
-function checkAllZonesCompleted(difficulty) {
-  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
-  const zones = Object.keys(questionsData);
-  return zones.every(zone => completedZones[zone]?.includes(difficulty));
 }
 
 function selectAnswer(event) {
