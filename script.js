@@ -41,13 +41,15 @@ function isDifficultyUnlocked(difficulty, zone) {
   const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
   const levels = completedZones[zone] || [];
 
+  const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
+
   if (difficulty === "scholar") {
-    return levels.includes("novice");
+    return levels.includes("novice") || unlockedDifficulties.includes("scholar");
   } else if (difficulty === "wizard") {
-    return levels.includes("scholar");
+    return levels.includes("scholar") || unlockedDifficulties.includes("wizard");
   }
 
-  return true; // Novice is always unlocked
+  return true; // Novice always unlocked
 }
 
 function isSpellUnlocked(spellName) {
