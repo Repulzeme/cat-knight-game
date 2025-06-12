@@ -243,6 +243,12 @@ function showXPGainBubble(xp) {
   }, 2000);
 }
 
+function checkAllZonesCompleted(difficulty) {
+  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+  const zones = Object.keys(questionsData);
+  return zones.every(zone => completedZones[zone]?.includes(difficulty));
+}
+
 function selectAnswer(event) {
   const selectedBtn = event.target;
   const selectedAnswer = selectedBtn.dataset.answer;
