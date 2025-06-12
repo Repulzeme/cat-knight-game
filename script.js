@@ -244,119 +244,85 @@ function showXPGainBubble(xp) {
 
 function selectAnswer(event) {
   const selectedBtn = event.target;
-const selectedAnswer = selectedBtn.dataset.answer;
-const correctAnswer = currentQuestion.answer;
-const allButtons = document.querySelectorAll("#answers-container button");
+  const selectedAnswer = selectedBtn.dataset.answer;
+  const correctAnswer = currentQuestion.answer;
+  const allButtons = document.querySelectorAll("#answers-container button");
 
-attemptCount++;
-allButtons.forEach(btn => btn.disabled = true); // Disable all buttons instantly
+  attemptCount++;
+  allButtons.forEach(btn => btn.disabled = true);
 
-if (selectedAnswer === correctAnswer) {
-  selectedBtn.classList.add("correct");
-
-  const xpEarned = attemptCount === 1 ? getXPGain(currentDifficulty)
-                  : attemptCount === 2 ? Math.floor(getXPGain(currentDifficulty) / 2)
-                  : Math.floor(getXPGain(currentDifficulty) / 3);
-
-gainXP(xpEarned);
-checkSpellUnlocks(); // 🧙‍♂️ Check spell unlocks based on new XP
-
-// 🔓 Check for unlocks
-const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
-const unlockedWizard = currentDifficulty === "scholar" && checkAllZonesCompleted("scholar");
-
-// Mark them as unlocked
-if (unlockedScholar) unlockedDifficulties.push("scholar");
-if (unlockedWizard) unlockedDifficulties.push("wizard");
-localStorage.setItem("unlockedDifficulties", JSON.stringify(unlockedDifficulties));
-
-// 🔥 Optional: Streak bonus if first try
-const streakIncreased = attemptCount === 1;
-
-// Show result screen
-showResultScreen(true, currentQuestion, xpEarned, streakIncreased, unlockedScholar, unlockedWizard);
-} else {
-  selectedBtn.classList.add("incorrect");
-  showFeedback("❌ Try again!", false);
-  selectedBtn.disabled = true;
-
-  if (attemptCount === 2) {
-    showFeedback("🧠 Here's a hint!", false);
-    autoShowHint(); // we’ll define this next if needed
-  } else if (attemptCount >= 3) {
-showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
-// hide unselected answers
-allButtons.forEach((btn) => {
-  if (btn !== selectedBtn) {
-    btn.style.display = "none";
-  }
-});
-
-if (!streakIncreased) {
-  const feedback = document.getElementById("feedback-message");
   const isCorrect = selectedAnswer === correctAnswer;
-  feedback.classList.remove("hidden", "correct", "wrong", "show");
-  void feedback.offsetWidth;
-  feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
 
-  setTimeout(() => {
-    feedback.classList.remove("show", "feedback-bounce");
-    feedback.classList.add("hidden");
-  }, 3000);
-}
-}
+  if (isCorrect) {
+    selectedBtn.classList.add("correct");
 
-allButtons.forEach((btn) => {
-  if (btn !== selectedBtn) {
-    btn.style.display = "none";
+    const xpEarned =
+      attemptCount === 1
+        ? getXPGain(currentDifficulty)
+        : attemptCount === 2
+        ? Math.floor(getXPGain(currentDifficulty) / 2)
+        : Math.floor(getXPGain(currentDifficulty) / 3);
+
+    gainXP(xpEarned);
+    checkSpellUnlocks();
+
+    const unlockedScholar =
+      currentDifficulty === "novice" &&
+      checkAllZonesCompleted("novice");
+    const unlockedWizard =
+      currentDifficulty === "scholar" &&
+      checkAllZonesCompleted("scholar");
+
+    if (unlockedScholar) unlockedDifficulties.push("scholar");
+    if (unlockedWizard) unlockedDifficulties.push("wizard");
+
+    localStorage.setItem(
+      "unlockedDifficulties",
+      JSON.stringify(unlockedDifficulties)
+    );
+
+    const streakIncreased = attemptCount === 1;
+
+    showResultScreen(
+      true,
+      currentQuestion,
+      xpEarned,
+      streakIncreased,
+      unlockedScholar,
+      unlockedWizard
+    );
+  } else {
+    selectedBtn.classList.add("incorrect");
+    selectedBtn.disabled = true;
+
+    const feedback = document.getElementById("feedback-message");
+
+    if (attemptCount === 2) {
+      showFeedback("🧠 Here's a hint!", false);
+      autoShowHint();
+    } else if (attemptCount >= 3) {
+      showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+
+      allButtons.forEach((btn) => {
+        if (btn !== selectedBtn) {
+          btn.style.display = "none";
+        }
+      });
+
+      const xpEarned = 0;
+      streak = 0;
+
+      updateStats();
+      updateSpellDisplay();
+
+      setTimeout(() => {
+        showDifficulties(currentZone);
+        goToMain();
+      }, 7000);
+    } else {
+      showFeedback("❌ Try again!", false);
+    }
   }
-});
-void feedback.offsetWidth; // force reflow
-feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
-
-setTimeout(() => {
-  feedback.classList.remove("show", "feedback-bounce");
-  feedback.classList.add("hidden");
-}, 3000);
-
-const xpEarned = selectedAnswer === correctAnswer ? getXPGain(currentDifficulty) : 0;
-if (xpEarned > 0) {
-  xp += xpEarned;
-
-  const today = new Date().toISOString().split("T")[0];
-  const lastPlayDate = localStorage.getItem("lastPlayDate");
-
-  let streakIncreased = false;
-  if (lastPlayDate !== today) {
-    streak++;
-    localStorage.setItem("lastPlayDate", today);
-    localStorage.setItem("streak", streak);
-    streakIncreased = true;
-  }
-
-let unlockedScholar = false;
-let unlockedWizard = false;
-
-if (selectedAnswer === correctAnswer) {
-  ({ unlockedScholar, unlockedWizard } = unlockNextDifficulty(currentZone, currentDifficulty));
-}
-  
-showResultScreen(isCorrect, currentQuestion, xpEarned, streakIncreased, unlockedScholar, unlockedWizard);
-} else {
-  streak = 0;
-}
-
-  updateStats();
-  updateSpellDisplay();
-
-setTimeout(() => {
-  feedback.classList.add("hidden");
-
-  // 🔧 Redraw difficulty screen to reflect unlock
-  showDifficulties(currentZone);
-
-  goToMain();
-}, 7000);
 }
 
 function showFeedback(message, isCorrect) {
