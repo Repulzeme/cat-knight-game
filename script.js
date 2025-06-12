@@ -9,6 +9,7 @@ let usedEliminate = false;
 let usedHint = false;
 let remainingQuestions = [];
 let attemptCount = 0;
+let unlockedSpells = JSON.parse(localStorage.getItem("unlockedSpells")) || [];
 
 const xpDisplay = document.getElementById("xp-stats");
 const zoneButtons = document.getElementById("zone-buttons");
