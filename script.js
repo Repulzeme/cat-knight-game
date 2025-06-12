@@ -263,59 +263,45 @@ function selectAnswer(event) {
   const isCorrect = selectedAnswer === correctAnswer;
 
 if (isCorrect) {
-  // Existing code:
   selectedBtn.classList.add("correct");
 
-  // ADD THIS block to mark the current zone as completed:
+  const xpEarned = (
+    attemptCount === 1 ? getXPGain(currentDifficulty) :
+    attemptCount === 2 ? Math.floor(getXPGain(currentDifficulty) / 2) :
+    Math.floor(getXPGain(currentDifficulty) / 3)
+  );
+  gainXP(xpEarned);
+  checkSpellUnlocks();
+
+  // ✅ Mark zone difficulty as completed
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
-  if (!completedZones[currentZone]) {
-    completedZones[currentZone] = [];
-  }
+  if (!completedZones[currentZone]) completedZones[currentZone] = [];
   if (!completedZones[currentZone].includes(currentDifficulty)) {
     completedZones[currentZone].push(currentDifficulty);
     localStorage.setItem("completedZones", JSON.stringify(completedZones));
   }
 
-  // ...then keep your xp gain / spell check / difficulty unlock logic
-}
+  // ✅ Check difficulty unlocks
+  let unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
+  const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
+  const unlockedWizard = currentDifficulty === "scholar" && checkAllZonesCompleted("scholar");
 
-    const xpEarned =
-      attemptCount === 1
-        ? getXPGain(currentDifficulty)
-        : attemptCount === 2
-        ? Math.floor(getXPGain(currentDifficulty) / 2)
-        : Math.floor(getXPGain(currentDifficulty) / 3);
+  if (unlockedScholar && !unlockedDifficulties.includes("scholar")) unlockedDifficulties.push("scholar");
+  if (unlockedWizard && !unlockedDifficulties.includes("wizard")) unlockedDifficulties.push("wizard");
 
-    gainXP(xpEarned);
-    checkSpellUnlocks();
+  localStorage.setItem("unlockedDifficulties", JSON.stringify(unlockedDifficulties));
 
-let unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
+  const streakIncreased = attemptCount === 1;
 
-    const unlockedScholar =
-      currentDifficulty === "novice" &&
-      checkAllZonesCompleted("novice");
-    const unlockedWizard =
-      currentDifficulty === "scholar" &&
-      checkAllZonesCompleted("scholar");
+  showResultScreen(
+    true,
+    currentQuestion,
+    xpEarned,
+    streakIncreased,
+    unlockedScholar,
+    unlockedWizard
+  );
 
-    if (unlockedScholar) unlockedDifficulties.push("scholar");
-    if (unlockedWizard) unlockedDifficulties.push("wizard");
-
-    localStorage.setItem(
-      "unlockedDifficulties",
-      JSON.stringify(unlockedDifficulties)
-    );
-
-    const streakIncreased = attemptCount === 1;
-
-    showResultScreen(
-      true,
-      currentQuestion,
-      xpEarned,
-      streakIncreased,
-      unlockedScholar,
-      unlockedWizard
-    );
   } else {
     selectedBtn.classList.add("incorrect");
     selectedBtn.disabled = true;
