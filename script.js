@@ -271,13 +271,24 @@ setTimeout(() => loadNextQuestion(), 1200);
     autoShowHint(); // we’ll define this next if needed
   } else if (attemptCount >= 3) {
 showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+// hide unselected answers
 allButtons.forEach((btn) => {
-  if (btn.dataset.answer === correctAnswer) {
-    btn.classList.add("correct");
+  if (btn !== selectedBtn) {
+    btn.style.display = "none";
   }
 });
-allButtons.forEach(btn => btn.disabled = true); // 👈 add this
-setTimeout(() => loadNextQuestion(), 1500);
+
+// restore feedback animation logic 👇
+const feedback = document.getElementById("feedback-message");
+const isCorrect = selectedAnswer === correctAnswer;
+feedback.classList.remove("hidden", "correct", "wrong", "show");
+void feedback.offsetWidth;
+feedback.classList.add("show", isCorrect ? "correct" : "wrong", "feedback-bounce");
+
+setTimeout(() => {
+  feedback.classList.remove("show", "feedback-bounce");
+  feedback.classList.add("hidden");
+}, 3000);
   }
 }
 
