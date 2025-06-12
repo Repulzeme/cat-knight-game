@@ -74,6 +74,13 @@ button.locked {
   color: #f1fa8c;
 }
 
+#hint-container {
+  margin-top: 1rem;
+  font-style: italic;
+  font-size: 1.1em;
+  color: #ffcc00;
+}
+
 #zone-buttons,
 #difficulty-buttons {
   display: flex;
