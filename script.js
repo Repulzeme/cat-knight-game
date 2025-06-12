@@ -184,10 +184,14 @@ function loadNextQuestion() {
 
 function renderQuestion() {
   const q = currentQuestion;
-  attemptCount = 0; // 👈 Add this here
+  attemptCount = 0;
 
   const questionTextDiv = document.getElementById("question-text");
   questionTextDiv.textContent = q.question;
+
+  const hintDiv = document.getElementById("hint-container");
+  hintDiv.textContent = "";
+  hintDiv.classList.add("hidden");
 
   const answersHTML = q.options
     .map(opt => {
@@ -253,9 +257,10 @@ if (selectedAnswer === correctAnswer) {
                   : attemptCount === 2 ? Math.floor(getXPGain(currentDifficulty) / 2)
                   : Math.floor(getXPGain(currentDifficulty) / 3);
 
-  showFeedback(`✅ Correct! +${xpEarned} XP`, true);
-  gainXP(xpEarned); // we’ll define gainXP if needed next
-  setTimeout(() => loadNextQuestion(), 1200);
+showFeedback(`✅ Correct! +${xpEarned} XP`, true);
+gainXP(xpEarned);
+allButtons.forEach(btn => btn.disabled = true); // 👈 add this
+setTimeout(() => loadNextQuestion(), 1200);
 } else {
   selectedBtn.classList.add("incorrect");
   showFeedback("❌ Try again!", false);
@@ -265,13 +270,14 @@ if (selectedAnswer === correctAnswer) {
     showFeedback("🧠 Here's a hint!", false);
     autoShowHint(); // we’ll define this next if needed
   } else if (attemptCount >= 3) {
-    showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
-    allButtons.forEach((btn) => {
-      if (btn.dataset.answer === correctAnswer) {
-        btn.classList.add("correct");
-      }
-    });
-    setTimeout(() => loadNextQuestion(), 1500);
+showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+allButtons.forEach((btn) => {
+  if (btn.dataset.answer === correctAnswer) {
+    btn.classList.add("correct");
+  }
+});
+allButtons.forEach(btn => btn.disabled = true); // 👈 add this
+setTimeout(() => loadNextQuestion(), 1500);
   }
 }
 
