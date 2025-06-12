@@ -273,6 +273,8 @@ function selectAnswer(event) {
     gainXP(xpEarned);
     checkSpellUnlocks();
 
+let unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
+
     const unlockedScholar =
       currentDifficulty === "novice" &&
       checkAllZonesCompleted("novice");
