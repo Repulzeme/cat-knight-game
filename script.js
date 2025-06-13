@@ -302,7 +302,7 @@ function selectAnswer(event) {
   } else {
     selectedBtn.classList.add("incorrect");
     selectedBtn.disabled = true;
-    selectedBtn.style.opacity = "0.5";
+    selectedBtn.classList.add("fade-out");
 
     if (attemptCount === 2) {
       showFeedback("💡 Here's a hint!", false);
