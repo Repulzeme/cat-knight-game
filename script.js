@@ -424,15 +424,14 @@ function unlockNextDifficulty(zone, difficulty) {
 }
 
 function checkSpellUnlocks() {
-  if (!unlockedSpells.includes("hint") && xp >= 200) {
-    unlockedSpells.push("hint");
-    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
-    updateSpellDisplay();
-  }
-  if (!unlockedSpells.includes("eliminate") && xp >= 500) {
-    unlockedSpells.push("eliminate");
-    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
-    updateSpellDisplay();
+  const eliminateUnlocked = localStorage.getItem("eliminateUnlocked") === "true";
+
+  const xp = getXP();
+  const allScholarDone = checkAllZonesCompleted("scholar");
+
+  if (!eliminateUnlocked && (xp >= 500 || allScholarDone)) {
+    localStorage.setItem("eliminateUnlocked", "true");
+    document.getElementById("eliminate-msg").textContent = "❌ Eliminate unlocked!";
   }
 }
 
