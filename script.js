@@ -433,14 +433,27 @@ function unlockNextDifficulty(zone, difficulty) {
 }
 
 function checkSpellUnlocks() {
-  const eliminateUnlocked = localStorage.getItem("eliminateUnlocked") === "true";
+  const xp = parseInt(localStorage.getItem("xp") || "0", 10);
+  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+  const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
 
-  const xp = getXP();
-  const allScholarDone = checkAllZonesCompleted("scholar");
+  const allZones = ["geography", "history", "sports", "stage", "daily"];
+  const scholarZonesCompleted = allZones.every(zone =>
+    completedZones[zone] && completedZones[zone].includes("scholar")
+  );
 
-  if (!eliminateUnlocked && (xp >= 500 || allScholarDone)) {
-    localStorage.setItem("eliminateUnlocked", "true");
-    document.getElementById("eliminate-msg").textContent = "❌ Eliminate unlocked!";
+  const eliminateUnlocked = xp >= 500 || scholarZonesCompleted;
+  const eliminateBtn = document.getElementById("eliminate-btn");
+  const eliminateMsg = document.getElementById("eliminate-msg");
+
+  if (eliminateUnlocked) {
+    eliminateBtn.classList.remove("hidden");
+    eliminateMsg.textContent = "🗑️ Eliminate unlocked!";
+    eliminateMsg.classList.remove("hidden");
+  } else {
+    eliminateBtn.classList.add("hidden");
+    eliminateMsg.textContent = "🔒 Eliminate unlocks at 500 Knowledge or all Scholar zones";
+    eliminateMsg.classList.remove("hidden");
   }
 }
 
