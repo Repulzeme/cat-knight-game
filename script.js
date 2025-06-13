@@ -258,7 +258,6 @@ function selectAnswer(event) {
   const allButtons = document.querySelectorAll("#answers-container button");
 
   attemptCount++;
-  allButtons.forEach(btn => btn.disabled = true);
 
   const isCorrect = selectedAnswer === correctAnswer;
 
@@ -311,29 +310,25 @@ if (isCorrect) {
     if (attemptCount === 2) {
       showFeedback("🧠 Here's a hint!", false);
       autoShowHint();
-    } else if (attemptCount >= 3) {
-      showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+} else {
+  selectedBtn.classList.add("wrong");
+  selectedBtn.disabled = true;
+  selectedBtn.style.opacity = "0.5";
 
-      allButtons.forEach((btn) => {
-        if (btn !== selectedBtn) {
-          btn.style.display = "none";
-        }
-      });
+  const feedback = document.getElementById("feedback-message");
 
-      const xpEarned = 0;
-      streak = 0;
+  if (attemptCount === 2) {
+    showFeedback("💡 Here's a hint!", false);
+    autoShowHint();
+  } else if (attemptCount >= 3) {
+    showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
-      updateStats();
-      updateSpellDisplay();
-
-      setTimeout(() => {
-        showDifficulties(currentZone);
-        goToMain();
-      }, 7000);
-    } else {
-      showFeedback("❌ Try again!", false);
-    }
+    // Final attempt — disable all remaining buttons
+    allButtons.forEach(btn => btn.disabled = true);
+  } else {
+    showFeedback("❌ Try again!", false);
   }
+}
 }
 
 function showFeedback(message, isCorrect) {
