@@ -223,6 +223,15 @@ button.locked {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0.5; }
+}
+
+.fade-out {
+  animation: fadeOut 1s ease forwards;
+}
+
 #result-unlock {
   font-size: 1.1rem;
   font-weight: bold;
