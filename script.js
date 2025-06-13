@@ -307,16 +307,25 @@ function selectAnswer(event) {
     if (attemptCount === 2) {
       showFeedback("💡 Here's a hint!", false);
       autoShowHint();
-    } else if (attemptCount >= 3) {
-      showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+} else if (attemptCount >= 3) {
+  showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
-      allButtons.forEach(btn => {
-        btn.disabled = true;
-      });
+  allButtons.forEach(btn => {
+    btn.disabled = true;
+  });
 
-    } else {
-      showFeedback("❌ Try again!", false);
-    }
+  // Auto-return to difficulty menu after 2.5s
+  setTimeout(() => {
+    goToMain();
+  }, 2500);
+}
+} else {
+  showFeedback("❌ Try again!", false);
+
+  // Remove access to spells after first try
+  document.getElementById("hint-btn").classList.add("hidden");
+  document.getElementById("eliminate-btn").classList.add("hidden");
+}
   }
 }
 
