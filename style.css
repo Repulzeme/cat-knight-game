@@ -168,6 +168,7 @@ button.locked {
 
 .feedback-msg.show {
   animation: bounce-in 2.5s ease-out forwards;
+  opacity: 1 !important;
 }
 
 .feedback-bounce {
