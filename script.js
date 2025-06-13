@@ -261,74 +261,63 @@ function selectAnswer(event) {
 
   const isCorrect = selectedAnswer === correctAnswer;
 
-if (isCorrect) {
-  selectedBtn.classList.add("correct");
+  if (isCorrect) {
+    selectedBtn.classList.add("correct");
 
-  const xpEarned = (
-    attemptCount === 1 ? getXPGain(currentDifficulty) :
-    attemptCount === 2 ? Math.floor(getXPGain(currentDifficulty) / 2) :
-    Math.floor(getXPGain(currentDifficulty) / 3)
-  );
-  gainXP(xpEarned);
-  checkSpellUnlocks();
+    const xpEarned = (
+      attemptCount === 1 ? getXPGain(currentDifficulty) :
+      attemptCount === 2 ? Math.floor(getXPGain(currentDifficulty) / 2) :
+      Math.floor(getXPGain(currentDifficulty) / 3)
+    );
+    gainXP(xpEarned);
+    checkSpellUnlocks();
 
-  // ✅ Mark zone difficulty as completed
-  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
-  if (!completedZones[currentZone]) completedZones[currentZone] = [];
-  if (!completedZones[currentZone].includes(currentDifficulty)) {
-    completedZones[currentZone].push(currentDifficulty);
-    localStorage.setItem("completedZones", JSON.stringify(completedZones));
-  }
+    const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+    if (!completedZones[currentZone]) completedZones[currentZone] = [];
+    if (!completedZones[currentZone].includes(currentDifficulty)) {
+      completedZones[currentZone].push(currentDifficulty);
+      localStorage.setItem("completedZones", JSON.stringify(completedZones));
+    }
 
-  // ✅ Check difficulty unlocks
-  let unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
-  const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
-  const unlockedWizard = currentDifficulty === "scholar" && checkAllZonesCompleted("scholar");
+    let unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
+    const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
+    const unlockedWizard = currentDifficulty === "scholar" && checkAllZonesCompleted("scholar");
 
-  if (unlockedScholar && !unlockedDifficulties.includes("scholar")) unlockedDifficulties.push("scholar");
-  if (unlockedWizard && !unlockedDifficulties.includes("wizard")) unlockedDifficulties.push("wizard");
+    if (unlockedScholar && !unlockedDifficulties.includes("scholar")) unlockedDifficulties.push("scholar");
+    if (unlockedWizard && !unlockedDifficulties.includes("wizard")) unlockedDifficulties.push("wizard");
 
-  localStorage.setItem("unlockedDifficulties", JSON.stringify(unlockedDifficulties));
+    localStorage.setItem("unlockedDifficulties", JSON.stringify(unlockedDifficulties));
 
-  const streakIncreased = attemptCount === 1;
+    const streakIncreased = attemptCount === 1;
 
-  showResultScreen(
-    true,
-    currentQuestion,
-    xpEarned,
-    streakIncreased,
-    unlockedScholar,
-    unlockedWizard
-  );
+    showResultScreen(
+      true,
+      currentQuestion,
+      xpEarned,
+      streakIncreased,
+      unlockedScholar,
+      unlockedWizard
+    );
 
   } else {
     selectedBtn.classList.add("incorrect");
     selectedBtn.disabled = true;
-
-    const feedback = document.getElementById("feedback-message");
+    selectedBtn.style.opacity = "0.5";
 
     if (attemptCount === 2) {
-      showFeedback("🧠 Here's a hint!", false);
+      showFeedback("💡 Here's a hint!", false);
       autoShowHint();
-} else {
-  selectedBtn.classList.add("wrong");
-  selectedBtn.disabled = true;
-  selectedBtn.style.opacity = "0.5";
+    } else if (attemptCount >= 3) {
+      showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
-  const feedback = document.getElementById("feedback-message");
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+      });
 
-  if (attemptCount === 2) {
-    showFeedback("💡 Here's a hint!", false);
-    autoShowHint();
-  } else if (attemptCount >= 3) {
-    showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
-
-    // Final attempt — disable all remaining buttons
-    allButtons.forEach(btn => btn.disabled = true);
-  } else {
-    showFeedback("❌ Try again!", false);
+    } else {
+      showFeedback("❌ Try again!", false);
+    }
   }
-}
 }
 
 function showFeedback(message, isCorrect) {
