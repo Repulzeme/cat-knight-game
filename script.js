@@ -299,33 +299,34 @@ function selectAnswer(event) {
       unlockedWizard
     );
 
-  } else {
-    selectedBtn.classList.add("incorrect");
-    selectedBtn.disabled = true;
-    selectedBtn.classList.add("fade-out");
-
-    if (attemptCount === 2) {
-      showFeedback("💡 Here's a hint!", false);
-      autoShowHint();
-} else if (attemptCount >= 3) {
-  showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
-
-  allButtons.forEach(btn => {
-    btn.disabled = true;
-  });
-
-  // Auto-return to difficulty menu after 2.5s
-  setTimeout(() => {
-    goToMain();
-  }, 2500);
-}
 } else {
-  showFeedback("❌ Try again!", false);
+  selectedBtn.classList.add("incorrect");
+  selectedBtn.disabled = true;
+  selectedBtn.classList.add("fade-out");
 
-  // Remove access to spells after first try
-  document.getElementById("hint-btn").classList.add("hidden");
-  document.getElementById("eliminate-btn").classList.add("hidden");
-}
+  // ❌ Hide spell buttons after first wrong try
+  if (attemptCount === 2) {
+    document.getElementById("hint-btn").classList.add("hidden");
+    document.getElementById("eliminate-btn").classList.add("hidden");
+  }
+
+  if (attemptCount === 2) {
+    showFeedback("💡 Here's a hint!", false);
+    autoShowHint();
+  } else if (attemptCount >= 3) {
+    showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+
+    allButtons.forEach(btn => {
+      btn.disabled = true;
+    });
+
+    // Auto-return to difficulty menu after 2.5s
+    setTimeout(() => {
+      goToMain();
+    }, 2500);
+  } else {
+    showFeedback("❌ Try again!", false);
+  }
   }
 }
 
