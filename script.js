@@ -414,28 +414,29 @@ function goToMain() {
 }
 
 function useHint() {
-  if (usedHint) return;
-  usedHint = true;
-  const hintBox = document.getElementById("hint-msg");
-  hintBox.textContent = `💡 Hint: ${currentQuestion.hint || "No hint available."}`;
+  const hintContainer = document.getElementById("hint-container");
+  const currentHint = currentQuestion.hint || "No hint available.";
+  hintContainer.textContent = `🪄 Hint: ${currentHint}`;
+  hintContainer.classList.remove("hidden");
+
+  const hintBtn = document.getElementById("hint-btn");
+  hintBtn.classList.add("hidden"); // 👈 Hide after use
 }
 
 function useEliminate() {
-  if (usedEliminate) return;
+  const allButtons = document.querySelectorAll("#answers-container button");
+  let removed = 0;
 
-  const buttons = Array.from(document.querySelectorAll("#question-container .answer-btn"));
-  const wrongButtons = buttons.filter(btn => btn.dataset.correct !== "true");
+  allButtons.forEach(btn => {
+    if (!btn.dataset.answer.includes(currentQuestion.answer) && removed < 2) {
+      btn.classList.add("fade-out");
+      setTimeout(() => btn.style.display = "none", 600);
+      removed++;
+    }
+  });
 
-  if (wrongButtons.length < 2) return;
-
-  const toRemove = [];
-  while (toRemove.length < 2) {
-    const rand = wrongButtons[Math.floor(Math.random() * wrongButtons.length)];
-    if (!toRemove.includes(rand)) toRemove.push(rand);
-  }
-
-  toRemove.forEach(btn => btn.classList.add("hidden"));
-  usedEliminate = true;
+  const eliminateBtn = document.getElementById("eliminate-btn");
+  eliminateBtn.classList.add("hidden"); // 👈 Hide after use
 }
 
 function checkStreak() {
