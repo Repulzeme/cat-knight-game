@@ -452,18 +452,35 @@ function checkSpellUnlocks() {
     completedZones[zone] && completedZones[zone].includes("scholar")
   );
 
+  const hintUnlocked = xp >= 200 || allZones.every(zone =>
+    completedZones[zone] && completedZones[zone].includes("novice")
+  );
+
   const eliminateUnlocked = xp >= 500 || scholarZonesCompleted;
   const eliminateBtn = document.getElementById("eliminate-btn");
   const eliminateMsg = document.getElementById("eliminate-msg");
 
   if (eliminateUnlocked) {
     eliminateBtn.classList.remove("hidden");
-    eliminateMsg.textContent = "🗑️ Eliminate unlocked!";
+    eliminateMsg.textContent = "❌ Eliminate unlocked!";
     eliminateMsg.classList.remove("hidden");
   } else {
     eliminateBtn.classList.add("hidden");
     eliminateMsg.textContent = "🔒 Eliminate unlocks at 500 Knowledge or all Scholar zones";
     eliminateMsg.classList.remove("hidden");
+  }
+
+  const hintBtn = document.getElementById("hint-btn");
+  const hintMsg = document.getElementById("hint-msg");
+
+  if (hintUnlocked) {
+    hintBtn.classList.remove("hidden");
+    hintMsg.textContent = "💡 Hint unlocked!";
+    hintMsg.classList.remove("hidden");
+  } else {
+    hintBtn.classList.add("hidden");
+    hintMsg.textContent = "💡 Hint unlocks at 200 Knowledge or all Novice zones";
+    hintMsg.classList.remove("hidden");
   }
 }
 
