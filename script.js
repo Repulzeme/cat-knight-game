@@ -321,13 +321,12 @@ document.getElementById("eliminate-msg").classList.add("hidden");
 } else if (attemptCount >= 3) {
   showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
-  allButtons.forEach(btn => {
-    btn.disabled = true;
-    if (btn.classList.contains("incorrect")) {
-      btn.style.transition = "opacity 1s ease";
-      btn.style.opacity = "0.3";
-    }
-  });
+allButtons.forEach(btn => {
+  btn.disabled = true;
+  if (btn !== selectedBtn) {
+    btn.classList.add("fade-out");
+  }
+});
 
     // Auto-return to difficulty menu after 2.5s
     setTimeout(() => {
