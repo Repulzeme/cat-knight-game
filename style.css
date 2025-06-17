@@ -260,3 +260,8 @@ button.locked {
   60% { transform: scale(0.95); }
   100% { transform: scale(1); }
 }
+
+.subtle-msg {
+  color: gray;
+  font-style: italic;
+}
