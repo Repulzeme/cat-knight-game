@@ -306,8 +306,12 @@ if (!completedZones[currentZone].includes(currentDifficulty)) {
 
 } else {
   selectedBtn.classList.add("incorrect");
+  selectedBtn.style.transition = "opacity 0.6s ease";
+  selectedBtn.style.opacity = "0";
   selectedBtn.disabled = true;
-  selectedBtn.classList.add("fade-out");
+  setTimeout(() => {
+    selectedBtn.style.display = "none";
+  }, 600);
 
  // ❌ Hide spell buttons AND their messages after first wrong try
 document.getElementById("hint-btn").classList.add("hidden");
