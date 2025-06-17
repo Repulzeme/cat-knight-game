@@ -489,12 +489,19 @@ function checkSpellUnlocks() {
   const hintBtn = document.getElementById("hint-btn");
   const eliminateBtn = document.getElementById("eliminate-btn");
 
+const hintMsg = document.getElementById("hint-msg");
+const eliminateMsg = document.getElementById("eliminate-msg");
+
+hintMsg.classList.remove("hidden");
+eliminateMsg.classList.remove("hidden");
+
   // ✅ Only show buttons when unlocked — messages stay visible
-  if (hintUnlocked) {
-    hintBtn.classList.remove("hidden");
-  } else {
-    hintBtn.classList.add("hidden");
-  }
+if (hintUnlocked) {
+  hintBtn.classList.remove("hidden");
+  hintBtn.disabled = false;
+} else {
+  hintBtn.classList.add("hidden");
+}
 
   if (eliminateUnlocked) {
     localStorage.setItem("eliminateUnlocked", "true");
