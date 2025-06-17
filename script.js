@@ -304,11 +304,11 @@ function selectAnswer(event) {
   selectedBtn.disabled = true;
   selectedBtn.classList.add("fade-out");
 
-  // ❌ Hide spell buttons after first wrong try
-  if (attemptCount === 2) {
-    document.getElementById("hint-btn").classList.add("hidden");
-    document.getElementById("eliminate-btn").classList.add("hidden");
-  }
+ // ❌ Hide spell buttons AND their messages after first wrong try
+document.getElementById("hint-btn").classList.add("hidden");
+document.getElementById("eliminate-btn").classList.add("hidden");
+document.getElementById("hint-msg").classList.add("hidden");
+document.getElementById("eliminate-msg").classList.add("hidden");
 
   if (attemptCount === 2) {
     showFeedback("💡 Here's a hint!", false);
