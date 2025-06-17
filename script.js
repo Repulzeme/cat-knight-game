@@ -277,12 +277,12 @@ function selectAnswer(event) {
     gainXP(xpEarned);
     checkSpellUnlocks();
 
-    const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
-    if (!completedZones[currentZone]) completedZones[currentZone] = [];
-    if (!completedZones[currentZone].includes(currentDifficulty)) {
-      completedZones[currentZone].push(currentDifficulty);
-      localStorage.setItem("completedZones", JSON.stringify(completedZones));
-    }
+const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+if (!completedZones[currentZone]) completedZones[currentZone] = [];
+if (!completedZones[currentZone].includes(currentDifficulty)) {
+  completedZones[currentZone].push(currentDifficulty);
+  localStorage.setItem("completedZones", JSON.stringify(completedZones));
+}
 
     let unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
     const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
@@ -447,6 +447,8 @@ function checkSpellUnlocks() {
   const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
 
   const allZones = ["geography", "history", "sports", "stage", "daily"];
+console.log("Completed zones:", completedZones);
+console.log("Scholar zones completed?", scholarZonesCompleted);
   const scholarZonesCompleted = allZones.every(zone =>
     completedZones[zone] && completedZones[zone].includes("scholar")
   );
