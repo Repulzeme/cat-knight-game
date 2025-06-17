@@ -230,6 +230,8 @@ button.locked {
 
 .fade-out {
   animation: fadeOut 1s ease forwards;
+  pointer-events: none;
+  filter: brightness(0.7);
 }
 
 #result-unlock {
