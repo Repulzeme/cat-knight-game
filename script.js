@@ -476,12 +476,12 @@ function checkSpellUnlocks() {
   const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
 
   const allZones = ["geography", "history", "sports", "stage", "daily"];
-  const scholarZonesCompleted = allZones.every(zone =>
-    completedZones[zone] && completedZones[zone].includes("scholar")
-  );
-  const noviceZonesCompleted = allZones.every(zone =>
-    completedZones[zone] && completedZones[zone].includes("novice")
-  );
+const scholarZonesCompleted = allZones.every(zone =>
+  (completedZones[zone] || []).includes("scholar")
+);
+const noviceZonesCompleted = allZones.every(zone =>
+  (completedZones[zone] || []).includes("novice")
+);
 
   const hintUnlocked = xp >= 200 || noviceZonesCompleted;
   const eliminateUnlocked = xp >= 500 || scholarZonesCompleted;
@@ -494,6 +494,17 @@ const eliminateMsg = document.getElementById("eliminate-msg");
 
 hintMsg.classList.remove("hidden");
 eliminateMsg.classList.remove("hidden");
+
+// ✅ Show spell unlock messages only once
+if (hintUnlocked && !localStorage.getItem("hintPopupShown")) {
+  showFeedback("✅ Hint spell unlocked!", false);
+  localStorage.setItem("hintPopupShown", "true");
+}
+
+if (eliminateUnlocked && !localStorage.getItem("eliminatePopupShown")) {
+  showFeedback("✅ Eliminate spell unlocked!", false);
+  localStorage.setItem("eliminatePopupShown", "true");
+}
 
   // ✅ Only show buttons when unlocked — messages stay visible
 if (hintUnlocked) {
