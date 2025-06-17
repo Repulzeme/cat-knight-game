@@ -447,41 +447,31 @@ function checkSpellUnlocks() {
   const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
 
   const allZones = ["geography", "history", "sports", "stage", "daily"];
-console.log("Completed zones:", completedZones);
-console.log("Scholar zones completed?", scholarZonesCompleted);
   const scholarZonesCompleted = allZones.every(zone =>
     completedZones[zone] && completedZones[zone].includes("scholar")
   );
-
-  const hintUnlocked = xp >= 200 || allZones.every(zone =>
+  const noviceZonesCompleted = allZones.every(zone =>
     completedZones[zone] && completedZones[zone].includes("novice")
   );
 
+  const hintUnlocked = xp >= 200 || noviceZonesCompleted;
   const eliminateUnlocked = xp >= 500 || scholarZonesCompleted;
-  const eliminateBtn = document.getElementById("eliminate-btn");
-  const eliminateMsg = document.getElementById("eliminate-msg");
-
-  if (eliminateUnlocked) {
-    eliminateBtn.classList.remove("hidden");
-    eliminateMsg.textContent = "❌ Eliminate unlocked!";
-    eliminateMsg.classList.remove("hidden");
-  } else {
-    eliminateBtn.classList.add("hidden");
-    eliminateMsg.textContent = "🔒 Eliminate unlocks at 500 Knowledge or all Scholar zones";
-    eliminateMsg.classList.remove("hidden");
-  }
 
   const hintBtn = document.getElementById("hint-btn");
-  const hintMsg = document.getElementById("hint-msg");
+  const eliminateBtn = document.getElementById("eliminate-btn");
 
+  // ✅ Only show buttons when unlocked — messages stay visible
   if (hintUnlocked) {
     hintBtn.classList.remove("hidden");
-    hintMsg.textContent = "💡 Hint unlocked!";
-    hintMsg.classList.remove("hidden");
   } else {
     hintBtn.classList.add("hidden");
-    hintMsg.textContent = "💡 Hint unlocks at 200 Knowledge or all Novice zones";
-    hintMsg.classList.remove("hidden");
+  }
+
+  if (eliminateUnlocked) {
+    localStorage.setItem("eliminateUnlocked", "true");
+    eliminateBtn.classList.remove("hidden");
+  } else {
+    eliminateBtn.classList.add("hidden");
   }
 }
 
