@@ -323,12 +323,20 @@ document.getElementById("eliminate-msg").classList.add("hidden");
     showFeedback("💡 Here's a hint!", false);
     autoShowHint();
 } else if (attemptCount >= 3) {
-  showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
 allButtons.forEach(btn => {
   btn.disabled = true;
-  if (btn !== selectedBtn) {
-    btn.classList.add("fade-out");
+  if (btn.style.display === "none") return;
+
+  if (btn.dataset.answer !== correctAnswer) {
+    btn.style.transition = "opacity 0.6s ease";
+    btn.style.opacity = "0";
+    setTimeout(() => {
+      btn.style.display = "none";
+    }, 600);
+  } else {
+    btn.classList.add("correct-reveal");
   }
 });
 
