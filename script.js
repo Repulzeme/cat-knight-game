@@ -200,7 +200,7 @@ function renderQuestion() {
   const q = currentQuestion;
   attemptCount = 0;
 // ♻️ Reset and show spell buttons only if unlocked
-const xp = getXP();
+const xp = parseInt(localStorage.getItem("xp") || "0", 10);
 const allZones = ["geography", "history", "sports", "stage", "daily"];
 const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
 
