@@ -213,9 +213,25 @@ const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
 
 const hintBtn = document.getElementById("hint-btn");
 const eliminateBtn = document.getElementById("eliminate-btn");
+// Ensure unlocked spells stay visible when loading questions
+if (localStorage.getItem("hintUnlocked") === "true") {
+  hintBtn.classList.remove("hidden");
+  hintBtn.disabled = false;
+}
+if (localStorage.getItem("eliminateUnlocked") === "true") {
+  eliminateBtn.classList.remove("hidden");
+  eliminateBtn.disabled = false;
+}
 
-if (hintUnlocked) hintBtn.classList.remove("hidden");
-if (eliminateUnlocked) eliminateBtn.classList.remove("hidden");
+// Also apply based on current session (e.g. just unlocked by zones/xp)
+if (hintUnlocked) {
+  hintBtn.classList.remove("hidden");
+  hintBtn.disabled = false;
+}
+if (eliminateUnlocked) {
+  eliminateBtn.classList.remove("hidden");
+  eliminateBtn.disabled = false;
+}
 
   const questionTextDiv = document.getElementById("question-text");
   questionTextDiv.textContent = q.question;
