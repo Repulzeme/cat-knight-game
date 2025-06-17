@@ -199,6 +199,23 @@ function loadNextQuestion() {
 function renderQuestion() {
   const q = currentQuestion;
   attemptCount = 0;
+// ♻️ Reset and show spell buttons only if unlocked
+const xp = getXP();
+const allZones = ["geography", "history", "sports", "stage", "daily"];
+const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+
+const hintUnlocked = xp >= 200 || allZones.every(zone =>
+  completedZones[zone] && completedZones[zone].includes("novice")
+);
+const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
+  completedZones[zone] && completedZones[zone].includes("scholar")
+);
+
+const hintBtn = document.getElementById("hint-btn");
+const eliminateBtn = document.getElementById("eliminate-btn");
+
+if (hintUnlocked) hintBtn.classList.remove("hidden");
+if (eliminateUnlocked) eliminateBtn.classList.remove("hidden");
 
   const questionTextDiv = document.getElementById("question-text");
   questionTextDiv.textContent = q.question;
