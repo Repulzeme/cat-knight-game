@@ -99,6 +99,11 @@ function updateStats() {
 }
 
 function loadQuestions() {
+  // ♻️ Reset spell buttons and messages
+  document.getElementById("hint-btn").classList.remove("hidden");
+  document.getElementById("eliminate-btn").classList.remove("hidden");
+  document.getElementById("hint-msg").classList.remove("hidden");
+  document.getElementById("eliminate-msg").classList.remove("hidden");
   fetch("questions.json")
     .then((res) => res.json())
     .then((data) => {
@@ -313,12 +318,16 @@ document.getElementById("eliminate-msg").classList.add("hidden");
   if (attemptCount === 2) {
     showFeedback("💡 Here's a hint!", false);
     autoShowHint();
-  } else if (attemptCount >= 3) {
-    showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
+} else if (attemptCount >= 3) {
+  showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
-    allButtons.forEach(btn => {
-      btn.disabled = true;
-    });
+  allButtons.forEach(btn => {
+    btn.disabled = true;
+    if (btn.classList.contains("incorrect")) {
+      btn.style.transition = "opacity 1s ease";
+      btn.style.opacity = "0.3";
+    }
+  });
 
     // Auto-return to difficulty menu after 2.5s
     setTimeout(() => {
