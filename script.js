@@ -419,6 +419,7 @@ function useHint() {
 
   const hintBtn = document.getElementById("hint-btn");
   hintBtn.classList.add("hidden"); // 👈 Hide after use
+  usedHint = true;
 }
 
 function useEliminate() {
@@ -435,6 +436,7 @@ function useEliminate() {
 
   const eliminateBtn = document.getElementById("eliminate-btn");
   eliminateBtn.classList.add("hidden"); // 👈 Hide after use
+  usedEliminate = true;
 }
 
 function checkStreak() {
