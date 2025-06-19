@@ -230,6 +230,11 @@ if (hintUnlocked && !usedHint) {
 const elimMsg = document.getElementById("eliminate-msg");
 const visibleOptions = Array.from(document.querySelectorAll("#answers-container button"))
   .filter(btn => btn.style.display != "none");
+// ✅ Hide Eliminate unlock tooltip once Eliminate is actually usable
+const eliminateInfoMsg = document.getElementById("eliminate-msg");
+if (eliminateUnlocked && visibleOptions.length >= 3 && !usedEliminate) {
+  eliminateInfoMsg.classList.add("hidden");
+}
 
 if (eliminateUnlocked && !usedEliminate && visibleOptions.length >= 3) {
   elimMsg.textContent = "✅ Eliminate unlocked!";
