@@ -262,6 +262,8 @@ button.locked {
 }
 
 .subtle-msg {
-  color: gray;
+  font-family: inherit; /* inherits from body or container */
+  font-size: 0.9em;
+  opacity: 0.9;
   font-style: italic;
 }
