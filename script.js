@@ -223,14 +223,17 @@ function renderQuestion() {
     hintMsg.classList.add("hidden");
   }
 
-  // 🎯 Update eliminate message correctly per question
-  const elimMsg = document.getElementById("eliminate-msg");
-  if (eliminateUnlocked) {
-    elimMsg.textContent = "✅ Eliminate unlocked!";
-    elimMsg.classList.remove("hidden");
-  } else {
-    elimMsg.classList.add("hidden");
-  }
+// 🎯 Update eliminate message correctly per question
+const elimMsg = document.getElementById("eliminate-msg");
+const visibleOptions = Array.from(document.querySelectorAll("#answers-container button"))
+  .filter(btn => btn.style.display !== "none");
+
+if (eliminateUnlocked && visibleOptions.length >= 3) {
+  elimMsg.textContent = "✅ Eliminate unlocked!";
+  elimMsg.classList.remove("hidden");
+} else {
+  elimMsg.classList.add("hidden");
+}
 
   // 🎯 Enable spell buttons if unlocked
   const hintBtn = document.getElementById("hint-btn");
