@@ -7,6 +7,8 @@ let currentDifficulty = "";
 let currentQuestion = null;
 let usedEliminate = false;
 let usedHint = false;
+let usedHintThisQuestion = false;
+let usedEliminateThisQuestion = false;
 let remainingQuestions = [];
 let attemptCount = 0;
 let unlockedSpells = JSON.parse(localStorage.getItem("unlockedSpells")) || [];
@@ -201,6 +203,8 @@ function renderQuestion() {
   attemptCount = 0;
   usedHint = false;
   usedEliminate = false;
+  usedHintThisQuestion = false;
+  usedEliminateThisQuestion = false;
 
   const xp = parseInt(localStorage.getItem("xp") || "0", 10);
   const allZones = ["geography", "history", "sports", "stage", "daily"];
@@ -458,6 +462,7 @@ function useHint() {
   hintBtn.classList.add("hidden"); // 👈 Hide after use
   document.getElementById("hint-msg").textContent = "✅ Hint used!";
   usedHint = true;
+  usedHintThisQuestion = true;
 }
 
 function useEliminate() {
@@ -476,6 +481,7 @@ function useEliminate() {
   eliminateBtn.classList.add("hidden"); // 👈 Hide after use
   document.getElementById("eliminate-msg").textContent = "✅ Eliminate used!";
   usedEliminate = true;
+  usedEliminateThisQuestion = true;
 }
 
 function checkStreak() {
