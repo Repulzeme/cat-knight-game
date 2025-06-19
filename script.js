@@ -419,6 +419,7 @@ function useHint() {
 
   const hintBtn = document.getElementById("hint-btn");
   hintBtn.classList.add("hidden"); // 👈 Hide after use
+  document.getElementById("hint-msg").textContent = "✅ Hint used!";
   usedHint = true;
 }
 
@@ -436,6 +437,7 @@ function useEliminate() {
 
   const eliminateBtn = document.getElementById("eliminate-btn");
   eliminateBtn.classList.add("hidden"); // 👈 Hide after use
+  document.getElementById("eliminate-msg").textContent = "✅ Eliminate used!";
   usedEliminate = true;
 }
 
