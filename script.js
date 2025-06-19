@@ -199,38 +199,62 @@ function loadNextQuestion() {
 function renderQuestion() {
   const q = currentQuestion;
   attemptCount = 0;
-usedHint = false;
-usedEliminate = false;
-// ♻️ Reset and show spell buttons only if unlocked
-const xp = parseInt(localStorage.getItem("xp") || "0", 10);
-const allZones = ["geography", "history", "sports", "stage", "daily"];
-const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+  usedHint = false;
+  usedEliminate = false;
 
-const hintUnlocked = xp >= 200 || allZones.every(zone =>
-  completedZones[zone] && completedZones[zone].includes("novice")
-);
-const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
-  completedZones[zone] && completedZones[zone].includes("scholar")
-);
+  const xp = parseInt(localStorage.getItem("xp") || "0", 10);
+  const allZones = ["geography", "history", "sports", "stage", "daily"];
+  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
 
-const hintBtn = document.getElementById("hint-btn");
-const eliminateBtn = document.getElementById("eliminate-btn");
-// Ensure unlocked spells stay visible when loading questions
-// ♻️ Show unlocked spells only if not used on current question
-if ((localStorage.getItem("hintUnlocked") === "true" || hintUnlocked) && !usedHint) {
-  hintBtn.classList.remove("hidden");
-  hintBtn.disabled = false;
-} else {
-  hintBtn.classList.add("hidden");
-}
+  const hintUnlocked = xp >= 200 || allZones.every(zone =>
+    completedZones[zone] && completedZones[zone].includes("novice")
+  );
 
-if ((localStorage.getItem("eliminateUnlocked") === "true" || eliminateUnlocked) && !usedEliminate) {
-  eliminateBtn.classList.remove("hidden");
-  eliminateBtn.disabled = false;
-} else {
-  eliminateBtn.classList.add("hidden");
-}
+  const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
+    completedZones[zone] && completedZones[zone].includes("scholar")
+  );
 
+  // 🎯 Update hint message correctly per question
+  const hintMsg = document.getElementById("hint-msg");
+  if (hintUnlocked) {
+    hintMsg.textContent = "✅ Hint unlocked!";
+    hintMsg.classList.remove("hidden");
+  } else {
+    hintMsg.classList.add("hidden");
+  }
+
+  // 🎯 Update eliminate message correctly per question
+  const elimMsg = document.getElementById("eliminate-msg");
+  if (eliminateUnlocked) {
+    elimMsg.textContent = "✅ Eliminate unlocked!";
+    elimMsg.classList.remove("hidden");
+  } else {
+    elimMsg.classList.add("hidden");
+  }
+
+  // 🎯 Enable spell buttons if unlocked
+  const hintBtn = document.getElementById("hint-btn");
+  const eliminateBtn = document.getElementById("eliminate-btn");
+
+  if (hintUnlocked) {
+    hintBtn.classList.remove("hidden");
+    hintBtn.disabled = false;
+  } else {
+    hintBtn.classList.add("hidden");
+  }
+
+  const visibleOptions = Array.from(document.querySelectorAll("#answers-container button"))
+    .filter(btn => btn.style.display !== "none");
+
+  if (eliminateUnlocked && visibleOptions.length >= 3) {
+    eliminateBtn.classList.remove("hidden");
+    eliminateBtn.disabled = false;
+  } else {
+    eliminateBtn.classList.add("hidden");
+    eliminateBtn.disabled = true;
+  }
+
+  // ✅ continue your normal question rendering below here...
   const questionTextDiv = document.getElementById("question-text");
   questionTextDiv.textContent = q.question;
 
@@ -245,8 +269,7 @@ if ((localStorage.getItem("eliminateUnlocked") === "true" || eliminateUnlocked) 
     })
     .join("");
 
-  const answersContainer = document.getElementById("answers-container");
-  answersContainer.innerHTML = answersHTML;
+  document.getElementById("answers-container").innerHTML = answersHTML;
 }
 
 function getXPGain(difficulty) {
