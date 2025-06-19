@@ -353,7 +353,6 @@ document.getElementById("eliminate-msg").classList.add("hidden");
 if (attemptCount === 2 && !usedHint) {
   showFeedback("💡 Here's a hint!", false);
   autoShowHint();
-}
 } else if (attemptCount >= 3) {
 showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
