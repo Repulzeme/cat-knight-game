@@ -214,22 +214,28 @@ function renderQuestion() {
     completedZones[zone] && completedZones[zone].includes("scholar")
   );
 
-// 🧠 Show "Hint unlocked!" only if unlocked but not used yet
+// ✅ Show Hint message per state
 const hintMsg = document.getElementById("hint-msg");
 if (hintUnlocked && !usedHint) {
   hintMsg.textContent = "✅ Hint unlocked!";
+  hintMsg.classList.remove("hidden");
+} else if (usedHint) {
+  hintMsg.textContent = "✅ Hint used!";
   hintMsg.classList.remove("hidden");
 } else {
   hintMsg.classList.add("hidden");
 }
 
-// 🧠 Show "Eliminate unlocked!" only if unlocked but not used yet
+// ✅ Show Eliminate message per state
 const elimMsg = document.getElementById("eliminate-msg");
 const visibleOptions = Array.from(document.querySelectorAll("#answers-container button"))
   .filter(btn => btn.style.display != "none");
 
-if (eliminateUnlocked && !usedEliminate && visibleOptions.length < 3) {
+if (eliminateUnlocked && !usedEliminate && visibleOptions.length >= 3) {
   elimMsg.textContent = "✅ Eliminate unlocked!";
+  elimMsg.classList.remove("hidden");
+} else if (usedEliminate) {
+  elimMsg.textContent = "✅ Eliminate used!";
   elimMsg.classList.remove("hidden");
 } else {
   elimMsg.classList.add("hidden");
