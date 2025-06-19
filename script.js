@@ -542,14 +542,32 @@ const noviceZonesCompleted = allZones.every(zone =>
   const hintUnlocked = xp >= 200 || noviceZonesCompleted;
   const eliminateUnlocked = xp >= 500 || scholarZonesCompleted;
 
-  const hintBtn = document.getElementById("hint-btn");
-  const eliminateBtn = document.getElementById("eliminate-btn");
-
+const hintBtn = document.getElementById("hint-btn");
+const eliminateBtn = document.getElementById("eliminate-btn");
 const hintMsg = document.getElementById("hint-msg");
 const eliminateMsg = document.getElementById("eliminate-msg");
 
-hintMsg.classList.remove("hidden");
-eliminateMsg.classList.remove("hidden");
+// 🧙‍♂️ HINT
+if (hintUnlocked) {
+  hintBtn.classList.remove("hidden");
+  hintBtn.disabled = false;
+  hintMsg.classList.add("hidden");
+} else {
+  hintBtn.classList.add("hidden");
+  hintMsg.textContent = "🧠 The Hint Spell unlocks at 200 Knowledge or after all Novice difficulties are completed";
+  hintMsg.classList.remove("hidden");
+}
+
+// ⚔️ ELIMINATE
+if (eliminateUnlocked) {
+  eliminateBtn.classList.remove("hidden");
+  eliminateBtn.disabled = false;
+  eliminateMsg.classList.add("hidden");
+} else {
+  eliminateBtn.classList.add("hidden");
+  eliminateMsg.textContent = "❌ The Eliminate Spell unlocks at 500 Knowledge or after all Scholar difficulties are completed";
+  eliminateMsg.classList.remove("hidden");
+}
 
 // ✅ Show spell unlock messages only once
 if (hintUnlocked && !localStorage.getItem("hintPopupShown")) {
