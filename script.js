@@ -199,6 +199,8 @@ function loadNextQuestion() {
 function renderQuestion() {
   const q = currentQuestion;
   attemptCount = 0;
+usedHint = false;
+usedEliminate = false;
 // ♻️ Reset and show spell buttons only if unlocked
 const xp = parseInt(localStorage.getItem("xp") || "0", 10);
 const allZones = ["geography", "history", "sports", "stage", "daily"];
@@ -214,23 +216,19 @@ const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
 const hintBtn = document.getElementById("hint-btn");
 const eliminateBtn = document.getElementById("eliminate-btn");
 // Ensure unlocked spells stay visible when loading questions
-if (localStorage.getItem("hintUnlocked") === "true") {
+// ♻️ Show unlocked spells only if not used on current question
+if ((localStorage.getItem("hintUnlocked") === "true" || hintUnlocked) && !usedHint) {
   hintBtn.classList.remove("hidden");
   hintBtn.disabled = false;
-}
-if (localStorage.getItem("eliminateUnlocked") === "true") {
-  eliminateBtn.classList.remove("hidden");
-  eliminateBtn.disabled = false;
+} else {
+  hintBtn.classList.add("hidden");
 }
 
-// Also apply based on current session (e.g. just unlocked by zones/xp)
-if (hintUnlocked) {
-  hintBtn.classList.remove("hidden");
-  hintBtn.disabled = false;
-}
-if (eliminateUnlocked) {
+if ((localStorage.getItem("eliminateUnlocked") === "true" || eliminateUnlocked) && !usedEliminate) {
   eliminateBtn.classList.remove("hidden");
   eliminateBtn.disabled = false;
+} else {
+  eliminateBtn.classList.add("hidden");
 }
 
   const questionTextDiv = document.getElementById("question-text");
