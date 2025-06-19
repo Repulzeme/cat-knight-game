@@ -350,9 +350,10 @@ document.getElementById("eliminate-btn").classList.add("hidden");
 document.getElementById("hint-msg").classList.add("hidden");
 document.getElementById("eliminate-msg").classList.add("hidden");
 
-  if (attemptCount === 2) {
-    showFeedback("💡 Here's a hint!", false);
-    autoShowHint();
+if (attemptCount === 2 && !usedHint) {
+  showFeedback("💡 Here's a hint!", false);
+  autoShowHint();
+}
 } else if (attemptCount >= 3) {
 showFeedback(`❌ The correct answer was: ${correctAnswer}`, false);
 
