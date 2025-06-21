@@ -219,7 +219,7 @@ function renderQuestion() {
   usedEliminateThisQuestion = false;
 
   const xp = parseInt(localStorage.getItem("xp") || "0", 10);
-  const allZones = ["geography", "history", "sports", "stage", "daily"];
+  const allZones = Object.keys(questionsData);
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
 
   const hintUnlocked = xp >= 200 || allZones.every(zone =>
@@ -572,7 +572,7 @@ function checkSpellUnlocks() {
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
   const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
 
-  const allZones = ["geography", "history", "sports", "stage", "daily"];
+  const allZones = Object.keys(questionsData);
 const scholarZonesCompleted = allZones.every(zone =>
   (completedZones[zone] || []).includes("scholar")
 );
