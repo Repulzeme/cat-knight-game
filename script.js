@@ -173,7 +173,7 @@ function hasCompletedLevel(zone, difficulty, questionText) {
   return completed?.[zone]?.[difficulty]?.includes(questionText);
 }
 
-function checkSpellUnlocks() {
+function checkSpellUnlocks(zone) {
   const xp = parseInt(localStorage.getItem("xp") || "0", 10);
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
   const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
@@ -243,6 +243,8 @@ if (hintUnlocked) {
   } else {
     eliminateBtn.classList.add("hidden");
   }
+const unlockedScholar = completedZones[zone] && completedZones[zone].includes("scholar");
+const unlockedWizard = completedZones[zone] && completedZones[zone].includes("wizard");
 return { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked };
 }
 
@@ -264,7 +266,7 @@ function startQuiz(zone, difficulty) {
   usedEliminate = false;
 
   // 🔁 Add this line right before rendering the question
-  const { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked } = checkSpellUnlocks();
+const { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked } = checkSpellUnlocks(zone);
 
   showScreen("question-screen");
   renderQuestion();
