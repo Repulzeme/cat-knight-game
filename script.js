@@ -12,6 +12,8 @@ let usedEliminateThisQuestion = false;
 let remainingQuestions = [];
 let attemptCount = 0;
 let unlockedSpells = JSON.parse(localStorage.getItem("unlockedSpells")) || [];
+let bossQuestions = [];
+let bossIndex = 0;
 
 const xpDisplay = document.getElementById("xp-stats");
 const zoneButtons = document.getElementById("zone-buttons");
@@ -41,6 +43,87 @@ function checkAllZonesCompleted(difficulty) {
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
   const zones = Object.keys(questionsData);
   return zones.every(zone => completedZones[zone]?.includes(difficulty));
+}
+
+function checkCastleUnlock() {
+  const allCompleted = Object.values(playerProgress).every(
+    zone => zone.novice && zone.scholar && zone.wizard
+  );
+
+  if (allCompleted) {
+    document.getElementById("castle-screen").classList.remove("hidden");
+    console.log("🏰 Castle unlocked!");
+  }
+}
+
+function startCastleBattle() {
+  hideAllScreens();
+  document.getElementById("castle-screen").classList.remove("hidden");
+  bossIndex = 0;
+  renderBossQuestion();
+}
+
+function renderBossQuestion() {
+  const question = bossQuestions[bossIndex];
+  document.getElementById("boss-question-text").textContent = question.question;
+
+  const answersContainer = document.getElementById("boss-answers-container");
+  answersContainer.innerHTML = "";
+
+  question.answers.forEach((answer, index) => {
+    const btn = document.createElement("button");
+    btn.textContent = answer;
+    btn.classList.add("answer-btn");
+
+    btn.addEventListener("click", () => {
+      if (index === question.correct) {
+        bossIndex++;
+        if (bossIndex >= bossQuestions.length) {
+          showCastleVictory();
+        } else {
+          renderBossQuestion();
+        }
+      } else {
+        showFeedback("Wrong! Try again!", "wrong");
+      }
+    });
+
+    answersContainer.appendChild(btn);
+  });
+}
+
+function handleBossAnswer(selectedIndex) {
+  const question = bossQuestions[bossIndex];
+  if (selectedIndex === question.correct) {
+    bossIndex++;
+    if (bossIndex < bossQuestions.length) {
+      renderBossQuestion();
+    } else {
+      showCastleVictory();
+    }
+  } else {
+    // Optional: Add incorrect feedback here
+    alert("Wrong! Try again.");
+  }
+}
+
+function showCastleVictory() {
+  hideAllScreens();
+  document.getElementById("boss-victory").classList.remove("hidden");
+
+  // Save wizard hat cosmetic unlock
+  localStorage.setItem("hasWizardHat", "true");
+
+  // Optional: Give big XP reward
+  let currentXP = parseInt(localStorage.getItem("knowledgeXP") || "0", 10);
+  currentXP += 100; // Reward 100 XP
+  localStorage.setItem("knowledgeXP", currentXP);
+
+  // Optional: Show XP float
+  showXPFloat("+100 Knowledge");
+
+  // Optional: Update XP bar or other UI elements
+  updateXPDisplay();
 }
 
 function isDifficultyUnlocked(difficulty, zone) {
