@@ -222,10 +222,6 @@ const { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked } = che
   const allZones = Object.keys(questionsData);
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
 
-  const hintUnlocked = xp >= 200 || allZones.every(zone =>
-    completedZones[zone] && completedZones[zone].includes("novice")
-  );
-
 if (usedHintThisQuestion) {
   hintMsg.textContent = "☑️ Hint used!";
   hintMsg.classList.remove("hidden");
