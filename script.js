@@ -62,7 +62,6 @@ function isSpellUnlocked(spellName) {
 
   const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
   const allZones = Object.keys(questionsData);
-
   const hasCompletedAll = allZones.every(zone =>
     completedZones[zone]?.includes(condition.zonesCompleted)
   );
@@ -77,28 +76,32 @@ function updateSpellDisplay() {
   const hintMsg = document.getElementById("hint-msg");
   const eliminateMsg = document.getElementById("eliminate-msg");
 
+// HINT
 if (isSpellUnlocked("hint")) {
-    hintBtn.classList.remove("hidden");
-    hintBtn.disabled = false;
+  hintBtn.classList.remove("hidden");
+  hintBtn.disabled = false;
+  hintMsg.classList.add("hidden"); // Hide redundant "unlocked!" msg
 
-    if (!unlockedSpells.includes("hint")) {
-        hintMsg.textContent = "✅ Hint unlocked!";
-        hintMsg.classList.remove("hidden");
-    } else {
-        hintMsg.classList.add("hidden"); // Hides it if already unlocked
-    }
+  // 🔽 Hide condition text
+  document.getElementById("hint-static-msg").classList.add("hidden");
 } else {
-    hintBtn.classList.add("hidden");
-    hintBtn.disabled = true;
+  hintBtn.classList.add("hidden");
+  hintBtn.disabled = true;
+  document.getElementById("hint-static-msg").classList.remove("hidden");
 }
 
-  if (isSpellUnlocked("eliminate")) {
-    eliminateBtn.disabled = false;
-    eliminateMsg.textContent = "✅ Eliminate unlocked!";
-  } else {
-    eliminateBtn.disabled = true;
-    eliminateMsg.textContent = "🔒 Eliminate unlocks at 500 Knowledge or all Scholar zones";
-  }
+// ELIMINATE
+if (isSpellUnlocked("eliminate")) {
+  eliminateBtn.classList.remove("hidden");
+  eliminateBtn.disabled = false;
+  eliminateMsg.classList.add("hidden");
+
+  document.getElementById("eliminate-static-msg").classList.add("hidden");
+} else {
+  eliminateBtn.classList.add("hidden");
+  eliminateBtn.disabled = true;
+  document.getElementById("eliminate-static-msg").classList.remove("hidden");
+}
 }
 
 function updateStats() {
