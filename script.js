@@ -21,6 +21,10 @@ const mainScreen = document.getElementById("main-screen");
 const difficultyButtons = document.getElementById("difficulty-buttons");
 const zoneTitle = document.getElementById("zone-title");
 const questionContainer = document.getElementById("question-container");
+const hintBtn = document.getElementById("hint-btn");
+const eliminateBtn = document.getElementById("eliminate-btn");
+const hintMsg = document.getElementById("hint-msg");
+const eliminateMsg = document.getElementById("eliminate-msg");
 
 const unlockConditions = {
   hint: {
@@ -190,11 +194,6 @@ const noviceZonesCompleted = allZones.every(zone =>
   const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
   completedZones[zone] && completedZones[zone].includes("scholar")
 );
-
-const hintBtn = document.getElementById("hint-btn");
-const eliminateBtn = document.getElementById("eliminate-btn");
-const hintMsg = document.getElementById("hint-msg");
-const eliminateMsg = document.getElementById("eliminate-msg");
 
 // 🧙‍♂️ HINT
 if (hintUnlocked) {
