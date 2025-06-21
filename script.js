@@ -62,11 +62,13 @@ function isSpellUnlocked(spellName) {
 
   const completedZones = JSON.parse(localStorage.getItem("completedZones") || "{}");
   const allZones = Object.keys(questionsData);
-  const hasCompletedAll = allZones.every(zone =>
-    completedZones[zone]?.includes(condition.zonesCompleted)
+
+  // Check if all zones have that specific difficulty completed
+  const hasCompletedDifficultyInAllZones = allZones.every(zone =>
+    Array.isArray(completedZones[zone]) && completedZones[zone].includes(condition.zonesCompleted)
   );
 
-  return hasXP || hasCompletedAll;
+  return hasXP || hasCompletedDifficultyInAllZones;
 }
 
 function updateSpellDisplay() {
@@ -275,10 +277,13 @@ if (eliminateUnlocked && !usedEliminate && visibleOptions.length >= 3) {
 
 if (hintUnlocked) {
   hintBtn.classList.remove("hidden");
-
 } else {
   hintBtn.classList.add("hidden");
 }
+
+// 🧼 Hide static unlock messages if spell is unlocked
+document.getElementById("hint-static-msg").classList.toggle("hidden", hintUnlocked);
+document.getElementById("eliminate-static-msg").classList.toggle("hidden", eliminateUnlocked);
 
  const visibleEliminateOptions = Array.from(document.querySelectorAll("#answers-container button"))
     .filter(btn => btn.style.display !== "none");
