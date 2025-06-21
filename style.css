@@ -133,30 +133,25 @@ button.locked {
   margin-bottom: 10px;
 }
 
-.feedback-msg {
-  position: fixed;
-  top: 100px;
+.feedback-message {
+  position: absolute;
+  top: 40%;
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-align: center;
-  z-index: 100;
-  opacity: 0;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  padding: 16px 24px;
+  font-size: 1.5rem;
+  border-radius: 10px;
+  animation: bounce 0.5s ease;
   pointer-events: none;
-  transition: opacity 0.3s ease;
-  background: none;
-  border: none;
-  padding: 0.5rem 1rem;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* glow effect */
 }
-
-.feedback-msg.correct {
-  color: #58e77e; /* Bright green text only */
+.feedback-correct {
+  background-color: #4caf50;
+  color: white;
 }
-
-.feedback-msg.wrong {
-  color: #f76c6c; /* Bright red text only */
+.feedback-wrong {
+  background-color: #e53935;
+  color: white;
 }
 
 @keyframes bounce-in {
