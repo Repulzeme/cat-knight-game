@@ -133,32 +133,42 @@ button.locked {
   margin-bottom: 10px;
 }
 
-.feedback-message {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 10;
-  padding: 16px 24px;
-  font-size: 1.5rem;
-  border-radius: 10px;
-  animation: bounce 0.5s ease;
-  pointer-events: none;
-}
-.feedback-correct {
-  background-color: #4caf50;
-  color: white;
-}
-.feedback-wrong {
-  background-color: #e53935;
-  color: white;
+#feedback-container {
+  text-align: center;
+  margin-bottom: 10px;
 }
 
-@keyframes bounce-in {
-  0%   { transform: translateY(-30px); opacity: 0; }
-  40%  { transform: translateY(10px); opacity: 1; }
-  70%  { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
+.feedback-msg {
+  display: inline-block;
+  padding: 0.4em 1em;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 10px;
+  animation: bounceFade 1s ease;
+}
+
+.feedback-msg.correct {
+  background-color: #58e77e;
+  color: #000;
+}
+
+.feedback-msg.wrong {
+  background-color: #e35050;
+  color: #fff;
+}
+
+@keyframes bounceFade {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 
 .feedback-msg.show {
