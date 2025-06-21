@@ -218,16 +218,19 @@ function renderQuestion() {
     completedZones[zone] && completedZones[zone].includes("scholar")
   );
 
-// ✅ Show Hint message per state
 const hintMsg = document.getElementById("hint-msg");
-if (hintUnlocked && !usedHint) {
-  hintMsg.textContent = "✅ Hint unlocked!";
-  hintMsg.classList.remove("hidden");
-} else if (usedHint) {
-  hintMsg.textContent = "✅ Hint used!";
+
+if (usedHintThisQuestion) {
+  hintMsg.textContent = "☑️ Hint used!";
   hintMsg.classList.remove("hidden");
 } else {
-  hintMsg.classList.add("hidden");
+  // Only show unlock message if just now unlocked
+  if (!unlockedSpells.includes("hint") && hintUnlocked) {
+    hintMsg.textContent = "✅ Hint unlocked!";
+    hintMsg.classList.remove("hidden");
+  } else {
+    hintMsg.classList.add("hidden");
+  }
 }
 
 // ✅ Show Eliminate message per state
@@ -254,23 +257,36 @@ if (eliminateUnlocked && !usedEliminate && visibleOptions.length >= 3) {
   const hintBtn = document.getElementById("hint-btn");
   const eliminateBtn = document.getElementById("eliminate-btn");
 
-  if (hintUnlocked) {
-    hintBtn.classList.remove("hidden");
-    hintBtn.disabled = false;
-  } else {
-    hintBtn.classList.add("hidden");
+if (hintUnlocked) {
+  hintBtn.classList.remove("hidden");
+
+  // 🧠 Save unlocked hint spell
+  if (!unlockedSpells.includes("hint")) {
+    unlockedSpells.push("hint");
+    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
   }
+
+} else {
+  hintBtn.classList.add("hidden");
+}
 
  const visibleEliminateOptions = Array.from(document.querySelectorAll("#answers-container button"))
     .filter(btn => btn.style.display !== "none");
 
-  if (eliminateUnlocked && visibleEliminateOptions.length >= 3) {
-    eliminateBtn.classList.remove("hidden");
-    eliminateBtn.disabled = false;
-  } else {
-    eliminateBtn.classList.add("hidden");
-    eliminateBtn.disabled = true;
+if (eliminateUnlocked && visibleEliminateOptions.length >= 3) {
+  eliminateBtn.classList.remove("hidden");
+  eliminateBtn.disabled = false;
+
+  // Save unlocked eliminate spell
+  if (!unlockedSpells.includes("eliminate")) {
+    unlockedSpells.push("eliminate");
+    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
   }
+
+} else {
+  eliminateBtn.classList.add("hidden");
+  eliminateBtn.disabled = true;
+}
 
   // ✅ continue your normal question rendering below here...
   const questionTextDiv = document.getElementById("question-text");
