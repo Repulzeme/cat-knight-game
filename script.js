@@ -77,13 +77,20 @@ function updateSpellDisplay() {
   const hintMsg = document.getElementById("hint-msg");
   const eliminateMsg = document.getElementById("eliminate-msg");
 
-  if (isSpellUnlocked("hint")) {
+if (isSpellUnlocked("hint")) {
+    hintBtn.classList.remove("hidden");
     hintBtn.disabled = false;
-    hintMsg.textContent = "✅ Hint unlocked!";
-  } else {
+
+    if (!unlockedSpells.includes("hint")) {
+        hintMsg.textContent = "✅ Hint unlocked!";
+        hintMsg.classList.remove("hidden");
+    } else {
+        hintMsg.classList.add("hidden"); // Hides it if already unlocked
+    }
+} else {
+    hintBtn.classList.add("hidden");
     hintBtn.disabled = true;
-    hintMsg.textContent = "🔒 Hint unlocks at 200 Knowledge or all Novice zones";
-  }
+}
 
   if (isSpellUnlocked("eliminate")) {
     eliminateBtn.disabled = false;
@@ -218,6 +225,12 @@ function renderQuestion() {
     completedZones[zone] && completedZones[zone].includes("scholar")
   );
 
+if (eliminateUnlocked && !unlockedSpells.includes("eliminate")) {
+    unlockedSpells.push("eliminate");
+    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
+    showMessage("✨ Eliminate unlocked!");
+}
+
 const hintMsg = document.getElementById("hint-msg");
 
 if (usedHintThisQuestion) {
@@ -259,12 +272,6 @@ if (eliminateUnlocked && !usedEliminate && visibleOptions.length >= 3) {
 
 if (hintUnlocked) {
   hintBtn.classList.remove("hidden");
-
-  // 🧠 Save unlocked hint spell
-  if (!unlockedSpells.includes("hint")) {
-    unlockedSpells.push("hint");
-    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
-  }
 
 } else {
   hintBtn.classList.add("hidden");
