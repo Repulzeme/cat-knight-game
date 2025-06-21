@@ -173,6 +173,79 @@ function hasCompletedLevel(zone, difficulty, questionText) {
   return completed?.[zone]?.[difficulty]?.includes(questionText);
 }
 
+function checkSpellUnlocks() {
+  const xp = parseInt(localStorage.getItem("xp") || "0", 10);
+  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
+  const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
+
+  const allZones = Object.keys(questionsData);
+const scholarZonesCompleted = allZones.every(zone =>
+  (completedZones[zone] || []).includes("scholar")
+);
+const noviceZonesCompleted = allZones.every(zone =>
+  (completedZones[zone] || []).includes("novice")
+);
+
+  const hintUnlocked = xp >= 200 || noviceZonesCompleted;
+  const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
+  completedZones[zone] && completedZones[zone].includes("scholar")
+);
+
+const hintBtn = document.getElementById("hint-btn");
+const eliminateBtn = document.getElementById("eliminate-btn");
+const hintMsg = document.getElementById("hint-msg");
+const eliminateMsg = document.getElementById("eliminate-msg");
+
+// 🧙‍♂️ HINT
+if (hintUnlocked) {
+  hintBtn.classList.remove("hidden");
+  hintBtn.disabled = false;
+  hintMsg.classList.add("hidden");
+} else {
+  hintBtn.classList.add("hidden");
+  hintMsg.textContent = "🧠 The Hint Spell unlocks at 200 Knowledge or after all Novice difficulties are completed";
+  hintMsg.classList.remove("hidden");
+}
+
+// ⚔️ ELIMINATE
+if (eliminateUnlocked) {
+  eliminateBtn.classList.remove("hidden");
+  eliminateBtn.disabled = false;
+  eliminateMsg.classList.add("hidden");
+} else {
+  eliminateBtn.classList.add("hidden");
+  eliminateMsg.textContent = "❌ The Eliminate Spell unlocks at 500 Knowledge or after all Scholar difficulties are completed";
+  eliminateMsg.classList.remove("hidden");
+}
+
+// ✅ Show spell unlock messages only once
+if (hintUnlocked && !localStorage.getItem("hintPopupShown")) {
+  showFeedback("✅ Hint spell unlocked!", false);
+  localStorage.setItem("hintPopupShown", "true");
+}
+
+if (eliminateUnlocked && !localStorage.getItem("eliminatePopupShown")) {
+  showFeedback("✅ Eliminate spell unlocked!", false);
+  localStorage.setItem("eliminatePopupShown", "true");
+}
+
+  // ✅ Only show buttons when unlocked — messages stay visible
+if (hintUnlocked) {
+  hintBtn.classList.remove("hidden");
+  hintBtn.disabled = false;
+} else {
+  hintBtn.classList.add("hidden");
+}
+
+  if (eliminateUnlocked) {
+    localStorage.setItem("eliminateUnlocked", "true");
+    eliminateBtn.classList.remove("hidden");
+  } else {
+    eliminateBtn.classList.add("hidden");
+  }
+return { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked };
+}
+
 function startQuiz(zone, difficulty) {
   currentZone = zone;
   currentDifficulty = difficulty;
@@ -549,79 +622,6 @@ function unlockNextDifficulty(zone, difficulty) {
   localStorage.setItem("completedZones", JSON.stringify(completedZones));
 
   return { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked };
-}
-
-function checkSpellUnlocks() {
-  const xp = parseInt(localStorage.getItem("xp") || "0", 10);
-  const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
-  const unlockedDifficulties = JSON.parse(localStorage.getItem("unlockedDifficulties")) || [];
-
-  const allZones = Object.keys(questionsData);
-const scholarZonesCompleted = allZones.every(zone =>
-  (completedZones[zone] || []).includes("scholar")
-);
-const noviceZonesCompleted = allZones.every(zone =>
-  (completedZones[zone] || []).includes("novice")
-);
-
-  const hintUnlocked = xp >= 200 || noviceZonesCompleted;
-  const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
-  completedZones[zone] && completedZones[zone].includes("scholar")
-);
-
-const hintBtn = document.getElementById("hint-btn");
-const eliminateBtn = document.getElementById("eliminate-btn");
-const hintMsg = document.getElementById("hint-msg");
-const eliminateMsg = document.getElementById("eliminate-msg");
-
-// 🧙‍♂️ HINT
-if (hintUnlocked) {
-  hintBtn.classList.remove("hidden");
-  hintBtn.disabled = false;
-  hintMsg.classList.add("hidden");
-} else {
-  hintBtn.classList.add("hidden");
-  hintMsg.textContent = "🧠 The Hint Spell unlocks at 200 Knowledge or after all Novice difficulties are completed";
-  hintMsg.classList.remove("hidden");
-}
-
-// ⚔️ ELIMINATE
-if (eliminateUnlocked) {
-  eliminateBtn.classList.remove("hidden");
-  eliminateBtn.disabled = false;
-  eliminateMsg.classList.add("hidden");
-} else {
-  eliminateBtn.classList.add("hidden");
-  eliminateMsg.textContent = "❌ The Eliminate Spell unlocks at 500 Knowledge or after all Scholar difficulties are completed";
-  eliminateMsg.classList.remove("hidden");
-}
-
-// ✅ Show spell unlock messages only once
-if (hintUnlocked && !localStorage.getItem("hintPopupShown")) {
-  showFeedback("✅ Hint spell unlocked!", false);
-  localStorage.setItem("hintPopupShown", "true");
-}
-
-if (eliminateUnlocked && !localStorage.getItem("eliminatePopupShown")) {
-  showFeedback("✅ Eliminate spell unlocked!", false);
-  localStorage.setItem("eliminatePopupShown", "true");
-}
-
-  // ✅ Only show buttons when unlocked — messages stay visible
-if (hintUnlocked) {
-  hintBtn.classList.remove("hidden");
-  hintBtn.disabled = false;
-} else {
-  hintBtn.classList.add("hidden");
-}
-
-  if (eliminateUnlocked) {
-    localStorage.setItem("eliminateUnlocked", "true");
-    eliminateBtn.classList.remove("hidden");
-  } else {
-    eliminateBtn.classList.add("hidden");
-  }
-return { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked };
 }
 
 function showResultScreen(isCorrect, questionObj, xpEarned, streakIncreased, unlockedScholar, unlockedWizard) {
