@@ -261,7 +261,7 @@ button.locked {
   100% { transform: scale(1); }
 }
 
-.subtle-msg {
+.static-msg {
   font-family: inherit; /* inherits from body or container */
   font-size: 0.9em;
   opacity: 0.9;
