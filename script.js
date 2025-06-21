@@ -621,6 +621,7 @@ if (hintUnlocked) {
   } else {
     eliminateBtn.classList.add("hidden");
   }
+return { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked };
 }
 
 function showResultScreen(isCorrect, questionObj, xpEarned, streakIncreased, unlockedScholar, unlockedWizard) {
