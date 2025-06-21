@@ -55,6 +55,24 @@
             <div id="result-unlock" class="result-unlock"></div>
             <button onclick="goToMain()" id="back-main-btn">🏠 Back to Main</button>
      </section>
+<section id="castle-screen" class="hidden">
+  <h2>🏰 Castle of Oblivion</h2>
+  <div id="boss-intro">The Shadow Sage awaits your challenge...</div>
+  <div id="boss-avatar">🧙‍♂️</div>
+
+  <div id="boss-question-container">
+    <div id="boss-question-text" class="question-text"></div>
+    <div id="boss-answers-container" class="answers"></div>
+  </div>
+
+  <div id="boss-victory" class="hidden">
+    <h3>🎉 You have defeated the Shadow Sage!</h3>
+    <p>You are now a true Cat Wizard 🧙‍♂️🐾</p>
+    <p>✨ You earned the Wizard Hat cosmetic!</p>
+  </div>
+
+  <button onclick="goToMain()">Back to Zones</button>
+</section>
   </main>
 
   <script src="script.js"></script>
