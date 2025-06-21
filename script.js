@@ -303,6 +303,10 @@ if (eliminateUnlocked && visibleEliminateOptions.length >= 3) {
   hintDiv.textContent = "";
   hintDiv.classList.add("hidden");
 
+// 🧼 Hide old unlock messages
+document.getElementById("hint-msg")?.classList.add("hidden");
+document.getElementById("eliminate-msg")?.classList.add("hidden");
+
   const answersHTML = q.options
     .map(opt => {
       const isCorrect = opt === q.answer;
