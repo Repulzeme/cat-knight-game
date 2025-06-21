@@ -179,7 +179,6 @@ function startQuiz(zone, difficulty) {
 
   const questions = questionsData[zone][difficulty];
   const pool = questions;
-  
   const unansweredPool = pool.filter(q => !hasCompletedLevel(zone, difficulty, q.question));
 
   if (unansweredPool.length === 0) {
@@ -187,15 +186,15 @@ function startQuiz(zone, difficulty) {
     return;
   }
 
-  // Pick random question from the remaining ones
   currentQuestion = unansweredPool[Math.floor(Math.random() * unansweredPool.length)];
   usedHint = false;
   usedEliminate = false;
-  
+
+  // 🔁 Add this line right before rendering the question
+  const { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked } = checkSpellUnlocks();
+
   showScreen("question-screen");
   renderQuestion();
-  
-  console.log("Quiz started with difficulty:", difficulty);
 }
 
 function loadNextQuestion() {
@@ -211,6 +210,7 @@ function loadNextQuestion() {
 }
 
 function renderQuestion() {
+const { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked } = checkSpellUnlocks();
   const q = currentQuestion;
   attemptCount = 0;
   usedHint = false;
@@ -225,18 +225,6 @@ function renderQuestion() {
   const hintUnlocked = xp >= 200 || allZones.every(zone =>
     completedZones[zone] && completedZones[zone].includes("novice")
   );
-
-  const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
-    completedZones[zone] && completedZones[zone].includes("scholar")
-  );
-
-if (eliminateUnlocked && !unlockedSpells.includes("eliminate")) {
-    unlockedSpells.push("eliminate");
-    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
-    showMessage("✨ Eliminate unlocked!");
-}
-
-const hintMsg = document.getElementById("hint-msg");
 
 if (usedHintThisQuestion) {
   hintMsg.textContent = "☑️ Hint used!";
@@ -564,7 +552,7 @@ function unlockNextDifficulty(zone, difficulty) {
 
   localStorage.setItem("completedZones", JSON.stringify(completedZones));
 
-  return { unlockedScholar, unlockedWizard };
+  return { unlockedScholar, unlockedWizard, hintUnlocked, eliminateUnlocked };
 }
 
 function checkSpellUnlocks() {
@@ -581,7 +569,9 @@ const noviceZonesCompleted = allZones.every(zone =>
 );
 
   const hintUnlocked = xp >= 200 || noviceZonesCompleted;
-  const eliminateUnlocked = xp >= 500 || scholarZonesCompleted;
+  const eliminateUnlocked = xp >= 500 || allZones.every(zone =>
+  completedZones[zone] && completedZones[zone].includes("scholar")
+);
 
 const hintBtn = document.getElementById("hint-btn");
 const eliminateBtn = document.getElementById("eliminate-btn");
