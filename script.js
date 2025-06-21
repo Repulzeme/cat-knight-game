@@ -516,25 +516,23 @@ allButtons.forEach(btn => {
 }
 
 function showFeedback(message, isCorrect) {
-  const feedback = document.getElementById("feedback-message");
-  feedback.textContent = message;
+  const container = document.getElementById("feedback-container");
+  container.innerHTML = ""; // Clear previous messages
 
-  feedback.classList.remove("correct", "wrong", "show", "hidden");
-  void feedback.offsetWidth; // 🔁 Force reflow for animation
+  const msg = document.createElement("div");
+  msg.classList.add("feedback-msg");
+  msg.classList.add(isCorrect ? "correct" : "wrong");
+  msg.textContent = message;
 
-  if (isCorrect) {
-    feedback.classList.add("correct");
-  } else {
-    feedback.classList.add("wrong");
-  }
+  container.appendChild(msg);
 
-  feedback.classList.add("show");
-
-  // Optional: auto-hide after delay
+  // Optional: fade out after 2s
   setTimeout(() => {
-    feedback.classList.add("hidden");
-    feedback.classList.remove("show");
-  }, 3000);
+    msg.classList.add("fade-out");
+    setTimeout(() => {
+      container.removeChild(msg);
+    }, 500);
+  }, 2000);
 }
 
 function goToMain() {
