@@ -307,10 +307,16 @@ function loadQuestions() {
 }
 
 function renderZones() {
+  const zoneButtons = document.getElementById("zone-buttons");
+  if (!zoneButtons) {
+    console.warn("⚠️ #zone-buttons not found in DOM.");
+    return;
+  }
+
   const zones = {
     geography: "🌍 The Compass Grove",
     history: "📜 The Timekeep Vault",
-    sports: "🏟️ The Grand Arena",
+    sports: "🏟 The Grand Arena",
     entertainment: "🎭 Forest of Flickers",
     daily: "✨ Daily Mix"
   };
@@ -324,12 +330,11 @@ function renderZones() {
     zoneButtons.appendChild(btn);
   }
 
-  // Move castle to end if it's visible
-// Move castle to end if it's visible
-const castleZone = document.getElementById("castle-zone");
-if (castleZone && !castleZone.classList.contains("hidden")) {
-  zoneButtons.appendChild(castleZone);
-}
+  // 👇 Castle Zone logic
+  const castleZone = document.getElementById("castle-zone");
+  if (castleZone && !castleZone.classList.contains("hidden")) {
+    zoneButtons.appendChild(castleZone);
+  }
 }
 
 function showDifficulties(zone) {
