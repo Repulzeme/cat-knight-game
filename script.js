@@ -28,6 +28,39 @@ const eliminateBtn = document.getElementById("eliminate-btn");
 const hintMsg = document.getElementById("hint-msg");
 const eliminateMsg = document.getElementById("eliminate-msg");
 
+const castleBossQuestions = [
+  {
+    question: "Which city is known as the City of Light?",
+    answers: ["Rome", "Paris", "Vienna", "Madrid"],
+    correct: "Paris",
+    fact: "Paris earned this nickname because it was one of the first cities to adopt street lighting."
+  },
+  {
+    question: "Who wrote the play 'Hamlet'?",
+    answers: ["Charles Dickens", "Oscar Wilde", "William Shakespeare", "Jane Austen"],
+    correct: "William Shakespeare",
+    fact: "'Hamlet' is one of Shakespeare's most famous tragedies, written around 1600."
+  },
+  {
+    question: "What is the capital city of Canada?",
+    answers: ["Toronto", "Ottawa", "Vancouver", "Montreal"],
+    correct: "Ottawa",
+    fact: "Ottawa was chosen as a compromise capital, located between English-speaking Toronto and French-speaking Montreal."
+  },
+  {
+    question: "Which sport has positions called 'point guard' and 'center'?",
+    answers: ["Football", "Baseball", "Basketball", "Hockey"],
+    correct: "Basketball",
+    fact: "Basketball was invented by Dr. James Naismith in 1891 to keep students active indoors."
+  },
+  {
+    question: "Which planet is known as the 'Morning Star'?",
+    answers: ["Venus", "Mars", "Jupiter", "Mercury"],
+    correct: "Venus",
+    fact: "Venus is called the 'Morning Star' due to its brightness and visibility just before sunrise."
+  }
+];
+
 const unlockConditions = {
   hint: {
     xp: 200,
@@ -487,6 +520,46 @@ document.getElementById("eliminate-msg")?.classList.add("hidden");
     .join("");
 
   document.getElementById("answers-container").innerHTML = answersHTML;
+}
+
+function renderBossQuestion() {
+  const questionObj = castleBossQuestions[bossIndex];
+
+  const questionTextEl = document.getElementById("boss-question-text");
+  const answersContainer = document.getElementById("boss-answers-container");
+  const victoryScreen = document.getElementById("boss-victory");
+
+  questionTextEl.textContent = questionObj.question;
+  answersContainer.innerHTML = "";
+
+  questionObj.answers.forEach(answer => {
+    const btn = document.createElement("button");
+    btn.textContent = answer;
+    btn.classList.add("answer-btn");
+    btn.onclick = () => {
+      if (answer === questionObj.correct) {
+        // Add XP
+        xp += 30;
+        localStorage.setItem("xp", xp);
+        updateXPDisplay();
+
+        // Show fun fact
+        showMessage(`✅ Correct! ${questionObj.fact}`, "correct");
+
+        // Next or victory
+        bossIndex++;
+        if (bossIndex < castleBossQuestions.length) {
+          setTimeout(renderBossQuestion, 2000);
+        } else {
+          setTimeout(showCastleVictory, 2000);
+        }
+      } else {
+        showMessage("❌ Wrong! Try again...", "wrong");
+        btn.disabled = true;
+      }
+    };
+    answersContainer.appendChild(btn);
+  });
 }
 
 function getXPGain(difficulty) {
