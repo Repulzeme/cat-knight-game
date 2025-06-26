@@ -306,9 +306,18 @@ function loadQuestions() {
     });
 }
 
+function isCastleUnlocked() {
+  // Example logic: unlock if all zones are completed on Wizard
+  return zonesCompleted.geography?.includes("Wizard") &&
+         zonesCompleted.history?.includes("Wizard") &&
+         zonesCompleted.sports?.includes("Wizard") &&
+         zonesCompleted.entertainment?.includes("Wizard") &&
+         zonesCompleted.daily?.includes("Wizard");
+}
+
 function renderZones() {
   const zones = {
-    geography: "🟢 The Compass Grove",
+    geography: "🌍 The Compass Grove",
     history: "📜 The Timekeep Vault",
     sports: "🏟️ The Grand Arena",
     entertainment: "🎭 Forest of Flickers",
