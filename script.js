@@ -73,8 +73,11 @@ const unlockConditions = {
 };
 
 function hideAllScreens() {
-  const screens = document.querySelectorAll(".screen");
-  screens.forEach(screen => screen.classList.add("hidden"));
+  document.getElementById("main-screen").classList.add("hidden");
+  document.getElementById("difficulty-screen").classList.add("hidden");
+  document.getElementById("question-screen").classList.add("hidden");
+  document.getElementById("result-screen").classList.add("hidden");
+  document.getElementById("castle-screen").classList.add("hidden");
 }
 
 function updateXPDisplay() {
@@ -114,13 +117,10 @@ function checkCastleUnlock() {
 }
 
 function startCastleBattle() {
-  mainScreen.classList.add("hidden");
-  difficultyScreen.classList.add("hidden");
-
-  const castleScreen = document.getElementById("castle-screen");
-  castleScreen.classList.remove("hidden");
-
-  renderCastleQuestion(); // existing logic
+  hideAllScreens();
+  document.getElementById("castle-screen").classList.remove("hidden");
+  bossIndex = 0;
+  renderBossQuestion();
 }
 
 function goBackToZones() {
