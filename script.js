@@ -77,6 +77,10 @@ function hideAllScreens() {
   screens.forEach(screen => screen.classList.add("hidden"));
 }
 
+function updateXPDisplay() {
+  xpDisplay.textContent = `🔥 Streak: ${streak} 🧠 Knowledge: ${xp}`;
+}
+
 function addCastleButton() {
   const btn = document.createElement("button");
   btn.textContent = "🏰 Enter the Castle of Oblivion";
