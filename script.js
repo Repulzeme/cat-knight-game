@@ -112,6 +112,18 @@ function startCastleBattle() {
   renderBossQuestion();
 }
 
+function showMessage(text, type) {
+  const bossContainer = document.getElementById("castle-screen");
+  const msg = document.createElement("div");
+  msg.className = `boss-msg ${type}`; // Add type for styling (e.g. "correct" or "wrong")
+  msg.textContent = text;
+  bossContainer.appendChild(msg);
+
+  setTimeout(() => {
+    msg.remove();
+  }, 2000);
+}
+
 function renderBossQuestion() {
   const question = bossQuestions[bossIndex];
   document.getElementById("boss-question-text").textContent = question.question;
