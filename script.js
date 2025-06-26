@@ -325,10 +325,11 @@ function renderZones() {
   }
 
   // Move castle to end if it's visible
-  const castleZone = document.getElementById("castle-zone");
-  if (!castleZone.classList.contains("hidden")) {
-    zoneButtons.appendChild(castleZone);
-  }
+// Move castle to end if it's visible
+const castleZone = document.getElementById("castle-zone");
+if (castleZone && !castleZone.classList.contains("hidden")) {
+  zoneButtons.appendChild(castleZone);
+}
 }
 
 function showDifficulties(zone) {
