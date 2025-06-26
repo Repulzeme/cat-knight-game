@@ -149,7 +149,7 @@ function renderBossQuestion() {
   hintMsg.classList.add("hidden");
   eliminateMsg.classList.add("hidden");
 
-  const question = bossQuestions[bossIndex];
+  const question = castleBossQuestions[bossIndex];
   document.getElementById("boss-question-text").textContent = question.question;
 
   const answersContainer = document.getElementById("boss-answers-container");
@@ -167,7 +167,7 @@ function renderBossQuestion() {
         xpDisplay.textContent = `Streak: ${streak} 💡 Knowledge: ${xp}`;
 
         bossIndex++;
-        if (bossIndex >= bossQuestions.length) {
+        if (bossIndex >= castleBossQuestions.length) {
           showCastleVictory();
         } else {
           renderBossQuestion();
