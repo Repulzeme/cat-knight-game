@@ -782,7 +782,8 @@ function goToMain() {
   document.getElementById("difficulty-screen").classList.add("hidden");
   document.getElementById("question-screen").classList.add("hidden");
   document.getElementById("result-screen").classList.add("hidden");
-  renderZones();
+  document.getElementById("castle-screen").classList.add("hidden");
+  document.getElementById("boss-victory").classList.add("hidden");
 }
 
 function useHint() {
