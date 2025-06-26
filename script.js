@@ -106,6 +106,8 @@ function checkCastleUnlock() {
 }
 
 function startCastleBattle() {
+hintBtn.style.display = "none";
+eliminateBtn.style.display = "none";
   hideAllScreens();
   document.getElementById("castle-screen").classList.remove("hidden");
   bossIndex = 0;
@@ -125,6 +127,12 @@ function showMessage(text, type) {
 }
 
 function renderBossQuestion() {
+  // Disable spells during boss fight
+  hintBtn.classList.add("hidden");
+  eliminateBtn.classList.add("hidden");
+  hintMsg.classList.add("hidden");
+  eliminateMsg.classList.add("hidden");
+
   const question = bossQuestions[bossIndex];
   document.getElementById("boss-question-text").textContent = question.question;
 
@@ -138,6 +146,10 @@ function renderBossQuestion() {
 
     btn.addEventListener("click", () => {
       if (index === question.correct) {
+        xp += 30;
+        localStorage.setItem("xp", xp);
+        xpDisplay.textContent = `Streak: ${streak} 💡 Knowledge: ${xp}`;
+
         bossIndex++;
         if (bossIndex >= bossQuestions.length) {
           showCastleVictory();
@@ -185,6 +197,8 @@ function showCastleVictory() {
 
   // Optional: Update XP bar or other UI elements
   updateXPDisplay();
+hintBtn.style.display = "";
+eliminateBtn.style.display = "";
 }
 
 function isDifficultyUnlocked(difficulty, zone) {
