@@ -325,3 +325,35 @@ button.locked {
 .shake {
   animation: screen-shake 0.4s ease;
 }
+
+.boss-msg {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  border: 2px solid gold;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  z-index: 10;
+  animation: fade-in-out 2s ease;
+}
+
+.boss-msg.correct {
+  background: rgba(0, 100, 0, 0.85);
+  border-color: limegreen;
+}
+
+.boss-msg.wrong {
+  background: rgba(100, 0, 0, 0.85);
+  border-color: red;
+}
+
+@keyframes fade-in-out {
+  0% { opacity: 0; transform: translate(-50%, -20px); }
+  10% { opacity: 1; transform: translate(-50%, 0); }
+  90% { opacity: 1; transform: translate(-50%, 0); }
+  100% { opacity: 0; transform: translate(-50%, 20px); }
+}
