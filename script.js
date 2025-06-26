@@ -307,16 +307,10 @@ function loadQuestions() {
 }
 
 function renderZones() {
-  const zoneButtons = document.getElementById("zone-buttons");
-  if (!zoneButtons) {
-    console.warn("⚠️ #zone-buttons not found in DOM.");
-    return;
-  }
-
   const zones = {
-    geography: "🌍 The Compass Grove",
+    geography: "🟢 The Compass Grove",
     history: "📜 The Timekeep Vault",
-    sports: "🏟 The Grand Arena",
+    sports: "🏟️ The Grand Arena",
     entertainment: "🎭 Forest of Flickers",
     daily: "✨ Daily Mix"
   };
@@ -330,10 +324,12 @@ function renderZones() {
     zoneButtons.appendChild(btn);
   }
 
-  // 👇 Castle Zone logic
-  const castleZone = document.getElementById("castle-zone");
-  if (castleZone && !castleZone.classList.contains("hidden")) {
-    zoneButtons.appendChild(castleZone);
+  // ✅ Add Castle zone button at the end if unlocked
+  if (isCastleUnlocked()) {
+    const castleBtn = document.createElement("button");
+    castleBtn.textContent = "🏰 Enter the Castle of Oblivion";
+    castleBtn.onclick = startCastleBattle;
+    zoneButtons.appendChild(castleBtn);
   }
 }
 
