@@ -90,6 +90,7 @@ if (castleZone) {
   castleZone.classList.remove("hidden");
   triggerCastleShake();
 }
+}
 
 function triggerCastleShake() {
   const body = document.body;
