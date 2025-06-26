@@ -307,12 +307,10 @@ function loadQuestions() {
 }
 
 function isCastleUnlocked() {
-  // Example logic: unlock if all zones are completed on Wizard
-  return zonesCompleted.geography?.includes("Wizard") &&
-         zonesCompleted.history?.includes("Wizard") &&
-         zonesCompleted.sports?.includes("Wizard") &&
-         zonesCompleted.entertainment?.includes("Wizard") &&
-         zonesCompleted.daily?.includes("Wizard");
+  const requiredZones = ["geography", "history", "sports", "entertainment", "daily"];
+  return requiredZones.every(zone =>
+    isDifficultyUnlocked("wizard", zone)
+  );
 }
 
 function renderZones() {
