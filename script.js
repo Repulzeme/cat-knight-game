@@ -39,6 +39,13 @@ const unlockConditions = {
   }
 };
 
+function addCastleButton() {
+  const btn = document.createElement("button");
+  btn.textContent = "🏰 Enter the Castle of Oblivion";
+  btn.onclick = startCastleBattle;
+  zoneButtons.appendChild(btn);
+}
+
 function checkAllZonesCompleted(difficulty) {
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
   const zones = Object.keys(questionsData);
@@ -205,6 +212,7 @@ function loadQuestions() {
   document.getElementById("eliminate-btn").classList.remove("hidden");
   document.getElementById("hint-msg").classList.remove("hidden");
   document.getElementById("eliminate-msg").classList.remove("hidden");
+
   fetch("questions.json")
     .then((res) => res.json())
     .then((data) => {
@@ -213,6 +221,11 @@ function loadQuestions() {
       updateStats();
       updateSpellDisplay();
       checkStreak();
+
+      // ✅ NEW: Check if Castle should be available
+      if (checkAllZonesCompleted("novice") && checkAllZonesCompleted("scholar") && checkAllZonesCompleted("wizard")) {
+        addCastleButton();
+      }
     });
 }
 
