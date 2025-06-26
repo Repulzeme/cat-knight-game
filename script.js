@@ -613,7 +613,11 @@ questionObj.answers.forEach(answer => {
   const btn = document.createElement("button");
   btn.textContent = answer;
   btn.classList.add("answer-btn");
-  btn.onclick = () => checkBossAnswer(answer);
+
+  btn.onclick = () => {
+    checkBossAnswer(answer);
+  };
+
   answersContainer.appendChild(btn);
 });
 
