@@ -46,6 +46,15 @@ function addCastleButton() {
   zoneButtons.appendChild(btn);
 }
 
+function triggerCastleShake() {
+  const body = document.body;
+  body.classList.add("shake");
+
+  setTimeout(() => {
+    body.classList.remove("shake");
+  }, 400); // Match animation duration
+}
+
 function checkAllZonesCompleted(difficulty) {
   const completedZones = JSON.parse(localStorage.getItem("completedZones")) || {};
   const zones = Object.keys(questionsData);
@@ -225,6 +234,7 @@ function loadQuestions() {
       // ✅ NEW: Check if Castle should be available
       if (checkAllZonesCompleted("novice") && checkAllZonesCompleted("scholar") && checkAllZonesCompleted("wizard")) {
         addCastleButton();
+        triggerCastleShake();
       }
     });
 }
