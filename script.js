@@ -85,7 +85,8 @@ function updateXPDisplay() {
 }
 
 function addCastleButton() {
-  const castleZone = document.getElementById("castle-zone");
+const castleZone = document.getElementById("castle-zone");
+if (castleZone) {
   castleZone.classList.remove("hidden");
   triggerCastleShake();
 }
