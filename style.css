@@ -271,3 +271,29 @@ button.locked {
   opacity: 0.9;
   font-style: italic;
 }
+
+#castle-zone {
+  background: linear-gradient(145deg, #3e3e7f, #1c1c3c);
+  color: #fff5cc;
+  font-weight: bold;
+  border: 3px solid gold;
+  box-shadow: 0 0 12px gold;
+  animation: pulse-glow 2s infinite;
+  transition: transform 0.2s ease;
+}
+
+#castle-zone:hover {
+  transform: scale(1.05);
+}
+
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 8px gold;
+  }
+  50% {
+    box-shadow: 0 0 18px gold;
+  }
+  100% {
+    box-shadow: 0 0 8px gold;
+  }
+}
