@@ -82,10 +82,9 @@ function updateXPDisplay() {
 }
 
 function addCastleButton() {
-  const btn = document.createElement("button");
-  btn.textContent = "🏰 Enter the Castle of Oblivion";
-  btn.onclick = startCastleBattle;
-  zoneButtons.appendChild(btn);
+  const castleZone = document.getElementById("castle-zone");
+  castleZone.classList.remove("hidden");
+  triggerCastleShake();
 }
 
 function triggerCastleShake() {
@@ -315,12 +314,20 @@ function renderZones() {
     entertainment: "🎭 Forest of Flickers",
     daily: "✨ Daily Mix"
   };
+
   zoneButtons.innerHTML = "";
+
   for (const key in zones) {
     const btn = document.createElement("button");
     btn.textContent = zones[key];
     btn.onclick = () => showDifficulties(key);
     zoneButtons.appendChild(btn);
+  }
+
+  // Move castle to end if it's visible
+  const castleZone = document.getElementById("castle-zone");
+  if (!castleZone.classList.contains("hidden")) {
+    zoneButtons.appendChild(castleZone);
   }
 }
 
