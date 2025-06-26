@@ -72,6 +72,11 @@ const unlockConditions = {
   }
 };
 
+function hideAllScreens() {
+  const screens = document.querySelectorAll(".screen");
+  screens.forEach(screen => screen.classList.add("hidden"));
+}
+
 function addCastleButton() {
   const btn = document.createElement("button");
   btn.textContent = "🏰 Enter the Castle of Oblivion";
