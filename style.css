@@ -297,3 +297,18 @@ button.locked {
     box-shadow: 0 0 8px gold;
   }
 }
+
+#castle-zone::before {
+  content: "🏰 ";
+  display: inline-block;
+  animation: bounce-castle 1.6s infinite;
+}
+
+@keyframes bounce-castle {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
