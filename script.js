@@ -114,12 +114,18 @@ function checkCastleUnlock() {
 }
 
 function startCastleBattle() {
-hintBtn.style.display = "none";
-eliminateBtn.style.display = "none";
-  hideAllScreens();
-  document.getElementById("castle-screen").classList.remove("hidden");
-  bossIndex = 0;
-  renderBossQuestion();
+  mainScreen.classList.add("hidden");
+  difficultyScreen.classList.add("hidden");
+
+  const castleScreen = document.getElementById("castle-screen");
+  castleScreen.classList.remove("hidden");
+
+  renderCastleQuestion(); // existing logic
+}
+
+function goBackToZones() {
+  document.getElementById("castle-screen").classList.add("hidden");
+  mainScreen.classList.remove("hidden");
 }
 
 function showMessage(text, type) {
