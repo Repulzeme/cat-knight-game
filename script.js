@@ -600,28 +600,6 @@ document.getElementById("eliminate-msg")?.classList.add("hidden");
   document.getElementById("answers-container").innerHTML = answersHTML;
 }
 
-function renderBossQuestion() {
-  const questionObj = castleBossQuestions[bossIndex];
-
-  const questionTextEl = document.getElementById("boss-question-text");
-  const answersContainer = document.getElementById("boss-answers-container");
-  const victoryScreen = document.getElementById("boss-victory");
-
-  questionTextEl.textContent = questionObj.question;
-  answersContainer.innerHTML = "";
-
-questionObj.answers.forEach(answer => {
-  const btn = document.createElement("button");
-  btn.textContent = answer;
-  btn.classList.add("answer-btn");
-
-  btn.onclick = () => {
-    checkBossAnswer(answer);
-  };
-
-  answersContainer.appendChild(btn);
-});
-
 function getXPGain(difficulty) {
   switch (difficulty) {
     case 'novice': return 10;
