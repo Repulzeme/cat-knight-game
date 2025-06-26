@@ -549,6 +549,14 @@ if (!completedZones[currentZone].includes(currentDifficulty)) {
     const unlockedScholar = currentDifficulty === "novice" && checkAllZonesCompleted("novice");
     const unlockedWizard = currentDifficulty === "scholar" && checkAllZonesCompleted("scholar");
 
+if (
+  checkAllZonesCompleted("novice") &&
+  checkAllZonesCompleted("scholar") &&
+  checkAllZonesCompleted("wizard")
+) {
+  addCastleButton(); // Shows the castle button
+}
+
     if (unlockedScholar && !unlockedDifficulties.includes("scholar")) unlockedDifficulties.push("scholar");
     if (unlockedWizard && !unlockedDifficulties.includes("wizard")) unlockedDifficulties.push("wizard");
 
