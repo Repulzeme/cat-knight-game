@@ -195,6 +195,25 @@ function handleBossAnswer(selectedIndex) {
   }
 }
 
+function checkBossAnswer(selectedAnswer) {
+document.querySelectorAll('.boss-msg').forEach(el => el.remove());
+  const questionObj = castleBossQuestions[bossIndex];
+  if (selectedAnswer === questionObj.correct) {
+    xp += 30;
+    localStorage.setItem("xp", xp);
+    updateXPDisplay();
+    showMessage(`✅ Correct! ${questionObj.fact}`, "correct");
+    bossIndex++;
+    if (bossIndex < castleBossQuestions.length) {
+      setTimeout(renderBossQuestion, 2000);
+    } else {
+      setTimeout(showCastleVictory, 2000);
+    }
+  } else {
+    showMessage("❌ Wrong! Try again...", "wrong");
+  }
+}
+
 function showCastleVictory() {
   hideAllScreens();
   document.getElementById("boss-victory").classList.remove("hidden");
@@ -590,35 +609,13 @@ function renderBossQuestion() {
   questionTextEl.textContent = questionObj.question;
   answersContainer.innerHTML = "";
 
-  questionObj.answers.forEach(answer => {
-    const btn = document.createElement("button");
-    btn.textContent = answer;
-    btn.classList.add("answer-btn");
-    btn.onclick = () => {
-      if (answer === questionObj.correct) {
-        // Add XP
-        xp += 30;
-        localStorage.setItem("xp", xp);
-        updateXPDisplay();
-
-        // Show fun fact
-        showMessage(`✅ Correct! ${questionObj.fact}`, "correct");
-
-        // Next or victory
-        bossIndex++;
-        if (bossIndex < castleBossQuestions.length) {
-          setTimeout(renderBossQuestion, 2000);
-        } else {
-          setTimeout(showCastleVictory, 2000);
-        }
-      } else {
-        showMessage("❌ Wrong! Try again...", "wrong");
-        btn.disabled = true;
-      }
-    };
-    answersContainer.appendChild(btn);
-  });
-}
+questionObj.answers.forEach(answer => {
+  const btn = document.createElement("button");
+  btn.textContent = answer;
+  btn.classList.add("answer-btn");
+  btn.onclick = () => checkBossAnswer(answer);
+  answersContainer.appendChild(btn);
+});
 
 function getXPGain(difficulty) {
   switch (difficulty) {
