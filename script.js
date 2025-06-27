@@ -161,7 +161,7 @@ function renderBossQuestion() {
     btn.classList.add("answer-btn");
 
     btn.addEventListener("click", () => {
-      if (index === question.correct) {
+      if (answer === question.correct)
         xp += 30;
         localStorage.setItem("xp", xp);
         xpDisplay.textContent = `Streak: ${streak} 💡 Knowledge: ${xp}`;
