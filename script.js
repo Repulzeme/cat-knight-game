@@ -173,7 +173,7 @@ btn.addEventListener("click", () => {
     localStorage.setItem("xp", xp);
     xpDisplay.textContent = `🔥 Streak: ${streak} 💡 Knowledge: ${xp}`;
 
-    showMessage("✅ Correct!", "correct");
+    showFeedback("✅ Correct!", true, "castle-feedback-container");
 
     setTimeout(() => {
       bossIndex++;
@@ -184,7 +184,7 @@ btn.addEventListener("click", () => {
       }
     }, 800); // Wait to show the message
   } else {
-    showMessage("❌ Wrong! Try again!", "wrong");
+    showFeedback("❌ Wrong! Try again!", "wrong");
   }
 });
 
@@ -736,9 +736,9 @@ allButtons.forEach(btn => {
   }
 }
 
-function showFeedback(message, isCorrect) {
-  const container = document.getElementById("feedback-container");
-  container.innerHTML = ""; // Clear previous messages
+function showFeedback(message, isCorrect, containerId = "feedback-container") {
+  const container = document.getElementById(containerId);
+  container.innerHTML = "";
 
   const msg = document.createElement("div");
   msg.classList.add("feedback-msg");
@@ -747,15 +747,12 @@ function showFeedback(message, isCorrect) {
 
   container.appendChild(msg);
 
-  // Auto fade and remove
   setTimeout(() => {
     msg.classList.add("fade-out");
     setTimeout(() => {
-      if (container.contains(msg)) {
-        container.removeChild(msg);
-      }
+      container.removeChild(msg);
     }, 500);
-  }, 1500);
+  }, 2000);
 }
 
 function goToMain() {
