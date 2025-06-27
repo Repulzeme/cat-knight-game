@@ -179,7 +179,7 @@ btn.addEventListener("click", () => {
     localStorage.setItem("xp", xp);
     xpDisplay.textContent = `🔥 Streak: ${streak} 💡 Knowledge: ${xp}`;
 
-    showFeedback("✅ Correct!", true, "castle-feedback-container");
+    showFeedback("✅ Correct!", true, "boss-feedback");
 
     setTimeout(() => {
       bossIndex++;
@@ -190,7 +190,7 @@ btn.addEventListener("click", () => {
       }
     }, 800); // Wait to show the message
   } else {
-    showFeedback("❌ Wrong! Try again!", "wrong");
+    showFeedback("❌ Wrong! Try again!", "wrong", "boss-feedback");
   }
 });
 
