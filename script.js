@@ -760,6 +760,7 @@ setTimeout(() => {
     }
   }, 500);
 }, 2000);
+}
 
 function goToMain() {
   document.getElementById("main-screen").classList.remove("hidden");
