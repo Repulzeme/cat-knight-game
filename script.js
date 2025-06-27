@@ -138,15 +138,21 @@ function goBackToZones() {
   mainScreen.classList.remove("hidden");
 }
 
-function showMessage(text, type) {
-  const msg = document.getElementById("message");
+function showMessage(text, type = "") {
+  const isCastle = !document.getElementById("castle-screen").classList.contains("hidden");
+  const msg = isCastle
+    ? document.getElementById("castle-message")
+    : document.getElementById("message");
+
+  if (!msg) return;
+
   msg.textContent = text;
-  msg.className = `feedback-message ${type}`;
+  msg.className = `feedback-msg ${type}`;
   msg.classList.remove("hidden");
 
   setTimeout(() => {
     msg.classList.add("hidden");
-  }, 1500);
+  }, 2200);
 }
 
 function renderBossQuestion() {
