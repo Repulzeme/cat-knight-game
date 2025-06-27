@@ -736,23 +736,20 @@ allButtons.forEach(btn => {
   }
 }
 
-function showFeedback(message, isCorrect, containerId = "feedback-container") {
+function showFeedback(message, isCorrect = true, containerId = "feedback-container") {
   const container = document.getElementById(containerId);
-  container.innerHTML = "";
+  if (!container) return;
 
   const msg = document.createElement("div");
-  msg.classList.add("feedback-msg");
-  msg.classList.add(isCorrect ? "correct" : "wrong");
+  msg.className = `feedback-msg ${isCorrect === true ? "correct" : isCorrect === "wrong" ? "wrong" : ""} show`;
   msg.textContent = message;
 
+  container.innerHTML = "";
   container.appendChild(msg);
 
   setTimeout(() => {
-    msg.classList.add("fade-out");
-    setTimeout(() => {
-      container.removeChild(msg);
-    }, 500);
-  }, 2000);
+    msg.classList.remove("show");
+  }, 1500);
 }
 
 function goToMain() {
