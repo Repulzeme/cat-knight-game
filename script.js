@@ -181,21 +181,6 @@ btn.addEventListener("click", () => {
   });
 }
 
-function handleBossAnswer(selectedIndex) {
-  const question = bossQuestions[bossIndex];
-  if (selectedIndex === question.correct) {
-    bossIndex++;
-    if (bossIndex < bossQuestions.length) {
-      renderBossQuestion();
-    } else {
-      showCastleVictory();
-    }
-  } else {
-    // Optional: Add incorrect feedback here
-    alert("Wrong! Try again.");
-  }
-}
-
 function checkBossAnswer(selectedAnswer) {
 document.querySelectorAll('.boss-msg').forEach(el => el.remove());
   const questionObj = castleBossQuestions[bossIndex];
