@@ -174,7 +174,7 @@ btn.addEventListener("click", () => {
     localStorage.setItem("xp", xp);
     xpDisplay.textContent = `🔥 Streak: ${streak} 💡 Knowledge: ${xp}`;
 
-    showFeedback("✅ Correct!", true);
+    showMessage("✅ Correct!", "correct");
 
     setTimeout(() => {
       bossIndex++;
@@ -185,7 +185,7 @@ btn.addEventListener("click", () => {
       }
     }, 800); // Wait to show the message
   } else {
-    showFeedback("❌ Wrong! Try again!", false);
+    showMessage("❌ Wrong! Try again!", "wrong");
   }
 });
 
@@ -225,7 +225,7 @@ function showCastleVictory() {
   localStorage.setItem("knowledgeXP", currentXP);
 
   // Optional: Show XP float
-  showXPFloat("+100 Knowledge");
+  showXPFloat(100);
 
   // Optional: Update XP bar or other UI elements
   updateXPDisplay();
