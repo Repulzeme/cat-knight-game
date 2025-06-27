@@ -160,22 +160,22 @@ function renderBossQuestion() {
     btn.textContent = answer;
     btn.classList.add("answer-btn");
 
-    btn.addEventListener("click", () => {
-      if (answer === question.correct)
-        xp += 30;
-        localStorage.setItem("xp", xp);
-        xpDisplay.textContent = `Streak: ${streak} 💡 Knowledge: ${xp}`;
+btn.addEventListener("click", () => {
+  if (answer === question.correct) {
+    xp += 30;
+    localStorage.setItem("xp", xp);
+    xpDisplay.textContent = `Streak: ${streak} 💡 Knowledge: ${xp}`;
 
-        bossIndex++;
-        if (bossIndex >= castleBossQuestions.length) {
-          showCastleVictory();
-        } else {
-          renderBossQuestion();
-        }
-      } else {
-        showFeedback("Wrong! Try again!", "wrong");
-      }
-    });
+    bossIndex++;
+    if (bossIndex >= castleBossQuestions.length) {
+      showCastleVictory();
+    } else {
+      renderBossQuestion();
+    }
+  } else {
+    showFeedback("Wrong! Try again!", "wrong");
+  }
+});
 
     answersContainer.appendChild(btn);
   });
