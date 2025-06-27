@@ -139,15 +139,14 @@ function goBackToZones() {
 }
 
 function showMessage(text, type) {
-  const bossContainer = document.getElementById("castle-screen");
-  const msg = document.createElement("div");
-  msg.className = `boss-msg ${type}`; // Add type for styling (e.g. "correct" or "wrong")
+  const msg = document.getElementById("message");
   msg.textContent = text;
-  bossContainer.appendChild(msg);
+  msg.className = `feedback-message ${type}`;
+  msg.classList.remove("hidden");
 
   setTimeout(() => {
-    msg.remove();
-  }, 2000);
+    msg.classList.add("hidden");
+  }, 1500);
 }
 
 function renderBossQuestion() {
