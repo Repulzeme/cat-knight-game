@@ -752,13 +752,14 @@ function showFeedback(message, isCorrect) {
   container.appendChild(msg);
 
   // Optional: fade out after 2s
+setTimeout(() => {
+  msg.classList.add("fade-out");
   setTimeout(() => {
-    msg.classList.add("fade-out");
-    setTimeout(() => {
+    if (container.contains(msg)) {
       container.removeChild(msg);
-    }, 500);
-  }, 2000);
-}
+    }
+  }, 500);
+}, 2000);
 
 function goToMain() {
   document.getElementById("main-screen").classList.remove("hidden");
