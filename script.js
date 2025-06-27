@@ -205,7 +205,7 @@ document.querySelectorAll('.boss-msg').forEach(el => el.remove());
     xp += 30;
     localStorage.setItem("xp", xp);
     updateXPDisplay();
-    showMessage(`✅ Correct! ${questionObj.fact}`, "correct");
+    showBossFeedback("✅ Correct! " + questionObj.fact, "correct");
     bossIndex++;
     if (bossIndex < castleBossQuestions.length) {
       setTimeout(renderBossQuestion, 2000);
@@ -213,21 +213,19 @@ document.querySelectorAll('.boss-msg').forEach(el => el.remove());
       setTimeout(showCastleVictory, 2000);
     }
   } else {
-    showMessage("❌ Wrong! Try again...", "wrong");
+    showBossFeedback("❌ Wrong! Try again...", "wrong");
   }
 }
 
-function showBossFeedback(message, type) {
-  const feedbackDiv = document.getElementById("boss-feedback");
-  feedbackDiv.textContent = message;
-  feedbackDiv.classList.remove("hidden");
-  feedbackDiv.classList.remove("correct", "wrong");
-  feedbackDiv.classList.add(type);
+function showBossFeedback(text, type) {
+  const feedback = document.getElementById("boss-feedback");
+  feedback.textContent = text;
+  feedback.className = "feedback-msg " + type;
+  feedback.classList.remove("hidden");
 
-  // Optional: hide after 2.5s
   setTimeout(() => {
-    feedbackDiv.classList.add("hidden");
-  }, 2500);
+    feedback.classList.add("hidden");
+  }, 2000);
 }
 
 function showCastleVictory() {
