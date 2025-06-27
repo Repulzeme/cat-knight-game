@@ -84,6 +84,14 @@ function updateXPDisplay() {
   xpDisplay.textContent = `🔥 Streak: ${streak} 🧠 Knowledge: ${xp}`;
 }
 
+function showXPFloat(amount) {
+  const xpFloat = document.createElement("div");
+  xpFloat.className = "xp-float";
+  xpFloat.textContent = `+${amount} XP`;
+  document.body.appendChild(xpFloat);
+  setTimeout(() => xpFloat.remove(), 1500);
+}
+
 function addCastleButton() {
 const castleZone = document.getElementById("castle-zone");
 if (castleZone) {
@@ -164,16 +172,20 @@ btn.addEventListener("click", () => {
   if (answer === question.correct) {
     xp += 30;
     localStorage.setItem("xp", xp);
-    xpDisplay.textContent = `Streak: ${streak} 💡 Knowledge: ${xp}`;
+    xpDisplay.textContent = `🔥 Streak: ${streak} 💡 Knowledge: ${xp}`;
 
-    bossIndex++;
-    if (bossIndex >= castleBossQuestions.length) {
-      showCastleVictory();
-    } else {
-      renderBossQuestion();
-    }
+    showFeedback("✅ Correct!", true);
+
+    setTimeout(() => {
+      bossIndex++;
+      if (bossIndex >= castleBossQuestions.length) {
+        showCastleVictory();
+      } else {
+        renderBossQuestion();
+      }
+    }, 800); // Wait to show the message
   } else {
-    showFeedback("Wrong! Try again!", "wrong");
+    showFeedback("❌ Wrong! Try again!", false);
   }
 });
 
@@ -736,15 +748,15 @@ function showFeedback(message, isCorrect) {
 
   container.appendChild(msg);
 
-  // Optional: fade out after 2s
-setTimeout(() => {
-  msg.classList.add("fade-out");
+  // Auto fade and remove
   setTimeout(() => {
-    if (container.contains(msg)) {
-      container.removeChild(msg);
-    }
-  }, 500);
-}, 2000);
+    msg.classList.add("fade-out");
+    setTimeout(() => {
+      if (container.contains(msg)) {
+        container.removeChild(msg);
+      }
+    }, 500);
+  }, 1500);
 }
 
 function goToMain() {
