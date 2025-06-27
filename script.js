@@ -217,6 +217,19 @@ document.querySelectorAll('.boss-msg').forEach(el => el.remove());
   }
 }
 
+function showBossFeedback(message, type) {
+  const feedbackDiv = document.getElementById("boss-feedback");
+  feedbackDiv.textContent = message;
+  feedbackDiv.classList.remove("hidden");
+  feedbackDiv.classList.remove("correct", "wrong");
+  feedbackDiv.classList.add(type);
+
+  // Optional: hide after 2.5s
+  setTimeout(() => {
+    feedbackDiv.classList.add("hidden");
+  }, 2500);
+}
+
 function showCastleVictory() {
   hideAllScreens();
   document.getElementById("boss-victory").classList.remove("hidden");
