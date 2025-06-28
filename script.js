@@ -179,7 +179,7 @@ btn.addEventListener("click", () => {
     localStorage.setItem("xp", xp);
     xpDisplay.textContent = `🔥 Streak: ${streak} 💡 Knowledge: ${xp}`;
 
-    showFeedback("✅ Correct!", true, "boss-feedback");
+    showBossFeedback("✅ Correct!", "correct");
 
     setTimeout(() => {
       bossIndex++;
@@ -190,7 +190,7 @@ btn.addEventListener("click", () => {
       }
     }, 800); // Wait to show the message
   } else {
-    showFeedback("❌ Wrong! Try again!", "wrong", "boss-feedback");
+    showBossFeedback("❌ Wrong! Try again...", "wrong");
   }
 });
 
@@ -229,24 +229,19 @@ function showBossFeedback(text, type) {
 }
 
 function showCastleVictory() {
-  hideAllScreens();
+  // Only hide the question container and intro
+  document.getElementById("boss-question-container").classList.add("hidden");
+  document.getElementById("boss-intro").classList.add("hidden");
+
+  // Show the final victory message
   document.getElementById("boss-victory").classList.remove("hidden");
 
-  // Save wizard hat cosmetic unlock
+  // Cosmetic + XP bonus
   localStorage.setItem("hasWizardHat", "true");
-
-  // Optional: Give big XP reward
   let currentXP = parseInt(localStorage.getItem("knowledgeXP") || "0", 10);
-  currentXP += 100; // Reward 100 XP
+  currentXP += 100;
   localStorage.setItem("knowledgeXP", currentXP);
-
-  // Optional: Show XP float
-  showXPFloat(100);
-
-  // Optional: Update XP bar or other UI elements
-  updateXPDisplay();
-hintBtn.style.display = "";
-eliminateBtn.style.display = "";
+  updateStats();
 }
 
 function isDifficultyUnlocked(difficulty, zone) {
