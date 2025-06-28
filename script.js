@@ -354,6 +354,7 @@ function isCastleUnlocked() {
 }
 
 function renderZones() {
+const zoneButtons = document.getElementById("main-screen");
   const zones = {
     geography: "🌍 The Compass Grove",
     history: "📜 The Timekeep Vault",
