@@ -377,10 +377,13 @@ const zoneButtons = document.getElementById("main-screen");
 }
 
 function showDifficulties(zone) {
+  const zoneTitle = document.getElementById("zoneTitle"); // <-- move here
+  const difficultyButtons = document.getElementById("difficulty-buttons");
+
   currentZone = zone;
   mainScreen.classList.add("hidden");
   difficultyScreen.classList.remove("hidden");
-  zoneTitle.textContent = `Choose your challenge in ${zone}`;
+  zoneTitle.textContent = `🎯 Choose your challenge in ${zone}:`;
   difficultyButtons.innerHTML = "";
 
   const difficulties = ["Novice", "Scholar", "Wizard"];
