@@ -13,11 +13,23 @@
   </header>
 
 <main>
+  <!-- Zone select screen -->
   <section id="main-screen">...</section>
 
+<!-- Spell Buttons HUD -->
+<div id="spell-container" class="hidden">
+  <button id="hint-btn" class="spell-button hidden">🧠 Hint</button>
+  <span id="hint-msg" class="spell-msg hidden">Hint used!</span>
+
+  <button id="eliminate-btn" class="spell-button hidden">❌ Eliminate</button>
+  <span id="eliminate-msg" class="spell-msg hidden">Eliminate used!</span>
+</div>
+
+  <!-- Difficulty choice -->
   <section id="difficulty-screen" class="hidden">...</section>
 
-  <section id="question-screen" class="hidden"> <!-- ✅ THIS FIXED -->
+  <!-- Regular question screen -->
+  <section id="question-screen" class="hidden">
     <div id="feedback-container"></div>
     <div id="question-container">
       <div id="question-text" class="question-text"></div>
@@ -26,37 +38,40 @@
       <button id="back-btn" onclick="goToMain()">🔙 Back to Zones</button>
     </div>
   </section>
-  
-       <section id="result-screen" class="hidden">
-           <div id="result-feedback" class="result-block"></div>
-           <div id="result-question" class="result-block"></div>
-            <div id="result-answer" class="result-block"></div>
-            <div id="result-knowledge" class="result-block"></div>
-            <div id="result-streak" class="result-block"></div>
-            <div id="result-funfact" class="result-block fun-fact"></div>
-            <div id="result-unlock" class="result-unlock"></div>
-            <button onclick="goToMain()" id="back-main-btn">🏠 Back to Main</button>
-     </section>
-  
-<section id="castle-screen" class="hidden">
-  <div id="boss-intro">The Shadow Sage awaits your challenge...</div>
-  <div id="boss-avatar">🧙‍♂️</div>
 
-  <div id="boss-question-container">
-    <div id="boss-question-text" class="question-text"></div>
-    <div id="boss-answers-container" class="answers"></div>
-    <div id="boss-feedback" class="feedback-msg hidden"></div>
-  </div>
+  <!-- Result screen -->
+  <section id="result-screen" class="hidden">
+    <div id="result-feedback" class="result-block"></div>
+    <div id="result-question" class="result-block"></div>
+    <div id="result-answer" class="result-block"></div>
+    <div id="result-knowledge" class="result-block"></div>
+    <div id="result-streak" class="result-block"></div>
+    <div id="result-funfact" class="result-block fun-fact"></div>
+    <div id="result-unlock" class="result-unlock"></div>
+    <button onclick="goToMain()" id="back-main-btn">🔒 Back to Main</button>
+  </section>
 
-  <div id="boss-victory" class="hidden">
-    <h3>🎉 You have defeated the Shadow Sage!</h3>
-    <p>You are now a true Cat Wizard 🧙‍♂️🐾</p>
-    <p>✨ You earned the Wizard Hat cosmetic!</p>
-  </div>
+  <!-- Castle boss screen -->
+  <section id="castle-screen" class="hidden">
+    <div id="boss-intro">The Shadow Sage awaits your challenge...</div>
+    <div id="boss-avatar">🧙‍♂️</div>
 
-  <button onclick="goToMain()">Back to Zones</button>
-</section>
-  </main>
+    <div id="boss-question-container">
+      <div id="boss-question-text" class="question-text"></div>
+      <div id="boss-answers-container" class="answers"></div>
+      <div id="boss-feedback" class="feedback-msg hidden"></div>
+    </div>
+
+    <div id="boss-victory" class="hidden">
+      <h3>🎉 You have defeated the Shadow Sage!</h3>
+      <p>You are now a true Cat Wizard 🧙‍♂️🐾</p>
+      <p>✨ You earned the Wizard Hat cosmetic!</p>
+    </div>
+
+    <button onclick="goToMain()">Back to Zones</button>
+  </section>
+</main>
+
   <script src="script.js"></script>
 <div id="xp-float" class="xp-float hidden">+10 Knowledge</div>
 </body>
