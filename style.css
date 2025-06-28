@@ -357,3 +357,8 @@ button.locked {
   90% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, 20px); }
 }
+
+#boss-feedback {
+  margin-top: 12px;
+  text-align: center;
+}
