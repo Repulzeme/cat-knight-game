@@ -894,6 +894,7 @@ setTimeout(() => goToMain(), 7000);
 }
 window.onload = () => {
   loadQuestions();
+  renderZones(); // <-- THIS IS CRUCIAL
 
   // Define your global functions here if needed
   window.startQuiz = startQuiz;
@@ -901,3 +902,4 @@ window.onload = () => {
   window.renderQuestion = renderQuestion;
   window.selectAnswer = selectAnswer;
 };
+
