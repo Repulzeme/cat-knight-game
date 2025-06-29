@@ -156,6 +156,8 @@ function showMessage(text, type = "") {
 }
 
 function renderBossQuestion() {
+const feedback = document.getElementById("feedback-container"); // instead of boss-feedback
+document.getElementById("feedback-container").innerHTML = "";
   // Disable spells during boss fight
   hintBtn.classList.add("hidden");
   eliminateBtn.classList.add("hidden");
@@ -218,7 +220,7 @@ document.querySelectorAll('.boss-msg').forEach(el => el.remove());
 }
 
 function showBossFeedback(text, type) {
-  const feedback = document.getElementById("boss-feedback");
+  const feedback = document.getElementById("feedback-container");
   feedback.textContent = text;
   feedback.className = "feedback-msg " + type;
   feedback.classList.remove("hidden");
