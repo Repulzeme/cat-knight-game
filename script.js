@@ -560,26 +560,28 @@ if (eliminateUnlocked && !usedEliminate && visibleOptions.length >= 3) {
   elimMsg.classList.add("hidden");
 }
 
-  // 🎯 Enable spell buttons if unlocked
+// 🪄 Show spells only in quiz view and only if unlocked
 const spellContainer = document.getElementById("spell-container");
 const hintBtn = document.getElementById("hint-btn");
 const eliminateBtn = document.getElementById("eliminate-btn");
 
-// Show spell HUD if at least one spell is unlocked
 if (hintUnlocked || eliminateUnlocked) {
   spellContainer.classList.remove("hidden");
 } else {
   spellContainer.classList.add("hidden");
 }
 
-// Show/hide Hint button
+// Show/hide individual spell buttons
 if (hintUnlocked) {
   hintBtn.classList.remove("hidden");
 } else {
   hintBtn.classList.add("hidden");
 }
 
-// Show/hide Eliminate button only if unlocked AND usable
+// Only show Eliminate if usable now
+const visibleOptions = Array.from(document.querySelectorAll("#answers-container button"))
+  .filter(btn => btn.style.display !== "none");
+
 if (eliminateUnlocked && visibleOptions.length >= 3) {
   eliminateBtn.classList.remove("hidden");
   eliminateBtn.disabled = false;
@@ -588,12 +590,6 @@ if (eliminateUnlocked && visibleOptions.length >= 3) {
   eliminateBtn.disabled = true;
 }
 
-// Show static unlock message for Eliminate if Hint is unlocked but Eliminate is not
-document.getElementById("eliminate-static-msg").classList.toggle(
-  "hidden",
-  eliminateUnlocked
-);
- 
 // 🧼 Hide static unlock messages if spell is unlocked
 document.getElementById("hint-static-msg").classList.toggle("hidden", hintUnlocked);
 document.getElementById("eliminate-static-msg").classList.toggle("hidden", eliminateUnlocked);
