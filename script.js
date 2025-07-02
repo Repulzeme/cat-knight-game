@@ -578,15 +578,9 @@ if (hintUnlocked) {
   hintBtn.classList.add("hidden");
 }
 
-const visibleOptions = Array.from(document.querySelectorAll("#answers-container button"))
-  .filter(btn => btn.style.display !== "none");
-
 if (eliminateUnlocked && visibleOptions.length >= 3) {
   eliminateBtn.classList.remove("hidden");
   eliminateBtn.disabled = false;
-} else {
-  eliminateBtn.classList.add("hidden");
-  eliminateBtn.disabled = true;
 }
 
 // 💫 Hide static unlock messages if spell is unlocked
