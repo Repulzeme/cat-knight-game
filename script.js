@@ -560,7 +560,7 @@ if (eliminateUnlocked && !usedEliminate && visibleOptions.length >= 3) {
   elimMsg.classList.add("hidden");
 }
 
-// 🪄 Show spells only in quiz view and only if unlocked
+// 🧙 Show spells only in quiz view and only if unlocked
 const spellContainer = document.getElementById("spell-container");
 const hintBtn = document.getElementById("hint-btn");
 const eliminateBtn = document.getElementById("eliminate-btn");
@@ -571,14 +571,13 @@ if (hintUnlocked || eliminateUnlocked) {
   spellContainer.classList.add("hidden");
 }
 
-// Show/hide individual spell buttons
+// 🔍 Show/hide individual spell buttons
 if (hintUnlocked) {
   hintBtn.classList.remove("hidden");
 } else {
   hintBtn.classList.add("hidden");
 }
 
-// Only show Eliminate if usable now
 const visibleOptions = Array.from(document.querySelectorAll("#answers-container button"))
   .filter(btn => btn.style.display !== "none");
 
@@ -590,22 +589,15 @@ if (eliminateUnlocked && visibleOptions.length >= 3) {
   eliminateBtn.disabled = true;
 }
 
-// 🧼 Hide static unlock messages if spell is unlocked
+// 💫 Hide static unlock messages if spell is unlocked
 document.getElementById("hint-static-msg").classList.toggle("hidden", hintUnlocked);
 document.getElementById("eliminate-static-msg").classList.toggle("hidden", eliminateUnlocked);
 
- const visibleEliminateOptions = Array.from(document.querySelectorAll("#answers-container button"))
-    .filter(btn => btn.style.display !== "none");
-
-if (eliminateUnlocked && visibleEliminateOptions.length >= 3) {
-  eliminateBtn.classList.remove("hidden");
-  eliminateBtn.disabled = false;
-
-  // Save unlocked eliminate spell
-  if (!unlockedSpells.includes("eliminate")) {
-    unlockedSpells.push("eliminate");
-    localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
-  }
+// 💾 Save unlocked eliminate spell
+if (!unlockedSpells.includes("eliminate")) {
+  unlockedSpells.push("eliminate");
+  localStorage.setItem("unlockedSpells", JSON.stringify(unlockedSpells));
+}
 
 } else {
   eliminateBtn.classList.add("hidden");
